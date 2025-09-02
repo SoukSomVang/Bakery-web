@@ -9,11 +9,13 @@
     >
       <!-- Overlay matching your image -->
       <div
-        class="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-red-900/80"
+        class="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-red-900/40"
       ></div>
 
       <!-- Content -->
-      <div class="relative z-10 h-full flex flex-col lg:flex-row justify-between items-center px-4 lg:px-8">
+      <div
+        class="relative z-10 h-full flex flex-col lg:flex-row justify-between items-center px-4 lg:px-8"
+      >
         <div class="w-full lg:w-1/2 mb-8 lg:mb-0">
           <div class="flex justify-center lg:justify-start">
             <div class="text-center lg:text-left">
@@ -35,11 +37,7 @@
               <div class="relative">
                 <!-- Small house icon -->
                 <div class="absolute -top-6 right-0 lg:left-0 text-red-300">
-                  <svg class="w-10 h-10 animate-bounce" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
-                    />
-                  </svg>
+                  
                 </div>
 
                 <span
@@ -60,7 +58,7 @@
           <!-- White Card -->
           <div
             class="bg-white/95 backdrop-blur-sm py-8 md:py-10 px-8 md:px-12 shadow-2xl max-w-sm md:max-w-lg rounded-lg border-l-4 border-red-500 animate-fade-in-right"
-            style="animation-delay: 0.6s;"
+            style="animation-delay: 0.6s"
           >
             <h1
               class="text-black text-xl md:text-2xl lg:text-3xl font-semibold mb-6 md:mb-8 leading-relaxed"
@@ -68,7 +66,8 @@
               Bakery house Holding Company Limited
             </h1>
             <p class="text-gray-600 text-sm md:text-base mb-6 leading-relaxed">
-              Crafting exceptional baked goods with premium ingredients and traditional techniques since our founding.
+              Crafting exceptional baked goods with premium ingredients and
+              traditional techniques since our founding.
             </p>
             <button
               class="bg-red-900 hover:bg-red-950 text-white px-8 md:px-12 py-4 md:py-5 rounded-lg font-semibold transition-all duration-300 w-full md:w-auto shadow-lg hover:shadow-xl transform hover:-translate-y-1"
@@ -85,56 +84,81 @@
     <section class="w-full bg-gray-50 py-16">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold text-gray-800 mb-4">Why Choose Bakery House</h2>
-          <p class="text-lg text-gray-600 max-w-2xl mx-auto">Our commitment to excellence is reflected in every aspect of our baking process</p>
+          <h2 class="text-4xl font-bold text-gray-800 mb-4">
+            Why Choose Bakery House
+          </h2>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+            Our commitment to excellence is reflected in every aspect of our
+            baking process
+          </p>
         </div>
         <div class="grid lg:grid-cols-2 gap-8 items-center">
           <div class="grid grid-cols-2 gap-4">
             <!-- Feature 1 -->
-            <div class="bg-red-800 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-              <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4">
+            <div
+              class="bg-red-800 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+            >
+              <div
+                class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4"
+              >
                 <span class="text-2xl font-bold">1</span>
               </div>
               <h3 class="text-lg font-bold mb-3">Premium Ingredients</h3>
               <p class="text-sm opacity-90 leading-relaxed">
-                Using the finest raw materials to create exceptional baked goods that exceed expectations.
+                Using the finest raw materials to create exceptional baked goods
+                that exceed expectations.
               </p>
             </div>
 
             <!-- Feature 2 -->
-            <div class="bg-white p-6 shadow-lg rounded-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-              <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+            <div
+              class="bg-white p-6 shadow-lg rounded-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+            >
+              <div
+                class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4"
+              >
                 <span class="text-2xl font-bold text-red-800">2</span>
               </div>
               <h3 class="text-lg font-bold mb-3 text-gray-800">
                 Continuous Innovation
               </h3>
               <p class="text-sm text-gray-600 leading-relaxed">
-                Constantly developing new products that fulfill the nutritional needs of our community.
+                Constantly developing new products that fulfill the nutritional
+                needs of our community.
               </p>
             </div>
 
             <!-- Feature 3 -->
-            <div class="bg-white p-6 shadow-lg rounded-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-              <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+            <div
+              class="bg-white p-6 shadow-lg rounded-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+            >
+              <div
+                class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4"
+              >
                 <span class="text-2xl font-bold text-red-800">3</span>
               </div>
               <h3 class="text-lg font-bold mb-3 text-gray-800">
                 Advanced Technology
               </h3>
               <p class="text-sm text-gray-600 leading-relaxed">
-                Implementing cutting-edge manufacturing technologies for consistent quality improvement.
+                Implementing cutting-edge manufacturing technologies for
+                consistent quality improvement.
               </p>
             </div>
 
             <!-- Feature 4 -->
-            <div class="bg-red-800 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-              <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4">
+            <div
+              class="bg-red-800 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+            >
+              <div
+                class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4"
+              >
                 <span class="text-2xl font-bold">4</span>
               </div>
               <h3 class="text-lg font-bold mb-3">Safety & Freshness</h3>
               <p class="text-sm opacity-90 leading-relaxed">
-                Maintaining the highest standards of freshness and cleanliness to deliver the best to our customers.
+                Maintaining the highest standards of freshness and cleanliness
+                to deliver the best to our customers.
               </p>
             </div>
           </div>
@@ -159,6 +183,7 @@
       <div class="container px-20">
         <h2
           class="text-start text-7xl font-semibold text-center mb-12 text-white underline cursor-pointer"
+          @click="$router.push('/products')"
         >
           ALL BAKERY
         </h2>
@@ -171,18 +196,29 @@
         <div class="grid lg:grid-cols-2 gap-12 items-center">
           <div class="order-2 lg:order-1">
             <div class="max-w-lg">
-              <span class="text-red-600 font-semibold text-sm uppercase tracking-wider mb-2 block">Featured Product</span>
-              <h2 class="text-4xl lg:text-5xl font-bold mb-6 text-gray-800 leading-tight">
+              <span
+                class="text-red-600 font-semibold text-sm uppercase tracking-wider mb-2 block"
+                >Featured Product</span
+              >
+              <h2
+                class="text-4xl lg:text-5xl font-bold mb-6 text-gray-800 leading-tight"
+              >
                 Whole Wheat Multigrain Bread
               </h2>
               <p class="text-gray-600 text-lg mb-8 leading-relaxed">
-                Our signature multigrain bread combines the wholesome goodness of wheat with a perfect blend of seeds and grains, creating a nutritious and delicious choice for health-conscious customers.
+                Our signature multigrain bread combines the wholesome goodness
+                of wheat with a perfect blend of seeds and grains, creating a
+                nutritious and delicious choice for health-conscious customers.
               </p>
               <div class="flex flex-col sm:flex-row gap-4">
-                <button class="bg-red-800 hover:bg-red-900 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                <button
+                  class="bg-red-800 hover:bg-red-900 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                >
                   Learn More
                 </button>
-                <button class="border-2 border-red-800 text-red-800 hover:bg-red-800 hover:text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300">
+                <button
+                  class="border-2 border-red-800 text-red-800 hover:bg-red-800 hover:text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300"
+                >
                   View All Products
                 </button>
               </div>
@@ -190,7 +226,9 @@
           </div>
           <div class="order-1 lg:order-2">
             <div class="relative">
-              <div class="absolute inset-0 bg-gradient-to-r from-red-100 to-orange-100 rounded-2xl transform rotate-6"></div>
+              <div
+                class="absolute inset-0 bg-gradient-to-r from-red-100 to-orange-100 rounded-2xl transform rotate-6"
+              ></div>
               <img
                 src="https://images.squarespace-cdn.com/content/v1/5ccc9bada9ab950174f0b374/1719853260027-MUYMSU6RJOXZFKQ8QIU2/Nature%27s+Own+-+Perfectly+Crafted+-+Multigrain+WEB+-+FOP.png?format=500w"
                 alt="Whole Wheat Bread"
@@ -204,53 +242,22 @@
 
     <!-- Branches Section -->
     <section class="py-16 bg-gray-50">
-      <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold mb-4 text-gray-800">
-            Our Locations
-          </h2>
-          <p class="text-lg text-gray-600 max-w-2xl mx-auto">Visit any of our conveniently located branches to experience our fresh baked goods</p>
-        </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
-          <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center group">
-            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-red-200 transition-colors">
-              <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold text-gray-800 mb-2">NorngNieng</h3>
-            <p class="text-gray-600 text-sm">Treekoff Branch</p>
+      <div class="container mx-auto px-4 text-center">
+        <h2 class="text-4xl font-bold mb-8 text-gray-800 underline">
+          Branches
+        </h2>
+        <div class="space-y-4 max-w-md mx-auto">
+          <div class="text-lg font-medium text-gray-700 underline">
+            Treekoff NorngNieng
           </div>
-          <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center group">
-            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-red-200 transition-colors">
-              <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold text-gray-800 mb-2">Dongpalan</h3>
-            <p class="text-gray-600 text-sm">Treekoff Branch</p>
+          <div class="text-lg font-medium text-gray-700 underline">
+            Treekoff Dongpalan
           </div>
-          <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center group">
-            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-red-200 transition-colors">
-              <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold text-gray-800 mb-2">Wattainoy</h3>
-            <p class="text-gray-600 text-sm">Treekoff Branch</p>
+          <div class="text-lg font-medium text-gray-700 underline">
+            Treekoff Wattainoy
           </div>
-          <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center group">
-            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-red-200 transition-colors">
-              <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold text-gray-800 mb-2">Vatchan</h3>
-            <p class="text-gray-600 text-sm">Treekoff Branch</p>
+          <div class="text-lg font-medium text-gray-700 underline">
+            Treekoff Vatchan
           </div>
         </div>
       </div>

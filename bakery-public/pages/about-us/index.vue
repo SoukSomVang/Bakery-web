@@ -2,14 +2,15 @@
   <div class="min-h-screen bg-gray-50">
     <!-- Hero Section -->
     <section
-      class="relative bg-cover bg-center max-h-[80vh]"
+      class="relative bg-cover bg-center max-h-[90vh]"
       :style="{
         backgroundImage: `url('https://images.unsplash.com/photo-1568254183919-78a4f43a2877?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDIzfHx8ZW58MHx8fHx8')`,
       }"
     >
       <!-- Overlay matching your style -->
+      <!-- class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-red-900/70" -->
       <div
-        class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-red-900/70"
+        class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-red-900/40"
       ></div>
 
       <!-- Content -->
@@ -18,7 +19,10 @@
           <div class="grid lg:grid-cols-2 gap-12 items-center">
             <!-- Left Content -->
             <div class="space-y-8">
-              <div class="border-l-4 border-white pl-8">
+              <div
+                class="border-l-4 border-white pl-8 animate-fade-in-up"
+                style="animation-delay: 0.4s"
+              >
                 <h2
                   class="text-4xl lg:text-5xl font-bold mb-4 leading-tight text-white"
                 >
@@ -27,13 +31,16 @@
                 </h2>
               </div>
 
-              <div class="border-l-4 border-white pl-8">
+              <div
+                class="border-l-4 border-white pl-8 animate-fade-in-up"
+                style="animation-delay: 0.6s"
+              >
                 <h3 class="text-3xl lg:text-4xl font-bold text-gray-200">
                   Bakery house
                 </h3>
               </div>
 
-              <div class="pl-8">
+              <div class="pl-8 animate-fade-in-up" style="animation-delay: 0.8s">
                 <button
                   class="bg-red-900 hover:bg-red-950 text-white px-6 md:px-10 py-3 md:py-4 rounded-md font-semibold transition-colors w-full md:w-auto"
                 >
@@ -44,7 +51,7 @@
 
             <!-- Right Content - Stylized Logo -->
             <div class="flex justify-center lg:justify-end">
-              <div class="text-right">
+              <div class="text-right animate-fade-in-right" style="animation-delay: 0.8s">
                 <!-- Bakery Text -->
                 <div class="mb-4">
                   <span
@@ -251,5 +258,37 @@ const bakeryData = ref({
 /* Additional custom styles if needed */
 .container {
   max-width: 1200px;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-fade-in-right {
+  animation: fadeInRight 0.8s ease-out forwards;
+  opacity: 0;
 }
 </style>

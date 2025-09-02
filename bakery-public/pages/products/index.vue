@@ -11,7 +11,7 @@
       <div class="relative z-10 h-full flex items-center justify-center px-4">
         <div class="text-center text-white">
           <h1 class="text-5xl lg:text-7xl font-bold mb-4 italic" style="font-family: 'Brush Script MT', cursive;">
-            Our Products
+            Our bakery
           </h1>
           <p class="text-xl lg:text-2xl">Fresh baked daily with the finest ingredients</p>
         </div>
@@ -21,77 +21,23 @@
     <!-- Product Categories -->
     <section class="py-16">
       <div class="container mx-auto px-4">
-        <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Product Categories</h2>
+        <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">All Bakery</h2>
         
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           <!-- Breads -->
-          <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer" @click="navigateToCategory('breads')">
-            <img
-              src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop"
-              alt="Fresh Breads"
-              class="w-full h-48 object-cover"
-            />
-            <div class="p-6">
-              <h3 class="text-2xl font-bold text-gray-800 mb-2">Breads</h3>
-              <p class="text-gray-600 mb-4">Artisan breads baked fresh daily</p>
-              <div class="text-red-600 font-semibold">View Products →</div>
+          <div v-for="(category, index) in categories" :key="index">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow" @click="navigateToCategory('breads')">
+              <img
+                :src="category?.image"
+                alt="Fresh Breads"
+                class="w-full h-48 object-cover"
+              />
+              <div class="p-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">{{ category?.name }}</h3>
+                <p class="text-gray-600 mb-4">Artisan breads baked fresh daily</p>
+                <div class="text-red-600 font-semibold">{{ category?.price.toLocaleString() }} KIP</div>
+              </div>
             </div>
-          </div>
-
-          <!-- Cakes -->
-          <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer" @click="navigateToCategory('cakes')">
-            <img
-              src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop"
-              alt="Fresh Cakes"
-              class="w-full h-48 object-cover"
-            />
-            <div class="p-6">
-              <h3 class="text-2xl font-bold text-gray-800 mb-2">Cakes</h3>
-              <p class="text-gray-600 mb-4">Custom and ready-made cakes</p>
-              <div class="text-red-600 font-semibold">View Products →</div>
-            </div>
-          </div>
-
-          <!-- Pastries -->
-          <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer" @click="navigateToCategory('pastries')">
-            <img
-              src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&h=300&fit=crop"
-              alt="Fresh Pastries"
-              class="w-full h-48 object-cover"
-            />
-            <div class="p-6">
-              <h3 class="text-2xl font-bold text-gray-800 mb-2">Pastries</h3>
-              <p class="text-gray-600 mb-4">Croissants, puffs, and more</p>
-              <div class="text-red-600 font-semibold">View Products →</div>
-            </div>
-          </div>
-
-          <!-- Cookies -->
-          <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer" @click="navigateToCategory('cookies')">
-            <img
-              src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&h=300&fit=crop"
-              alt="Fresh Cookies"
-              class="w-full h-48 object-cover"
-            />
-            <div class="p-6">
-              <h3 class="text-2xl font-bold text-gray-800 mb-2">Cookies</h3>
-              <p class="text-gray-600 mb-4">Sweet treats and cookies</p>
-              <div class="text-red-600 font-semibold">View Products →</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Featured Products -->
-    <section class="py-16 bg-white">
-      <div class="container mx-auto px-4">
-        <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Featured Products</h2>
-        
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div v-for="product in featuredProducts" :key="product.id" class="bg-gray-50 rounded-lg shadow-lg overflow-hidden p-6 text-center">
-            <h3 class="text-xl font-bold text-gray-800 mb-4">{{ product.name }}</h3>
-            <span class="text-2xl font-bold text-red-600">${{ product.price }}</span>
           </div>
         </div>
       </div>
@@ -100,19 +46,6 @@
     <!-- All Products Grid -->
     <section class="py-16 bg-gray-50">
       <div class="container mx-auto px-4">
-        <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">All Products</h2>
-        
-        <!-- Products Grid -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-          <div
-            v-for="product in paginatedProducts"
-            :key="product.id"
-            class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow p-6 text-center"
-          >
-            <h3 class="text-xl font-bold text-gray-800 mb-4">{{ product.name }}</h3>
-            <span class="text-2xl font-bold text-red-600">${{ product.price }}</span>
-          </div>
-        </div>
 
         <!-- Pagination -->
         <div class="flex justify-center items-center space-x-4">
@@ -160,30 +93,30 @@
         </div>
       </div>
     </section>
-
-    <!-- Call to Action -->
-    <section class="py-16 bg-red-900 text-white">
-      <div class="container mx-auto px-4 text-center">
-        <h2 class="text-4xl font-bold mb-6">Custom Orders Available</h2>
-        <p class="text-xl mb-8 max-w-2xl mx-auto">
-          Need something special? We create custom cakes and catering platters for your events.
-        </p>
-        <button class="bg-white text-red-800 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-          Contact Us for Custom Orders
-        </button>
-      </div>
-    </section>
   </div>
 </template>
 
 <script setup>
 import { useRouter } from "vue-router";
+import cuisant from "@/assets/images/all-menu/cuisant.jpg";
+import cuisant1 from "@/assets/images/all-menu/cuisant2.jpg";
+import cuisant2 from "@/assets/images/all-menu/cuisant3.jpg";
+import cuisant3 from "@/assets/images/all-menu/cuisant4.jpg";
+import cuisant4 from "@/assets/images/all-menu/cuisant5.jpg";
 
 const router = useRouter();
 
 // Pagination
 const currentPage = ref(1);
 const itemsPerPage = 8;
+
+const categories = ref([
+  { name: "Croissant", price: 10000, image: cuisant },
+  { name: "Croissant", price: 10000, image: cuisant1 },
+  { name: "Croissant", price: 10000, image: cuisant2 },
+  { name: "Croissant", price: 10000, image: cuisant3 },
+  { name: "Croissant", price: 10000, image: cuisant4 }
+]);
 
 // Featured products
 const featuredProducts = ref([
