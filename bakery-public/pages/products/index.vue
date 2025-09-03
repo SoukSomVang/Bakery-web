@@ -99,10 +99,6 @@
 <script setup>
 import { useRouter } from "vue-router";
 import cuisant from "@/assets/images/all-menu/cuisant.jpg";
-import cuisant1 from "@/assets/images/all-menu/cuisant2.jpg";
-import cuisant2 from "@/assets/images/all-menu/cuisant3.jpg";
-import cuisant3 from "@/assets/images/all-menu/cuisant4.jpg";
-import cuisant4 from "@/assets/images/all-menu/cuisant5.jpg";
 
 const router = useRouter();
 
@@ -112,10 +108,10 @@ const itemsPerPage = 8;
 
 const categories = ref([
   { name: "Croissant", price: 10000, image: cuisant },
-  { name: "Croissant", price: 10000, image: cuisant1 },
-  { name: "Croissant", price: 10000, image: cuisant2 },
-  { name: "Croissant", price: 10000, image: cuisant3 },
-  { name: "Croissant", price: 10000, image: cuisant4 }
+  { name: "Croissant", price: 10000, image: cuisant },
+  { name: "Croissant", price: 10000, image: cuisant },
+  { name: "Croissant", price: 10000, image: cuisant },
+  { name: "Croissant", price: 10000, image: cuisant }
 ]);
 
 // Featured products

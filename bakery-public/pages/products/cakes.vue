@@ -100,11 +100,6 @@
 <script setup>
 import { useRouter } from "vue-router";
 import cake from "@/assets/images/all-menu/cake.jpg";
-import cake1 from "@/assets/images/all-menu/cake1.jpg";
-import cake2 from "@/assets/images/all-menu/cake2.jpg";
-import cake3 from "@/assets/images/all-menu/cake3.jpg";
-import cake4 from "@/assets/images/all-menu/cake4.jpg";
-import cake5 from "@/assets/images/all-menu/cake5.jpg";
 
 const router = useRouter();
 
@@ -114,11 +109,11 @@ const itemsPerPage = 8;
 
 const cakes = ref([
   { name: "Cake", price: 10000, image: cake },
-  { name: "Cake", price: 10000, image: cake1 },
-  { name: "Cake", price: 10000, image: cake2 },
-  { name: "Cake", price: 10000, image: cake3 },
-  { name: "Cake", price: 10000, image: cake4 },
-  { name: "Cake", price: 10000, image: cake5 }
+  { name: "Cake", price: 10000, image: cake },
+  { name: "Cake", price: 10000, image: cake },
+  { name: "Cake", price: 10000, image: cake },
+  { name: "Cake", price: 10000, image: cake },
+  { name: "Cake", price: 10000, image: cake }
 ]);
 
 // Featured products
