@@ -1,13 +1,25 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allow read access to products for all users
+    // Admin Panel Collections - Allow all operations for now (secure in production)
+    match /bakeryItems/{document} {
+      allow read, write: if true; // Change to require auth in production
+    }
+    
+    match /storageData/{document} {
+      allow read, write: if true; // Change to require auth in production  
+    }
+    
+    match /branches/{document} {
+      allow read, write: if true; // Change to require auth in production
+    }
+    
+    // Public collections for customer-facing app
     match /products/{document} {
       allow read: if true;
       allow write: if request.auth != null && request.auth.token.admin == true;
     }
     
-    // Allow read access to categories for all users
     match /categories/{document} {
       allow read: if true;
       allow write: if request.auth != null && request.auth.token.admin == true;

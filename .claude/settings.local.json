@@ -1,7 +1,35 @@
 {
   "permissions": {
     "allow": [
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Read(/D:\\Web_project\\Bakery-web\\bakery-admin/**)",
+      "Read(/D:\\Web_project\\Bakery-web\\bakery-admin/**)",
+      "Read(/D:\\Web_project\\Bakery-web\\shared-configs/**)",
+      "Read(/D:\\Web_project\\Bakery-web/**)",
+      "Read(/D:\\Web_project\\Bakery-web\\bakery-admin/**)",
+      "Read(/D:\\Web_project\\Bakery-web\\bakery-admin/**)",
+      "Read(/D:\\Web_project\\Bakery-web\\bakery-admin\\app/**)",
+      "Read(/D:\\Web_project\\Bakery-web\\bakery-admin\\plugins/**)",
+      "Read(/D:\\Web_project\\Bakery-web\\bakery-admin\\plugins/**)",
+      "Read(/D:\\Web_project\\Bakery-web\\bakery-admin\\app/**)",
+      "Read(/D:\\Web_project\\Bakery-web\\bakery-admin/**)",
+      "Bash(npm run dev:*)",
+      "Bash(npm install)",
+      "Bash(npm audit:*)",
+      "mcp__ide__getDiagnostics",
+      "Read(/D:\\Web_project\\Bakery-web/**)",
+      "Read(/D:\\Web_project\\Bakery-web/**)",
+      "Read(/D:\\Web_project\\Bakery-web/**)",
+      "Read(/D:\\Web_project\\Bakery-web/**)",
+      "Read(/D:\\Web_project\\Bakery-web/**)",
+      "Read(/D:\\Web_project\\Bakery-web/**)",
+      "Read(/D:\\Web_project\\Bakery-web/**)",
+      "Read(/D:\\Web_project\\Bakery-web/**)",
+      "Read(/D:\\Web_project\\Bakery-web\\shared-configs/**)",
+      "Read(/D:\\Web_project\\Bakery-web\\bakery-public/**)",
+      "Read(/D:\\Web_project\\Bakery-web\\bakery-public/**)",
+      "Bash(firebase --version)",
+      "Bash(firebase projects:list:*)"
     ],
     "deny": [],
     "ask": []
