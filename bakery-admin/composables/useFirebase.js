@@ -173,6 +173,68 @@ export const useFirebase = () => {
     }
   }
 
+  // Bakeries CRUD
+  const getBakeries = async () => {
+    try {
+      const querySnapshot = await getDocs(collection($db, 'bakeries'))
+      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    } catch (error) {
+      console.error('Error getting bakeries:', error)
+      throw error
+    }
+  }
+
+  const getBakeryById = async (id) => {
+    try {
+      const docRef = doc($db, 'bakeries', id)
+      const docSnap = await getDoc(docRef)
+      if (docSnap.exists()) {
+        return { id: docSnap.id, ...docSnap.data() }
+      } else {
+        throw new Error('Bakery not found')
+      }
+    } catch (error) {
+      console.error('Error getting bakery:', error)
+      throw error
+    }
+  }
+
+  const addBakery = async (bakery) => {
+    try {
+      const docRef = await addDoc(collection($db, 'bakeries'), {
+        ...bakery,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      })
+      return docRef.id
+    } catch (error) {
+      console.error('Error adding bakery:', error)
+      throw error
+    }
+  }
+
+  const updateBakery = async (id, bakery) => {
+    try {
+      const docRef = doc($db, 'bakeries', id)
+      await updateDoc(docRef, {
+        ...bakery,
+        updatedAt: new Date()
+      })
+    } catch (error) {
+      console.error('Error updating bakery:', error)
+      throw error
+    }
+  }
+
+  const deleteBakery = async (id) => {
+    try {
+      await deleteDoc(doc($db, 'bakeries', id))
+    } catch (error) {
+      console.error('Error deleting bakery:', error)
+      throw error
+    }
+  }
+
   // File Upload
   const uploadImage = async (file, path) => {
     try {
@@ -214,6 +276,13 @@ export const useFirebase = () => {
     addBranch,
     updateBranch,
     deleteBranch,
+    
+    // Bakeries
+    getBakeries,
+    getBakeryById,
+    addBakery,
+    updateBakery,
+    deleteBakery,
     
     // File Management
     uploadImage,

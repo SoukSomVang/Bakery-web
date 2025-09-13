@@ -3,6 +3,7 @@ export const useBakeryStore = defineStore('bakery', {
     bakeryItems: [],
     storageData: [],
     branches: [],
+    bakeries: [],
     loading: false,
     error: null,
     bakeryTypes: [
@@ -34,6 +35,10 @@ export const useBakeryStore = defineStore('bakery', {
     
     getStorageDataById: (state) => (id) => {
       return state.storageData.find(data => data.id === id)
+    },
+    
+    getBakeryById: (state) => (id) => {
+      return state.bakeries.find(bakery => bakery.id === id)
     }
   },
 
@@ -271,6 +276,83 @@ export const useBakeryStore = defineStore('bakery', {
       } catch (error) {
         this.setError('Failed to delete branch')
         console.error('Error deleting branch:', error)
+        throw error
+      } finally {
+        this.setLoading(false)
+      }
+    },
+
+    // Bakery Actions
+    async fetchBakeries() {
+      this.setLoading(true)
+      this.setError(null)
+      
+      try {
+        const { getBakeries } = useFirebase()
+        this.bakeries = await getBakeries()
+      } catch (error) {
+        this.setError('Failed to fetch bakeries')
+        console.error('Error fetching bakeries:', error)
+      } finally {
+        this.setLoading(false)
+      }
+    },
+
+    async addBakery(bakery) {
+      this.setLoading(true)
+      this.setError(null)
+      
+      try {
+        const { addBakery } = useFirebase()
+        const id = await addBakery(bakery)
+        
+        // Add to local state
+        this.bakeries.push({ id, ...bakery, createdAt: new Date(), updatedAt: new Date() })
+        return id
+      } catch (error) {
+        this.setError('Failed to add bakery')
+        console.error('Error adding bakery:', error)
+        throw error
+      } finally {
+        this.setLoading(false)
+      }
+    },
+
+    async updateBakery(id, bakery) {
+      this.setLoading(true)
+      this.setError(null)
+      
+      try {
+        const { updateBakery } = useFirebase()
+        await updateBakery(id, bakery)
+        
+        // Update local state
+        const index = this.bakeries.findIndex(b => b.id === id)
+        if (index !== -1) {
+          this.bakeries[index] = { ...this.bakeries[index], ...bakery, updatedAt: new Date() }
+        }
+      } catch (error) {
+        this.setError('Failed to update bakery')
+        console.error('Error updating bakery:', error)
+        throw error
+      } finally {
+        this.setLoading(false)
+      }
+    },
+
+    async deleteBakery(id) {
+      this.setLoading(true)
+      this.setError(null)
+      
+      try {
+        const { deleteBakery } = useFirebase()
+        await deleteBakery(id)
+        
+        // Remove from local state
+        this.bakeries = this.bakeries.filter(bakery => bakery.id !== id)
+      } catch (error) {
+        this.setError('Failed to delete bakery')
+        console.error('Error deleting bakery:', error)
         throw error
       } finally {
         this.setLoading(false)

@@ -240,25 +240,71 @@
       </div>
     </section>
 
-    <!-- Branches Section -->
+    <!-- Bakery Locations Section -->
     <section class="py-16 bg-gray-50">
-      <div class="container mx-auto px-4 text-center">
-        <h2 class="text-4xl font-bold mb-8 text-gray-800 underline">
-          Branches
-        </h2>
-        <div class="space-y-4 max-w-md mx-auto">
-          <div class="text-lg font-medium text-gray-700 underline">
-            Treekoff NorngNieng
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-4xl font-bold text-gray-800 mb-4">
+            Our Bakery Locations
+          </h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            Visit any of our locations to experience fresh, high-quality baked goods
+          </p>
+        </div>
+        
+        <!-- Loading State -->
+        <div v-if="bakeriesLoading" class="text-center">
+          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600 mx-auto"></div>
+        </div>
+        
+        <!-- Bakeries Grid -->
+        <div v-else-if="bakeries.length > 0" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div 
+            v-for="bakery in bakeries.slice(0, 6)" 
+            :key="bakery.id"
+            class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6"
+          >
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ bakery.name }}</h3>
+            <div class="text-sm text-gray-600 mb-2">
+              {{ bakery.address }}
+            </div>
+            <div class="text-sm text-gray-500">
+              {{ bakery.city }}, {{ bakery.country }}
+            </div>
+            <div v-if="bakery.operatingHours" class="text-sm text-gray-500 mt-2">
+              {{ bakery.operatingHours }}
+            </div>
           </div>
-          <div class="text-lg font-medium text-gray-700 underline">
-            Treekoff Dongpalan
+        </div>
+        
+        <!-- Fallback to static branches if no bakeries -->
+        <div v-else class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div class="bg-white rounded-lg shadow-md p-6 text-center">
+            <h3 class="text-lg font-medium text-gray-700">Treekoff NorngNieng</h3>
           </div>
-          <div class="text-lg font-medium text-gray-700 underline">
-            Treekoff Wattainoy
+          <div class="bg-white rounded-lg shadow-md p-6 text-center">
+            <h3 class="text-lg font-medium text-gray-700">Treekoff Dongpalan</h3>
           </div>
-          <div class="text-lg font-medium text-gray-700 underline">
-            Treekoff Vatchan
+          <div class="bg-white rounded-lg shadow-md p-6 text-center">
+            <h3 class="text-lg font-medium text-gray-700">Treekoff Wattainoy</h3>
           </div>
+          <div class="bg-white rounded-lg shadow-md p-6 text-center">
+            <h3 class="text-lg font-medium text-gray-700">Treekoff Vatchan</h3>
+          </div>
+        </div>
+        
+        <!-- View All Locations Button -->
+        <div class="text-center">
+          <NuxtLink 
+            to="/bakeries"
+            class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200 inline-flex items-center gap-2"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+            View All Locations
+          </NuxtLink>
         </div>
       </div>
     </section>
@@ -267,8 +313,14 @@
 
 <script setup>
 import { useRouter } from "vue-router";
+import { useFirebase } from '~/composables/useFirebase'
 
 const router = useRouter();
+const { getBakeries } = useFirebase()
+
+// Bakery locations data
+const bakeries = ref([])
+const bakeriesLoading = ref(true)
 
 // Product data
 const bakeryProducts = ref([
@@ -304,19 +356,30 @@ const additionalProducts = ref([
   { id: 24, name: "Eggs tart", image: "" },
 ]);
 
+// Load bakery locations
+onMounted(async () => {
+  try {
+    bakeries.value = await getBakeries()
+  } catch (error) {
+    console.error('Failed to load bakeries:', error)
+  } finally {
+    bakeriesLoading.value = false
+  }
+})
+
 function handleGotoAboutUs() {
   router.push("/about-us");
 }
 
 // Meta tags for SEO
-// useSeoMeta({
-//   title: 'Bakery House - Fresh Baked Goods Daily',
-//   ogTitle: 'Bakery House - Fresh Baked Goods Daily',
-//   description: 'Experience the finest bakery products made with the best ingredients. From croissants to cakes, we serve fresh baked goods daily.',
-//   ogDescription: 'Experience the finest bakery products made with the best ingredients. From croissants to cakes, we serve fresh baked goods daily.',
-//   ogImage: '/api/placeholder/1200/630',
-//   twitterCard: 'summary_large_image',
-// })
+useSeoMeta({
+  title: 'Bakery House - Fresh Baked Goods Daily',
+  ogTitle: 'Bakery House - Fresh Baked Goods Daily',
+  description: 'Experience the finest bakery products made with the best ingredients. From croissants to cakes, we serve fresh baked goods daily.',
+  ogDescription: 'Experience the finest bakery products made with the best ingredients. From croissants to cakes, we serve fresh baked goods daily.',
+  ogImage: '/api/placeholder/1200/630',
+  twitterCard: 'summary_large_image',
+})
 </script>
 
 <style scoped>
