@@ -29,7 +29,9 @@
       "Read(/D:\\Web_project\\Bakery-web\\bakery-public/**)",
       "Read(/D:\\Web_project\\Bakery-web\\bakery-public/**)",
       "Bash(firebase --version)",
-      "Bash(firebase projects:list:*)"
+      "Bash(firebase projects:list:*)",
+      "Bash(npx vue-tsc:*)",
+      "Bash(findstr:*)"
     ],
     "deny": [],
     "ask": []
