@@ -3,7 +3,7 @@
     "default": "bakery-house-f7e32"
   },
   "targets": {
-    "your-bakery-project-id": {
+    "bakery-house-f7e32": {
       "hosting": {
         "bakery-public": [
           "bakery-public-site"
