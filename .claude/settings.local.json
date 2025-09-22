@@ -31,7 +31,12 @@
       "Bash(firebase --version)",
       "Bash(firebase projects:list:*)",
       "Bash(npx vue-tsc:*)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(firebase deploy:*)",
+      "Bash(firebase firestore:databases:*)",
+      "Bash(node:*)",
+      "Bash(npm install:*)",
+      "Bash(firebase init:*)"
     ],
     "deny": [],
     "ask": []

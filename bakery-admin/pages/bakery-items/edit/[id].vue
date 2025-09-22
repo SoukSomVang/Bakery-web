@@ -74,49 +74,78 @@
             </div>
           </div>
 
-          <!-- Image Upload -->
+          <!-- Image URL -->
           <div class="card">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Product Image</h3>
-            
+
             <div class="space-y-4">
-              <!-- Current Image -->
-              <div v-if="form.imageUrl && !imagePreview">
-                <p class="text-sm text-gray-600 mb-2">Current Image:</p>
-                <div class="relative inline-block">
-                  <img :src="form.imageUrl" alt="Current" class="w-32 h-32 object-cover rounded-lg border" />
+              <div>
+                <label class="form-label">Image URL</label>
+                <input
+                  v-model="form.imageUrl"
+                  type="url"
+                  class="form-input"
+                  placeholder="https://example.com/image.jpg"
+                  @input="updateImagePreview"
+                />
+                <p class="text-xs text-gray-500 mt-1">
+                  Use image URLs from Google Drive, Imgur, Unsplash, or any public image hosting service
+                </p>
+              </div>
+
+              <!-- Quick Examples -->
+              <div class="space-y-2">
+                <p class="text-sm font-medium text-gray-700">Quick Examples:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                   <button
-                    @click="removeCurrentImage"
                     type="button"
-                    class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600"
+                    @click="setExampleImage('https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&h=300&fit=crop')"
+                    class="text-xs text-blue-600 hover:text-blue-800 text-left"
                   >
-                    ×
+                    🥐 Croissant (Unsplash)
+                  </button>
+                  <button
+                    type="button"
+                    @click="setExampleImage('https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=400&h=300&fit=crop')"
+                    class="text-xs text-blue-600 hover:text-blue-800 text-left"
+                  >
+                    🍞 Bread (Unsplash)
+                  </button>
+                  <button
+                    type="button"
+                    @click="setExampleImage('https://picsum.photos/400/300')"
+                    class="text-xs text-blue-600 hover:text-blue-800 text-left"
+                  >
+                    🎲 Random Image
+                  </button>
+                  <button
+                    type="button"
+                    @click="setExampleImage('https://via.placeholder.com/400x300/FFB6C1/000000?text=Bakery+Item')"
+                    class="text-xs text-blue-600 hover:text-blue-800 text-left"
+                  >
+                    📷 Placeholder
                   </button>
                 </div>
               </div>
-              
-              <div>
-                <label class="form-label">{{ form.imageUrl ? 'Replace Image' : 'Upload Image' }}</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  @change="handleImageUpload"
-                  class="form-input"
-                />
-              </div>
-              
-              <!-- New Image Preview -->
-              <div v-if="imagePreview" class="mt-4">
-                <p class="text-sm text-gray-600 mb-2">New Image Preview:</p>
+
+              <!-- Image Preview -->
+              <div v-if="form.imageUrl && imagePreview" class="mt-4">
+                <p class="text-sm text-gray-600 mb-2">Preview:</p>
                 <div class="relative inline-block">
                   <img :src="imagePreview" alt="Preview" class="w-32 h-32 object-cover rounded-lg border" />
                   <button
-                    @click="removeNewImage"
+                    @click="removeImage"
                     type="button"
                     class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600"
                   >
                     ×
                   </button>
                 </div>
+              </div>
+
+              <!-- Image Load Error -->
+              <div v-if="form.imageUrl && imageError" class="mt-2">
+                <p class="text-sm text-red-600">⚠️ Unable to load image. Please check the URL.</p>
               </div>
             </div>
           </div>
@@ -193,8 +222,8 @@
           <!-- Form Actions -->
           <div class="flex justify-end space-x-3">
             <NuxtLink to="/bakery-items" class="btn-secondary">Cancel</NuxtLink>
-            <button type="submit" class="btn-primary" :disabled="loading || uploading">
-              {{ loading || uploading ? 'Updating...' : 'Update Item' }}
+            <button type="submit" class="btn-primary" :disabled="loading">
+              {{ loading ? 'Updating...' : 'Update Item' }}
             </button>
           </div>
         </form>
@@ -212,7 +241,6 @@
 const route = useRoute()
 const router = useRouter()
 const bakeryStore = useBakeryStore()
-const { uploadImage, deleteImage } = useFirebase()
 const { bakeryTypes, loading, error } = storeToRefs(bakeryStore)
 
 const id = route.params.id
@@ -235,16 +263,14 @@ const form = ref({
   imageUrl: ''
 })
 
-const imageFile = ref(null)
 const imagePreview = ref(null)
-const uploading = ref(false)
-const originalImageUrl = ref('')
+const imageError = ref(false)
 
 // Methods
 const loadItem = async () => {
   await bakeryStore.fetchBakeryItems()
   item.value = bakeryStore.getBakeryItemById(id)
-  
+
   if (item.value) {
     // Populate form with existing data
     Object.keys(form.value).forEach(key => {
@@ -252,66 +278,48 @@ const loadItem = async () => {
         form.value[key] = item.value[key]
       }
     })
-    originalImageUrl.value = item.value.imageUrl || ''
-  }
-}
-
-const handleImageUpload = (event) => {
-  const file = event.target.files[0]
-  if (file) {
-    imageFile.value = file
-    
-    // Create preview
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      imagePreview.value = e.target.result
+    // Set up initial image preview
+    if (form.value.imageUrl) {
+      updateImagePreview()
     }
-    reader.readAsDataURL(file)
   }
 }
 
-const removeCurrentImage = () => {
-  form.value.imageUrl = ''
+const updateImagePreview = () => {
+  if (form.value.imageUrl) {
+    // Test if the image URL is valid
+    const img = new Image()
+    img.onload = () => {
+      imagePreview.value = form.value.imageUrl
+      imageError.value = false
+    }
+    img.onerror = () => {
+      imagePreview.value = null
+      imageError.value = true
+    }
+    img.src = form.value.imageUrl
+  } else {
+    imagePreview.value = null
+    imageError.value = false
+  }
 }
 
-const removeNewImage = () => {
-  imageFile.value = null
+const setExampleImage = (url) => {
+  form.value.imageUrl = url
+  updateImagePreview()
+}
+
+const removeImage = () => {
+  form.value.imageUrl = ''
   imagePreview.value = null
+  imageError.value = false
 }
 
 const submitForm = async () => {
   try {
-    let finalImageUrl = form.value.imageUrl
+    // Update the bakery item directly with the URL
+    await bakeryStore.updateBakeryItem(id, form.value)
 
-    // Handle image upload if new image provided
-    if (imageFile.value) {
-      uploading.value = true
-      
-      // Delete old image if exists
-      if (originalImageUrl.value && originalImageUrl.value !== form.value.imageUrl) {
-        try {
-          await deleteImage(originalImageUrl.value)
-        } catch (err) {
-          console.warn('Failed to delete old image:', err)
-        }
-      }
-      
-      // Upload new image
-      finalImageUrl = await uploadImage(imageFile.value, 'bakery-items')
-      uploading.value = false
-    } else if (!form.value.imageUrl && originalImageUrl.value) {
-      // Delete old image if user removed it
-      try {
-        await deleteImage(originalImageUrl.value)
-      } catch (err) {
-        console.warn('Failed to delete old image:', err)
-      }
-    }
-
-    // Update the bakery item
-    const updateData = { ...form.value, imageUrl: finalImageUrl }
-    await bakeryStore.updateBakeryItem(id, updateData)
-    
     // Redirect to items list
     router.push('/bakery-items')
   } catch (err) {

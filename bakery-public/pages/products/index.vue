@@ -22,20 +22,39 @@
     <section class="py-16">
       <div class="container mx-auto px-4">
         <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">All Bakery</h2>
-        
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <!-- Breads -->
-          <div v-for="(category, index) in categories" :key="index">
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow" @click="navigateToCategory('breads')">
+
+        <!-- Loading State -->
+        <div v-if="loading" class="flex justify-center items-center py-20">
+          <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-red-600"></div>
+        </div>
+
+        <!-- Error State -->
+        <div v-else-if="error" class="text-center py-20">
+          <div class="text-red-600 text-xl mb-4">{{ error }}</div>
+          <button
+            @click="fetchData"
+            class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
+
+        <!-- Categories Grid -->
+        <div v-else class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div v-for="category in categories" :key="category.id">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow cursor-pointer hover:shadow-xl"
+                 @click="navigateToCategory(category.slug || 'breads')">
               <img
-                :src="category?.image"
-                alt="Fresh Breads"
+                :src="category.image || cuisant"
+                :alt="category.name"
                 class="w-full h-48 object-cover"
               />
               <div class="p-6">
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">{{ category?.name }}</h3>
-                <p class="text-gray-600 mb-4">Artisan breads baked fresh daily</p>
-                <div class="text-red-600 font-semibold">{{ category?.price.toLocaleString() }} KIP</div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">{{ category.name }}</h3>
+                <p class="text-gray-600 mb-4">{{ category.description || 'Fresh baked daily' }}</p>
+                <div v-if="category.price" class="text-red-600 font-semibold">
+                  {{ typeof category.price === 'number' ? category.price.toLocaleString() : category.price }} KIP
+                </div>
               </div>
             </div>
           </div>
@@ -46,9 +65,41 @@
     <!-- All Products Grid -->
     <section class="py-16 bg-gray-50">
       <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">All Products</h2>
+
+        <!-- Products Grid -->
+        <div v-if="!loading && !error && allProducts.length > 0" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <div v-for="product in paginatedProducts" :key="product.id">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow hover:shadow-xl">
+              <img
+                :src="product.image || 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=300&h=200&fit=crop'"
+                :alt="product.name"
+                class="w-full h-48 object-cover"
+              />
+              <div class="p-4">
+                <h3 class="text-lg font-bold text-gray-800 mb-2">{{ product.name }}</h3>
+                <p v-if="product.description" class="text-gray-600 text-sm mb-2">{{ product.description }}</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-red-600 font-semibold">
+                    {{ typeof product.price === 'number' ? product.price.toLocaleString() : product.price }} KIP
+                  </span>
+                  <span class="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                    {{ product.category }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- No Products Message -->
+        <div v-else-if="!loading && !error && allProducts.length === 0" class="text-center py-20">
+          <div class="text-gray-600 text-xl">No products available at the moment.</div>
+          <p class="text-gray-500 mt-2">Please check back later or contact us for more information.</p>
+        </div>
 
         <!-- Pagination -->
-        <div class="flex justify-center items-center space-x-4">
+        <div v-if="allProducts.length > itemsPerPage && !loading && !error" class="flex justify-center items-center space-x-4">
           <button
             @click="prevPage"
             :disabled="currentPage === 1"
@@ -61,7 +112,7 @@
           >
             Previous
           </button>
-          
+
           <div class="flex space-x-2">
             <button
               v-for="page in totalPages"
@@ -77,7 +128,7 @@
               {{ page }}
             </button>
           </div>
-          
+
           <button
             @click="nextPage"
             :disabled="currentPage === totalPages"
@@ -101,78 +152,64 @@ import { useRouter } from "vue-router";
 import cuisant from "@/assets/images/all-menu/cuisant.jpg";
 
 const router = useRouter();
+const { getCategories, getProducts, getFeaturedProducts } = useProducts();
+
+// Loading states
+const loading = ref(true);
+const error = ref(null);
 
 // Pagination
 const currentPage = ref(1);
 const itemsPerPage = 8;
 
-const categories = ref([
-  { name: "Croissant", price: 10000, image: cuisant },
-  { name: "Croissant", price: 10000, image: cuisant },
-  { name: "Croissant", price: 10000, image: cuisant },
-  { name: "Croissant", price: 10000, image: cuisant },
-  { name: "Croissant", price: 10000, image: cuisant }
-]);
+// Data from Firestore
+const categories = ref([]);
+const featuredProducts = ref([]);
+const allProducts = ref([]);
 
-// Featured products
-const featuredProducts = ref([
-  {
-    id: 1,
-    name: "Ham Cheese Croissant",
-    description: "Buttery croissant filled with ham and cheese",
-    price: "4.50",
-    image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&h=300&fit=crop",
-    category: "Pastries"
-  },
-  {
-    id: 2,
-    name: "Chocolate Lava Cake",
-    description: "Rich chocolate cake with molten center",
-    price: "6.99",
-    image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop",
-    category: "Cakes"
-  },
-  {
-    id: 3,
-    name: "Whole Wheat Bread",
-    description: "Nutritious multigrain bread",
-    price: "3.25",
-    image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop",
-    category: "Breads"
+// Fetch data from Firestore
+const fetchData = async () => {
+  try {
+    loading.value = true;
+    error.value = null;
+
+    // Fetch all data in parallel
+    const [categoriesData, productsData, featuredData] = await Promise.all([
+      getCategories(),
+      getProducts(),
+      getFeaturedProducts()
+    ]);
+
+    categories.value = categoriesData;
+    allProducts.value = productsData;
+    featuredProducts.value = featuredData;
+
+    // If no categories from Firestore, fallback to placeholder
+    if (categories.value.length === 0) {
+      categories.value = [
+        { id: 'fallback-1', name: "Croissant", price: 10000, image: cuisant }
+      ];
+    }
+
+  } catch (err) {
+    console.error('Error fetching data:', err);
+    error.value = 'Failed to load products. Please try again later.';
+
+    // Fallback data if Firestore fails
+    categories.value = [
+      { id: 'fallback-1', name: "Croissant", price: 10000, image: cuisant }
+    ];
+    allProducts.value = [];
+    featuredProducts.value = [];
+  } finally {
+    loading.value = false;
   }
-]);
+};
 
-// All products
-const allProducts = ref([
-  // Breads
-  { id: 1, name: "Whole Wheat Multigrain Bread", category: "Breads", price: "3.25", image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=300&h=200&fit=crop" },
-  { id: 2, name: "Sourdough Bread", category: "Breads", price: "4.50", image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=300&h=200&fit=crop" },
-  { id: 3, name: "French Baguette", category: "Breads", price: "2.75", image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=300&h=200&fit=crop" },
-  
-  // Pastries
-  { id: 4, name: "Ham Cheese Croissant", category: "Pastries", price: "4.50", image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=300&h=200&fit=crop" },
-  { id: 5, name: "Almond Croissant", category: "Pastries", price: "3.75", image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=300&h=200&fit=crop" },
-  { id: 6, name: "Butter Croissant", category: "Pastries", price: "2.99", image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=300&h=200&fit=crop" },
-  { id: 7, name: "Spinach Cheese Croissant", category: "Pastries", price: "4.25", image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=300&h=200&fit=crop" },
-  { id: 8, name: "Cream Puffs", category: "Pastries", price: "3.50", image: "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=300&h=200&fit=crop" },
-  { id: 9, name: "Cream Puffs Matcha", category: "Pastries", price: "3.75", image: "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=300&h=200&fit=crop" },
-  { id: 10, name: "Coconut Pie", category: "Pastries", price: "4.99", image: "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=300&h=200&fit=crop" },
-  
-  // Cakes
-  { id: 11, name: "Chocolate Two Tone Lava", category: "Cakes", price: "6.99", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=200&fit=crop" },
-  { id: 12, name: "Carrot Cake", category: "Cakes", price: "5.75", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=200&fit=crop" },
-  { id: 13, name: "Mousse Cake Matcha", category: "Cakes", price: "7.50", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=200&fit=crop" },
-  { id: 14, name: "Cheese Cake", category: "Cakes", price: "6.25", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=200&fit=crop" },
-  { id: 15, name: "Red Velvet Cake", category: "Cakes", price: "6.75", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=200&fit=crop" },
-  { id: 16, name: "Cake Milk", category: "Cakes", price: "4.99", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=200&fit=crop" },
-  { id: 17, name: "Chocolate Top Mousse", category: "Cakes", price: "7.25", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=200&fit=crop" },
-  
-  // Cookies
-  { id: 18, name: "Cookie Red Velvet", category: "Cookies", price: "2.50", image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=300&h=200&fit=crop" },
-  { id: 19, name: "Cookie Chocolate", category: "Cookies", price: "2.25", image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=300&h=200&fit=crop" },
-  { id: 20, name: "Cookie Matcha", category: "Cookies", price: "2.75", image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=300&h=200&fit=crop" },
-  { id: 21, name: "White Chocolate Oreo", category: "Cookies", price: "3.25", image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=300&h=200&fit=crop" }
-]);
+// Fetch data on component mount
+onMounted(() => {
+  fetchData();
+});
 
 // Computed properties for pagination
 const totalPages = computed(() => {

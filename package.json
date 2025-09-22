@@ -8,7 +8,7 @@
     "install:public": "cd bakery-public && npm install",
     "install:admin": "cd bakery-admin && npm install",
     "dev:public": "cd bakery-public && npm run dev",
-    "dev:admin": "cd bakery-admin && npm run dev", 
+    "dev:admin": "cd bakery-admin && npm run dev",
     "build:all": "npm run build:public && npm run build:admin",
     "build:public": "cd bakery-public && npm run generate",
     "build:admin": "cd bakery-admin && npm run generate",
@@ -26,5 +26,8 @@
     "ecommerce"
   ],
   "author": "Your Name",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "firebase": "^12.3.0"
+  }
 }

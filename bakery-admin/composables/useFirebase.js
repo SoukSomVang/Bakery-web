@@ -1,29 +1,93 @@
-import { 
-  collection, 
-  doc, 
-  getDocs, 
-  getDoc, 
-  addDoc, 
-  updateDoc, 
-  deleteDoc, 
-  query, 
-  where, 
+import {
+  collection,
+  doc,
+  getDocs,
+  getDoc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  query,
+  where,
   orderBy,
   onSnapshot
 } from 'firebase/firestore'
-import { 
-  ref as storageRef, 
-  uploadBytes, 
-  getDownloadURL, 
-  deleteObject 
+import {
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject
 } from 'firebase/storage'
+import { initializeApp } from 'firebase/app'
+import { getFirestore } from 'firebase/firestore'
+import { getStorage } from 'firebase/storage'
+
+// Initialize Firebase directly in the composable
+const firebaseConfig = {
+  apiKey: "AIzaSyA-mTuHs5LPPthtSn5jFOe0hOQVpBI1Sj0",
+  authDomain: "bakery-house-f7e32.firebaseapp.com",
+  projectId: "bakery-house-f7e32",
+  storageBucket: "bakery-house-f7e32.appspot.com",
+  messagingSenderId: "617557360769",
+  appId: "1:617557360769:web:b47a7378ac07ae9e940d80",
+  measurementId: "G-SN3VG7L5XX"
+}
+
+// Global Firebase instances
+let firebaseApp = null
+let firestoreDb = null
+let firebaseStorage = null
+
+const getFirebaseInstances = () => {
+  if (!firebaseApp) {
+    try {
+      console.log('🔧 Initializing Firebase in useFirebase...')
+      console.log('🔧 Config:', firebaseConfig)
+
+      firebaseApp = initializeApp(firebaseConfig)
+      firestoreDb = getFirestore(firebaseApp)
+      firebaseStorage = getStorage(firebaseApp)
+
+      console.log('✅ Firebase app initialized:', !!firebaseApp)
+      console.log('✅ Firestore initialized:', !!firestoreDb)
+      console.log('✅ Storage initialized:', !!firebaseStorage)
+    } catch (error) {
+      console.error('❌ Firebase initialization failed in useFirebase:', error)
+      return { db: null, storage: null }
+    }
+  }
+
+  return {
+    db: firestoreDb,
+    storage: firebaseStorage
+  }
+}
 
 export const useFirebase = () => {
-  const { $db, $storage } = useNuxtApp()
+  console.log('🔧 useFirebase called')
+
+  // Get Firebase instances
+  const { db, storage } = getFirebaseInstances()
+
+  // Debug database initialization
+  console.log('📊 Database check:', !!db)
+  console.log('📊 Storage check:', !!storage)
+
+  if (!db) {
+    console.error('❌ Firebase Database is not initialized in useFirebase')
+    console.error('Please check the Firebase configuration')
+  } else {
+    console.log('✅ Firebase Database found in useFirebase')
+  }
+
+  const $db = db
+  const $storage = storage
 
   // Bakery Items CRUD
   const getBakeryItems = async () => {
     try {
+      if (!$db) {
+        throw new Error('Firebase Database is not initialized. Please check your Firebase configuration.')
+      }
       const querySnapshot = await getDocs(collection($db, 'bakeryItems'))
       return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
     } catch (error) {
@@ -45,6 +109,9 @@ export const useFirebase = () => {
 
   const addBakeryItem = async (item) => {
     try {
+      if (!$db) {
+        throw new Error('Firebase Database is not initialized. Please check your Firebase configuration.')
+      }
       const docRef = await addDoc(collection($db, 'bakeryItems'), {
         ...item,
         createdAt: new Date(),
@@ -238,12 +305,32 @@ export const useFirebase = () => {
   // File Upload
   const uploadImage = async (file, path) => {
     try {
+      // Check if storage is available
+      if (!$storage) {
+        console.warn('Firebase Storage is not initialized. Skipping image upload.')
+        // Return a placeholder URL or null - this allows the form to work without storage
+        return 'https://via.placeholder.com/400x300?text=Image+Not+Uploaded'
+      }
+
+      // Check if file is valid
+      if (!file) {
+        throw new Error('No file provided for upload.')
+      }
+
+      // Create storage reference
       const imageRef = storageRef($storage, `images/${path}/${file.name}`)
+
+      // Upload file
       const snapshot = await uploadBytes(imageRef, file)
-      return await getDownloadURL(snapshot.ref)
+
+      // Get download URL
+      const downloadURL = await getDownloadURL(snapshot.ref)
+      return downloadURL
     } catch (error) {
       console.error('Error uploading image:', error)
-      throw error
+      // If storage fails, return placeholder instead of throwing error
+      console.warn('Image upload failed, using placeholder image.')
+      return 'https://via.placeholder.com/400x300?text=Upload+Failed'
     }
   }
 

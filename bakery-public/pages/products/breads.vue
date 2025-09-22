@@ -34,21 +34,38 @@
     <!-- Products Section -->
     <section class="py-16">
       <div class="container mx-auto px-4">
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Loading State -->
+        <div v-if="loading" class="flex justify-center items-center py-20">
+          <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-red-600"></div>
+        </div>
+
+        <!-- Error State -->
+        <div v-else-if="error" class="text-center py-20">
+          <div class="text-red-600 text-xl mb-4">{{ error }}</div>
+          <button
+            @click="fetchBreads"
+            class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
+
+        <!-- Products Grid -->
+        <div v-else class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div
             v-for="bread in breads"
             :key="bread.id"
             class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
           >
             <img
-              :src="bread.image"
+              :src="bread.image || 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop'"
               :alt="bread.name"
               class="w-full h-56 object-cover"
             />
             <div class="p-6">
               <h3 class="text-xl font-bold text-gray-800 mb-2">{{ bread.name }}</h3>
               <p class="text-gray-600 mb-3">{{ bread.description }}</p>
-              <div class="mb-4">
+              <div v-if="bread.ingredients && bread.ingredients.length > 0" class="mb-4">
                 <div class="flex flex-wrap gap-2">
                   <span
                     v-for="ingredient in bread.ingredients"
@@ -60,7 +77,9 @@
                 </div>
               </div>
               <div class="flex justify-between items-center">
-                <span class="text-2xl font-bold text-red-600">${{ bread.price }}</span>
+                <span class="text-2xl font-bold text-red-600">
+                  {{ typeof bread.price === 'number' ? `${bread.price.toLocaleString()} KIP` : `$${bread.price}` }}
+                </span>
                 <button class="bg-red-900 hover:bg-red-950 text-white px-4 py-2 rounded-md font-semibold transition-colors">
                   Order Now
                 </button>
@@ -142,56 +161,70 @@
 </template>
 
 <script setup>
-const breads = ref([
-  {
-    id: 1,
-    name: "Whole Wheat Multigrain Bread",
-    description: "Nutritious blend of whole wheat flour with seeds and grains",
-    price: "3.25",
-    image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop",
-    ingredients: ["Whole Wheat", "Sunflower Seeds", "Flax Seeds", "Oats"]
-  },
-  {
-    id: 2,
-    name: "Classic Sourdough",
-    description: "Traditional sourdough with a perfectly tangy flavor and crispy crust",
-    price: "4.50",
-    image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=400&h=300&fit=crop",
-    ingredients: ["Sourdough Starter", "Organic Flour", "Sea Salt", "Water"]
-  },
-  {
-    id: 3,
-    name: "French Baguette",
-    description: "Authentic French baguette with a golden crust and airy interior",
-    price: "2.75",
-    image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=400&h=300&fit=crop",
-    ingredients: ["French Flour", "Yeast", "Salt", "Water"]
-  },
-  {
-    id: 4,
-    name: "Pumpernickel Rye",
-    description: "Dense, dark rye bread with a rich, earthy flavor",
-    price: "4.25",
-    image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop",
-    ingredients: ["Rye Flour", "Molasses", "Caraway Seeds", "Sourdough"]
-  },
-  {
-    id: 5,
-    name: "Ciabatta",
-    description: "Italian bread with a crispy crust and open, airy crumb",
-    price: "3.75",
-    image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=400&h=300&fit=crop",
-    ingredients: ["Italian Flour", "Olive Oil", "Yeast", "Sea Salt"]
-  },
-  {
-    id: 6,
-    name: "Focaccia",
-    description: "Herb-topped Italian flatbread, perfect for sharing",
-    price: "5.50",
-    image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=400&h=300&fit=crop",
-    ingredients: ["Olive Oil", "Rosemary", "Sea Salt", "Italian Flour"]
+const { getProductsByCategory } = useProducts();
+
+// Loading states
+const loading = ref(true);
+const error = ref(null);
+
+// Data from Firestore
+const breads = ref([]);
+
+// Fetch breads from Firestore
+const fetchBreads = async () => {
+  try {
+    loading.value = true;
+    error.value = null;
+
+    const breadsData = await getProductsByCategory('Breads');
+    breads.value = breadsData;
+
+    // If no breads from Firestore, fallback to sample data
+    if (breads.value.length === 0) {
+      breads.value = [
+        {
+          id: 'fallback-1',
+          name: "Whole Wheat Multigrain Bread",
+          description: "Nutritious blend of whole wheat flour with seeds and grains",
+          price: "3.25",
+          image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop",
+          ingredients: ["Whole Wheat", "Sunflower Seeds", "Flax Seeds", "Oats"]
+        },
+        {
+          id: 'fallback-2',
+          name: "Classic Sourdough",
+          description: "Traditional sourdough with a perfectly tangy flavor and crispy crust",
+          price: "4.50",
+          image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=400&h=300&fit=crop",
+          ingredients: ["Sourdough Starter", "Organic Flour", "Sea Salt", "Water"]
+        }
+      ];
+    }
+
+  } catch (err) {
+    console.error('Error fetching breads:', err);
+    error.value = 'Failed to load breads. Please try again later.';
+
+    // Fallback data if Firestore fails
+    breads.value = [
+      {
+        id: 'error-fallback',
+        name: "Classic Sourdough",
+        description: "Traditional sourdough with a perfectly tangy flavor and crispy crust",
+        price: "4.50",
+        image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=400&h=300&fit=crop",
+        ingredients: ["Sourdough Starter", "Organic Flour", "Sea Salt", "Water"]
+      }
+    ];
+  } finally {
+    loading.value = false;
   }
-]);
+};
+
+// Fetch data on component mount
+onMounted(() => {
+  fetchBreads();
+});
 
 // SEO
 useHead({
