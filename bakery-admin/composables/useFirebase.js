@@ -17,48 +17,17 @@ import {
   getDownloadURL,
   deleteObject
 } from 'firebase/storage'
-import { initializeApp } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore'
-import { getStorage } from 'firebase/storage'
-
-// Initialize Firebase directly in the composable
-const firebaseConfig = {
-  apiKey: "AIzaSyA-mTuHs5LPPthtSn5jFOe0hOQVpBI1Sj0",
-  authDomain: "bakery-house-f7e32.firebaseapp.com",
-  projectId: "bakery-house-f7e32",
-  storageBucket: "bakery-house-f7e32.appspot.com",
-  messagingSenderId: "617557360769",
-  appId: "1:617557360769:web:b47a7378ac07ae9e940d80",
-  measurementId: "G-SN3VG7L5XX"
-}
-
-// Global Firebase instances
-let firebaseApp = null
-let firestoreDb = null
-let firebaseStorage = null
+import { auth, db, storage } from '../../shared-configs/firebase-config.js'
 
 const getFirebaseInstances = () => {
-  if (!firebaseApp) {
-    try {
-      console.log('🔧 Initializing Firebase in useFirebase...')
-      console.log('🔧 Config:', firebaseConfig)
-
-      firebaseApp = initializeApp(firebaseConfig)
-      firestoreDb = getFirestore(firebaseApp)
-      firebaseStorage = getStorage(firebaseApp)
-
-      console.log('✅ Firebase app initialized:', !!firebaseApp)
-      console.log('✅ Firestore initialized:', !!firestoreDb)
-      console.log('✅ Storage initialized:', !!firebaseStorage)
-    } catch (error) {
-      console.error('❌ Firebase initialization failed in useFirebase:', error)
-      return { db: null, storage: null }
-    }
-  }
+  console.log('🔧 Using shared Firebase configuration...')
+  console.log('✅ Auth from shared config:', !!auth)
+  console.log('✅ Database from shared config:', !!db)
+  console.log('✅ Storage from shared config:', !!storage)
 
   return {
-    db: firestoreDb,
-    storage: firebaseStorage
+    db: db,
+    storage: storage
   }
 }
 

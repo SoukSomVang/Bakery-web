@@ -36,7 +36,8 @@
       "Bash(firebase firestore:databases:*)",
       "Bash(node:*)",
       "Bash(npm install:*)",
-      "Bash(firebase init:*)"
+      "Bash(firebase init:*)",
+      "Bash(dir:*)"
     ],
     "deny": [],
     "ask": []
