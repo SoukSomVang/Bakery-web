@@ -205,7 +205,7 @@
               <label class="block text-sm font-medium text-gray-700 mb-2">
                 Current Image
               </label>
-              <img :src="form.image" alt="Current bakery image" class="w-32 h-32 object-cover rounded-lg" />
+              <img :src="convertGoogleDriveUrl(form.image)" alt="Current bakery image" class="w-32 h-32 object-cover rounded-lg" />
             </div>
 
             <!-- Image Upload -->
@@ -223,7 +223,7 @@
                 />
               </div>
               <div v-if="imagePreview" class="mt-4">
-                <img :src="imagePreview" alt="Preview" class="w-32 h-32 object-cover rounded-lg" />
+                <img :src="convertGoogleDriveUrl(imagePreview)" alt="Preview" class="w-32 h-32 object-cover rounded-lg" />
               </div>
             </div>
 
@@ -275,6 +275,7 @@ import { useBakeryStore } from '~/stores/bakery'
 const route = useRoute()
 const router = useRouter()
 const bakeryStore = useBakeryStore()
+const { convertGoogleDriveUrl } = useGoogleDrive()
 
 // Get bakery ID from route
 const bakeryId = route.params.id

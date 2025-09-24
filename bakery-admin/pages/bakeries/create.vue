@@ -198,7 +198,7 @@
                 />
               </div>
               <div v-if="imagePreview" class="mt-4">
-                <img :src="imagePreview" alt="Preview" class="w-32 h-32 object-cover rounded-lg" />
+                <img :src="convertGoogleDriveUrl(imagePreview)" alt="Preview" class="w-32 h-32 object-cover rounded-lg" />
               </div>
             </div>
 
@@ -249,6 +249,7 @@ import { useBakeryStore } from '~/stores/bakery'
 
 const router = useRouter()
 const bakeryStore = useBakeryStore()
+const { convertGoogleDriveUrl } = useGoogleDrive()
 
 // Form state
 const form = reactive({

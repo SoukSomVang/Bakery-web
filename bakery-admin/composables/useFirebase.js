@@ -17,13 +17,15 @@ import {
   getDownloadURL,
   deleteObject
 } from 'firebase/storage'
-import { auth, db, storage } from '../../shared-configs/firebase-config.js'
-
 const getFirebaseInstances = () => {
-  console.log('🔧 Using shared Firebase configuration...')
-  console.log('✅ Auth from shared config:', !!auth)
-  console.log('✅ Database from shared config:', !!db)
-  console.log('✅ Storage from shared config:', !!storage)
+  console.log('🔧 Using client-side Firebase configuration...')
+
+  // Use client-side Firebase initialization
+  const { db, auth, storage } = useClientFirebase()
+
+  console.log('✅ Auth from client config:', !!auth)
+  console.log('✅ Database from client config:', !!db)
+  console.log('✅ Storage from client config:', !!storage)
 
   return {
     db: db,
@@ -326,6 +328,60 @@ export const useFirebase = () => {
     }
   }
 
+  // Bakery Types CRUD
+  const getBakeryTypes = async () => {
+    try {
+      if (!$db) {
+        throw new Error('Firebase Database is not initialized. Please check your Firebase configuration.')
+      }
+      const querySnapshot = await getDocs(collection($db, 'bakeryTypes'))
+      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    } catch (error) {
+      console.error('Error getting bakery types:', error)
+      throw error
+    }
+  }
+
+  const addBakeryType = async (type) => {
+    try {
+      if (!$db) {
+        throw new Error('Firebase Database is not initialized. Please check your Firebase configuration.')
+      }
+      const docRef = await addDoc(collection($db, 'bakeryTypes'), {
+        ...type,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      })
+      console.log('✅ Bakery type added successfully with ID:', docRef.id)
+      return docRef.id
+    } catch (error) {
+      console.error('❌ Error adding bakery type:', error)
+      throw error
+    }
+  }
+
+  const updateBakeryType = async (id, type) => {
+    try {
+      const docRef = doc($db, 'bakeryTypes', id)
+      await updateDoc(docRef, {
+        ...type,
+        updatedAt: new Date()
+      })
+    } catch (error) {
+      console.error('Error updating bakery type:', error)
+      throw error
+    }
+  }
+
+  const deleteBakeryType = async (id) => {
+    try {
+      await deleteDoc(doc($db, 'bakeryTypes', id))
+    } catch (error) {
+      console.error('Error deleting bakery type:', error)
+      throw error
+    }
+  }
+
   return {
     // Bakery Items
     getBakeryItems,
@@ -352,9 +408,15 @@ export const useFirebase = () => {
     addBakery,
     updateBakery,
     deleteBakery,
-    
+
     // File Management
     uploadImage,
-    deleteImage
+    deleteImage,
+
+    // Bakery Types
+    getBakeryTypes,
+    addBakeryType,
+    updateBakeryType,
+    deleteBakeryType
   }
 }

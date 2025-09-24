@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
-import { getFirestore } from 'firebase/firestore'
-import { getStorage } from 'firebase/storage'
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore'
+import { getStorage, connectStorageEmulator } from 'firebase/storage'
 import { getAnalytics } from 'firebase/analytics'
 
 const firebaseConfig = {
@@ -41,14 +41,19 @@ export { auth }
 // Initialize Firestore with error handling
 let db = null
 try {
-  db = getFirestore(app)
-  console.log('✅ Firestore initialized successfully')
-  console.log('📊 Database object:', !!db)
-  console.log('📊 Database app:', db.app.name)
-  console.log('📊 Database type:', db.type)
+  // Only initialize Firestore in browser environment
+  if (typeof window !== 'undefined') {
+    db = getFirestore(app)
+    console.log('✅ Firestore initialized successfully')
+    console.log('📊 Database object:', !!db)
+    console.log('📊 Database app:', db.app.name)
+    console.log('📊 Database type:', db.type)
 
-  // The database is initialized correctly - any permission errors will occur during operations
-  console.log('🔥 Firestore is ready for operations')
+    // The database is initialized correctly - any permission errors will occur during operations
+    console.log('🔥 Firestore is ready for operations')
+  } else {
+    console.log('🔧 Server-side rendering - Firestore will be initialized on client')
+  }
 } catch (error) {
   console.error('❌ Firestore initialization failed:', error)
   console.error('Error details:', error.message)
@@ -72,9 +77,14 @@ export { db }
 // Initialize Storage with error handling
 let storage = null
 try {
-  storage = getStorage(app)
-  console.log('✅ Firebase Storage initialized successfully')
-  console.log('📁 Storage bucket:', storage.app.options.storageBucket)
+  // Only initialize Storage in browser environment
+  if (typeof window !== 'undefined') {
+    storage = getStorage(app)
+    console.log('✅ Firebase Storage initialized successfully')
+    console.log('📁 Storage bucket:', storage.app.options.storageBucket)
+  } else {
+    console.log('🔧 Server-side rendering - Storage will be initialized on client')
+  }
 } catch (error) {
   console.error('❌ Storage initialization failed:', error)
   console.error('Please ensure Storage is enabled in your Firebase Console')

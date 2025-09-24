@@ -45,9 +45,9 @@
       <div v-else-if="!loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <div v-for="item in filteredItems" :key="item.id" class="card hover:shadow-lg transition-shadow">
           <div class="aspect-w-16 aspect-h-9 mb-4">
-            <img 
-              v-if="item.imageUrl" 
-              :src="item.imageUrl" 
+            <img
+              v-if="item.imageUrl"
+              :src="convertGoogleDriveUrl(item.imageUrl)"
               :alt="item.name"
               class="w-full h-48 object-cover rounded-lg"
             />
@@ -127,6 +127,7 @@
 <script setup>
 const bakeryStore = useBakeryStore()
 const { bakeryItems, bakeryTypes, loading, error } = storeToRefs(bakeryStore)
+const { convertGoogleDriveUrl } = useGoogleDrive()
 
 // State
 const selectedType = ref('')

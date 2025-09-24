@@ -4,20 +4,9 @@ export const useBakeryStore = defineStore('bakery', {
     storageData: [],
     branches: [],
     bakeries: [],
+    bakeryTypes: [],
     loading: false,
-    error: null,
-    bakeryTypes: [
-      'Cake',
-      'Bread',
-      'Pastry', 
-      'Cookie',
-      'Muffin',
-      'Croissant',
-      'Donut',
-      'Pie',
-      'Tart',
-      'Other'
-    ]
+    error: null
   }),
 
   getters: {
@@ -39,6 +28,15 @@ export const useBakeryStore = defineStore('bakery', {
     
     getBakeryById: (state) => (id) => {
       return state.bakeries.find(bakery => bakery.id === id)
+    },
+
+    getBakeryTypeById: (state) => (id) => {
+      return state.bakeryTypes.find(type => type.id === id)
+    },
+
+    // Get type names for dropdowns
+    bakeryTypeNames: (state) => {
+      return state.bakeryTypes.map(type => type.name)
     }
   },
 
@@ -353,6 +351,83 @@ export const useBakeryStore = defineStore('bakery', {
       } catch (error) {
         this.setError('Failed to delete bakery')
         console.error('Error deleting bakery:', error)
+        throw error
+      } finally {
+        this.setLoading(false)
+      }
+    },
+
+    // Bakery Types Actions
+    async fetchBakeryTypes() {
+      this.setLoading(true)
+      this.setError(null)
+
+      try {
+        const { getBakeryTypes } = useFirebase()
+        this.bakeryTypes = await getBakeryTypes()
+      } catch (error) {
+        this.setError('Failed to fetch bakery types')
+        console.error('Error fetching bakery types:', error)
+      } finally {
+        this.setLoading(false)
+      }
+    },
+
+    async addBakeryType(type) {
+      this.setLoading(true)
+      this.setError(null)
+
+      try {
+        const { addBakeryType } = useFirebase()
+        const id = await addBakeryType(type)
+
+        // Add to local state
+        this.bakeryTypes.push({ id, ...type, createdAt: new Date(), updatedAt: new Date() })
+        return id
+      } catch (error) {
+        this.setError('Failed to add bakery type')
+        console.error('Error adding bakery type:', error)
+        throw error
+      } finally {
+        this.setLoading(false)
+      }
+    },
+
+    async updateBakeryType(id, type) {
+      this.setLoading(true)
+      this.setError(null)
+
+      try {
+        const { updateBakeryType } = useFirebase()
+        await updateBakeryType(id, type)
+
+        // Update local state
+        const index = this.bakeryTypes.findIndex(t => t.id === id)
+        if (index !== -1) {
+          this.bakeryTypes[index] = { ...this.bakeryTypes[index], ...type, updatedAt: new Date() }
+        }
+      } catch (error) {
+        this.setError('Failed to update bakery type')
+        console.error('Error updating bakery type:', error)
+        throw error
+      } finally {
+        this.setLoading(false)
+      }
+    },
+
+    async deleteBakeryType(id) {
+      this.setLoading(true)
+      this.setError(null)
+
+      try {
+        const { deleteBakeryType } = useFirebase()
+        await deleteBakeryType(id)
+
+        // Remove from local state
+        this.bakeryTypes = this.bakeryTypes.filter(type => type.id !== id)
+      } catch (error) {
+        this.setError('Failed to delete bakery type')
+        console.error('Error deleting bakery type:', error)
         throw error
       } finally {
         this.setLoading(false)

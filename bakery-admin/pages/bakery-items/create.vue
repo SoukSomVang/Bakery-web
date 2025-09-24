@@ -28,7 +28,7 @@
                 <label class="form-label">Type *</label>
                 <select v-model="form.type" class="form-input" required>
                   <option value="">Select a type</option>
-                  <option v-for="type in bakeryTypes" :key="type" :value="type">{{ type }}</option>
+                  <option v-for="type in bakeryTypeNames" :key="type" :value="type">{{ type }}</option>
                 </select>
               </div>
               
@@ -229,7 +229,7 @@
 <script setup>
 const router = useRouter()
 const bakeryStore = useBakeryStore()
-const { bakeryTypes, loading, error } = storeToRefs(bakeryStore)
+const { bakeryTypeNames, loading, error } = storeToRefs(bakeryStore)
 
 // Form state
 const form = ref({
@@ -252,19 +252,37 @@ const imagePreview = ref(null)
 const imageError = ref(false)
 
 // Methods
+// Convert Google Drive sharing URLs to direct image URLs
+const convertGoogleDriveUrl = (url) => {
+  if (!url) return url
+
+  // Handle sharing URLs (view and edit)
+  const shareMatch = url.match(/\/d\/([a-zA-Z0-9-_]+)/)
+  if (shareMatch) {
+    const fileId = shareMatch[1]
+    return `https://drive.google.com/uc?export=view&id=${fileId}`
+  }
+
+  // Already a direct uc URL, return as is
+  return url
+}
+
 const updateImagePreview = () => {
   if (form.value.imageUrl) {
+    // Convert Google Drive URL if needed
+    const convertedUrl = convertGoogleDriveUrl(form.value.imageUrl)
+
     // Test if the image URL is valid
     const img = new Image()
     img.onload = () => {
-      imagePreview.value = form.value.imageUrl
+      imagePreview.value = convertedUrl
       imageError.value = false
     }
     img.onerror = () => {
       imagePreview.value = null
       imageError.value = true
     }
-    img.src = form.value.imageUrl
+    img.src = convertedUrl
   } else {
     imagePreview.value = null
     imageError.value = false
@@ -284,8 +302,14 @@ const removeImage = () => {
 
 const submitForm = async () => {
   try {
-    // Create the bakery item directly with the URL
-    await bakeryStore.addBakeryItem(form.value)
+    // Convert Google Drive URL before saving to database
+    const itemData = { ...form.value }
+    if (itemData.imageUrl) {
+      itemData.imageUrl = convertGoogleDriveUrl(itemData.imageUrl)
+    }
+
+    // Create the bakery item with converted URL
+    await bakeryStore.addBakeryItem(itemData)
 
     // Redirect to items list
     router.push('/bakery-items')
@@ -296,8 +320,8 @@ const submitForm = async () => {
 
 // Load data on mount
 onMounted(() => {
-  if (bakeryTypes.value.length === 0) {
-    bakeryStore.fetchBakeryItems()
+  if (bakeryTypeNames.value.length === 0) {
+    bakeryStore.fetchBakeryTypes()
   }
 })
 </script>
