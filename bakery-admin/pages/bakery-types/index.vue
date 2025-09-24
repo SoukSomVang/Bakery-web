@@ -160,6 +160,9 @@ const closeModal = () => {
 
 const submitForm = async () => {
   try {
+    // Convert type name to lowercase for consistency
+    typeForm.value.name = typeForm.value.name.toLowerCase()
+
     if (showAddModal.value) {
       await bakeryStore.addBakeryType(typeForm.value)
     } else if (showEditModal.value) {

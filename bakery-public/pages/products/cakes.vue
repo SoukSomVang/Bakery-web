@@ -22,24 +22,57 @@
     <section class="py-16">
       <div class="container mx-auto px-4">
         <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">All Cakes</h2>
-        
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <!-- Breads -->
-          <div v-for="(cake, index) in cakes" :key="index">
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow" @click="navigateToCategory('breads')">
+
+        <!-- Loading State -->
+        <div v-if="loading" class="flex justify-center items-center py-20">
+          <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-red-600"></div>
+        </div>
+
+        <!-- Error State -->
+        <div v-else-if="error" class="text-center py-20">
+          <div class="text-red-600 text-xl mb-4">{{ error }}</div>
+          <button
+            @click="fetchCakes"
+            class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
+
+        <!-- Search Bar -->
+        <div v-else class="max-w-md mx-auto mb-8">
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search cakes..."
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none"
+          />
+        </div>
+
+        <!-- Cakes Grid -->
+        <div v-if="!loading && !error" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <div v-for="cake in paginatedCakes" :key="cake.id">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow hover:shadow-xl">
               <img
-                :src="cake?.image"
-                alt="Fresh Breads"
+                :src="cake.image || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=200&fit=crop'"
+                :alt="cake.name"
                 class="w-full h-48 object-cover"
               />
-              <div class="p-6">
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">{{ cake?.name }}</h3>
-                <p class="text-gray-600 mb-4">Artisan breads baked fresh daily</p>
-                <div class="text-red-600 font-semibold">{{ cake?.price.toLocaleString() }} KIP</div>
+              <div class="p-4">
+                <h3 class="text-lg font-bold text-gray-800 mb-2">{{ cake.name }}</h3>
+                <p v-if="cake.description" class="text-gray-600 text-sm mb-2">{{ cake.description }}</p>
+                <div class="text-red-600 font-semibold">
+                  {{ typeof cake.price === 'number' ? cake.price.toLocaleString() : cake.price }} KIP
+                </div>
               </div>
             </div>
           </div>
+        </div>
 
+        <!-- No Cakes Message -->
+        <div v-if="!loading && !error && filteredCakes.length === 0" class="text-center py-20">
+          <div class="text-gray-600 text-xl">No cakes found.</div>
+          <p class="text-gray-500 mt-2">{{ searchQuery ? 'Try adjusting your search terms.' : 'Check back later for new cake varieties.' }}</p>
         </div>
       </div>
     </section>
@@ -49,7 +82,7 @@
       <div class="container mx-auto px-4">
 
         <!-- Pagination -->
-        <div class="flex justify-center items-center space-x-4">
+        <div v-if="filteredCakes.length > itemsPerPage && !loading && !error" class="flex justify-center items-center space-x-4">
           <button
             @click="prevPage"
             :disabled="currentPage === 1"
@@ -62,7 +95,7 @@
           >
             Previous
           </button>
-          
+
           <div class="flex space-x-2">
             <button
               v-for="page in totalPages"
@@ -78,7 +111,7 @@
               {{ page }}
             </button>
           </div>
-          
+
           <button
             @click="nextPage"
             :disabled="currentPage === totalPages"
@@ -99,92 +132,71 @@
 
 <script setup>
 import { useRouter } from "vue-router";
-import cake from "@/assets/images/all-menu/cake.jpg";
 
 const router = useRouter();
+const { getProductsByBakeryType } = useProducts();
+
+// Loading and error states
+const loading = ref(true);
+const error = ref(null);
+
+// Search
+const searchQuery = ref('');
 
 // Pagination
 const currentPage = ref(1);
 const itemsPerPage = 8;
 
-const cakes = ref([
-  { name: "Cake", price: 10000, image: cake },
-  { name: "Cake", price: 10000, image: cake },
-  { name: "Cake", price: 10000, image: cake },
-  { name: "Cake", price: 10000, image: cake },
-  { name: "Cake", price: 10000, image: cake },
-  { name: "Cake", price: 10000, image: cake }
-]);
+// Data
+const allCakes = ref([]);
 
-// Featured products
-const featuredProducts = ref([
-  {
-    id: 1,
-    name: "Ham Cheese Croissant",
-    description: "Buttery croissant filled with ham and cheese",
-    price: "4.50",
-    image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&h=300&fit=crop",
-    category: "Pastries"
-  },
-  {
-    id: 2,
-    name: "Chocolate Lava Cake",
-    description: "Rich chocolate cake with molten center",
-    price: "6.99",
-    image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop",
-    category: "Cakes"
-  },
-  {
-    id: 3,
-    name: "Whole Wheat Bread",
-    description: "Nutritious multigrain bread",
-    price: "3.25",
-    image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop",
-    category: "Breads"
+// Fetch cakes from Firestore (filtering by bakery type)
+const fetchCakes = async () => {
+  try {
+    console.log('🚀 CAKES: Fetching cakes from Firestore...');
+    loading.value = true;
+    error.value = null;
+
+    // Get products filtered by 'cake' bakery type (lowercase)
+    allCakes.value = await getProductsByBakeryType('cake');
+    console.log('✅ CAKES: Cakes loaded:', allCakes.value.length);
+
+  } catch (err) {
+    console.error('❌ CAKES: Error fetching cakes:', err);
+    error.value = `Failed to load cakes: ${err.message}`;
+    allCakes.value = [];
+  } finally {
+    loading.value = false;
   }
-]);
+};
 
-// All products
-const allProducts = ref([
-  // Breads
-  { id: 1, name: "Whole Wheat Multigrain Bread", category: "Breads", price: "3.25", image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=300&h=200&fit=crop" },
-  { id: 2, name: "Sourdough Bread", category: "Breads", price: "4.50", image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=300&h=200&fit=crop" },
-  { id: 3, name: "French Baguette", category: "Breads", price: "2.75", image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=300&h=200&fit=crop" },
-  
-  // Pastries
-  { id: 4, name: "Ham Cheese Croissant", category: "Pastries", price: "4.50", image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=300&h=200&fit=crop" },
-  { id: 5, name: "Almond Croissant", category: "Pastries", price: "3.75", image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=300&h=200&fit=crop" },
-  { id: 6, name: "Butter Croissant", category: "Pastries", price: "2.99", image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=300&h=200&fit=crop" },
-  { id: 7, name: "Spinach Cheese Croissant", category: "Pastries", price: "4.25", image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=300&h=200&fit=crop" },
-  { id: 8, name: "Cream Puffs", category: "Pastries", price: "3.50", image: "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=300&h=200&fit=crop" },
-  { id: 9, name: "Cream Puffs Matcha", category: "Pastries", price: "3.75", image: "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=300&h=200&fit=crop" },
-  { id: 10, name: "Coconut Pie", category: "Pastries", price: "4.99", image: "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=300&h=200&fit=crop" },
-  
-  // Cakes
-  { id: 11, name: "Chocolate Two Tone Lava", category: "Cakes", price: "6.99", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=200&fit=crop" },
-  { id: 12, name: "Carrot Cake", category: "Cakes", price: "5.75", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=200&fit=crop" },
-  { id: 13, name: "Mousse Cake Matcha", category: "Cakes", price: "7.50", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=200&fit=crop" },
-  { id: 14, name: "Cheese Cake", category: "Cakes", price: "6.25", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=200&fit=crop" },
-  { id: 15, name: "Red Velvet Cake", category: "Cakes", price: "6.75", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=200&fit=crop" },
-  { id: 16, name: "Cake Milk", category: "Cakes", price: "4.99", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=200&fit=crop" },
-  { id: 17, name: "Chocolate Top Mousse", category: "Cakes", price: "7.25", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=200&fit=crop" },
-  
-  // Cookies
-  { id: 18, name: "Cookie Red Velvet", category: "Cookies", price: "2.50", image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=300&h=200&fit=crop" },
-  { id: 19, name: "Cookie Chocolate", category: "Cookies", price: "2.25", image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=300&h=200&fit=crop" },
-  { id: 20, name: "Cookie Matcha", category: "Cookies", price: "2.75", image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=300&h=200&fit=crop" },
-  { id: 21, name: "White Chocolate Oreo", category: "Cookies", price: "3.25", image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=300&h=200&fit=crop" }
-]);
+// Computed properties for filtering
+const filteredCakes = computed(() => {
+  if (!searchQuery.value) {
+    return allCakes.value;
+  }
+
+  const query = searchQuery.value.toLowerCase();
+  return allCakes.value.filter(cake =>
+    cake.name?.toLowerCase().includes(query) ||
+    cake.description?.toLowerCase().includes(query)
+  );
+});
 
 // Computed properties for pagination
 const totalPages = computed(() => {
-  return Math.ceil(allProducts.value.length / itemsPerPage);
+  return Math.ceil(filteredCakes.value.length / itemsPerPage);
 });
 
-const paginatedProducts = computed(() => {
+const paginatedCakes = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage;
   const end = start + itemsPerPage;
-  return allProducts.value.slice(start, end);
+  return filteredCakes.value.slice(start, end);
+});
+
+// Watch for search changes and reset pagination
+watch(searchQuery, () => {
+  currentPage.value = 1;
 });
 
 // Pagination methods
@@ -205,21 +217,26 @@ const navigateToCategory = (category) => {
   router.push(`/products/${category}`);
 };
 
+// Fetch data on component mount
+onMounted(() => {
+  fetchCakes();
+});
+
 // SEO
 useHead({
-  title: 'Our Products - Bakery House | Fresh Baked Goods',
+  title: 'Cakes - Bakery House | Fresh Baked Cakes',
   meta: [
     {
       name: 'description',
-      content: 'Explore our wide range of fresh baked products including artisan breads, custom cakes, pastries, and cookies. All made daily with the finest ingredients.'
+      content: 'Explore our delicious selection of fresh baked cakes including chocolate, vanilla, red velvet, and custom celebration cakes. Made daily with the finest ingredients.'
     },
     {
       property: 'og:title',
-      content: 'Bakery House Products - Fresh Breads, Cakes, Pastries & More'
+      content: 'Fresh Baked Cakes - Bakery House'
     },
     {
       property: 'og:description',
-      content: 'Discover our delicious selection of baked goods including croissants, artisan breads, custom cakes, and sweet treats. Order now for pickup or delivery.'
+      content: 'Discover our amazing variety of cakes perfect for any occasion. Custom cakes, birthday cakes, and more available for order.'
     }
   ]
 });

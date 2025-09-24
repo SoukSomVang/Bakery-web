@@ -50,57 +50,97 @@
           </button>
         </div>
 
-        <!-- Products Grid -->
-        <div v-else class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div
-            v-for="bread in breads"
-            :key="bread.id"
-            class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
-          >
-            <img
-              :src="bread.image || 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop'"
-              :alt="bread.name"
-              class="w-full h-56 object-cover"
-            />
-            <div class="p-6">
-              <h3 class="text-xl font-bold text-gray-800 mb-2">{{ bread.name }}</h3>
-              <p class="text-gray-600 mb-3">{{ bread.description }}</p>
-              <div v-if="bread.ingredients && bread.ingredients.length > 0" class="mb-4">
-                <div class="flex flex-wrap gap-2">
-                  <span
-                    v-for="ingredient in bread.ingredients"
-                    :key="ingredient"
-                    class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded"
-                  >
-                    {{ ingredient }}
-                  </span>
+        <!-- Search Bar -->
+        <div v-else class="max-w-md mx-auto mb-8">
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search breads..."
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none"
+          />
+        </div>
+
+        <!-- Breads Grid -->
+        <div v-if="!loading && !error" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <div v-for="bread in paginatedBreads" :key="bread.id">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow hover:shadow-xl">
+              <img
+                :src="bread.image || 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=300&h=200&fit=crop'"
+                :alt="bread.name"
+                class="w-full h-48 object-cover"
+              />
+              <div class="p-4">
+                <h3 class="text-lg font-bold text-gray-800 mb-2">{{ bread.name }}</h3>
+                <p v-if="bread.description" class="text-gray-600 text-sm mb-2">{{ bread.description }}</p>
+                <div class="text-red-600 font-semibold">
+                  {{ typeof bread.price === 'number' ? bread.price.toLocaleString() : bread.price }} KIP
                 </div>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-2xl font-bold text-red-600">
-                  {{ typeof bread.price === 'number' ? `${bread.price.toLocaleString()} KIP` : `$${bread.price}` }}
-                </span>
-                <button class="bg-red-900 hover:bg-red-950 text-white px-4 py-2 rounded-md font-semibold transition-colors">
-                  Order Now
-                </button>
               </div>
             </div>
           </div>
         </div>
+
+        <!-- No Breads Message -->
+        <div v-if="!loading && !error && filteredBreads.length === 0" class="text-center py-20">
+          <div class="text-gray-600 text-xl">No breads found.</div>
+          <p class="text-gray-500 mt-2">{{ searchQuery ? 'Try adjusting your search terms.' : 'Check back later for fresh bread varieties.' }}</p>
+        </div>
+
+        <!-- Pagination -->
+        <div v-if="filteredBreads.length > itemsPerPage && !loading && !error" class="flex justify-center items-center space-x-4">
+          <button
+            @click="prevPage"
+            :disabled="currentPage === 1"
+            :class="[
+              'px-4 py-2 rounded-lg font-semibold transition-colors',
+              currentPage === 1
+                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                : 'bg-red-900 text-white hover:bg-red-950'
+            ]"
+          >
+            Previous
+          </button>
+
+          <div class="flex space-x-2">
+            <button
+              v-for="page in totalPages"
+              :key="page"
+              @click="currentPage = page"
+              :class="[
+                'px-3 py-2 rounded-lg font-semibold transition-colors',
+                currentPage === page
+                  ? 'bg-red-900 text-white'
+                  : 'bg-white text-gray-700 hover:bg-gray-100'
+              ]"
+            >
+              {{ page }}
+            </button>
+          </div>
+
+          <button
+            @click="nextPage"
+            :disabled="currentPage === totalPages"
+            :class="[
+              'px-4 py-2 rounded-lg font-semibold transition-colors',
+              currentPage === totalPages
+                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                : 'bg-red-900 text-white hover:bg-red-950'
+            ]"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </section>
 
-    <!-- Information Section -->
+    <!-- Our Commitment Section -->
     <section class="py-16 bg-white">
       <div class="container mx-auto px-4">
         <div class="grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 class="text-4xl font-bold text-gray-800 mb-6">Our Bread Making Process</h2>
-            <p class="text-gray-600 mb-6 leading-relaxed">
-              Every loaf starts before dawn with our master bakers selecting the finest flour, 
-              natural yeast, and quality ingredients. We use traditional techniques combined 
-              with modern precision to create breads that are crusty on the outside and 
-              perfectly soft inside.
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">Our Commitment to Quality</h2>
+            <p class="text-lg text-gray-700 mb-6">
+              Every loaf is crafted with passion and precision, using time-honored techniques passed down through generations of bakers.
             </p>
             <div class="space-y-4">
               <div class="flex items-center space-x-3">
@@ -109,7 +149,7 @@
                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                   </svg>
                 </div>
-                <span class="text-gray-700">Premium organic flour</span>
+                <span class="text-gray-700">Organic flour and premium ingredients</span>
               </div>
               <div class="flex items-center space-x-3">
                 <div class="bg-red-100 p-2 rounded-full">
@@ -161,63 +201,79 @@
 </template>
 
 <script setup>
-const { getProductsByCategory } = useProducts();
+const { getProductsByBakeryType } = useProducts();
 
-// Loading states
+// Loading and error states
 const loading = ref(true);
 const error = ref(null);
 
-// Data from Firestore
-const breads = ref([]);
+// Search
+const searchQuery = ref('');
 
-// Fetch breads from Firestore
+// Pagination
+const currentPage = ref(1);
+const itemsPerPage = 8;
+
+// Data
+const allBreads = ref([]);
+
+// Fetch breads from Firestore (filtering by bakery type)
 const fetchBreads = async () => {
   try {
     loading.value = true;
     error.value = null;
 
-    const breadsData = await getProductsByCategory('Breads');
-    breads.value = breadsData;
-
-    // If no breads from Firestore, fallback to sample data
-    if (breads.value.length === 0) {
-      breads.value = [
-        {
-          id: 'fallback-1',
-          name: "Whole Wheat Multigrain Bread",
-          description: "Nutritious blend of whole wheat flour with seeds and grains",
-          price: "3.25",
-          image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop",
-          ingredients: ["Whole Wheat", "Sunflower Seeds", "Flax Seeds", "Oats"]
-        },
-        {
-          id: 'fallback-2',
-          name: "Classic Sourdough",
-          description: "Traditional sourdough with a perfectly tangy flavor and crispy crust",
-          price: "4.50",
-          image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=400&h=300&fit=crop",
-          ingredients: ["Sourdough Starter", "Organic Flour", "Sea Salt", "Water"]
-        }
-      ];
-    }
+    // Get products filtered by 'bread' bakery type (lowercase)
+    allBreads.value = await getProductsByBakeryType('bakery');
 
   } catch (err) {
     console.error('Error fetching breads:', err);
     error.value = 'Failed to load breads. Please try again later.';
-
-    // Fallback data if Firestore fails
-    breads.value = [
-      {
-        id: 'error-fallback',
-        name: "Classic Sourdough",
-        description: "Traditional sourdough with a perfectly tangy flavor and crispy crust",
-        price: "4.50",
-        image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=400&h=300&fit=crop",
-        ingredients: ["Sourdough Starter", "Organic Flour", "Sea Salt", "Water"]
-      }
-    ];
+    allBreads.value = [];
   } finally {
     loading.value = false;
+  }
+};
+
+// Computed properties for filtering
+const filteredBreads = computed(() => {
+  if (!searchQuery.value) {
+    return allBreads.value;
+  }
+
+  const query = searchQuery.value.toLowerCase();
+  return allBreads.value.filter(bread =>
+    bread.name?.toLowerCase().includes(query) ||
+    bread.description?.toLowerCase().includes(query)
+  );
+});
+
+// Computed properties for pagination
+const totalPages = computed(() => {
+  return Math.ceil(filteredBreads.value.length / itemsPerPage);
+});
+
+const paginatedBreads = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return filteredBreads.value.slice(start, end);
+});
+
+// Watch for search changes and reset pagination
+watch(searchQuery, () => {
+  currentPage.value = 1;
+});
+
+// Pagination methods
+const nextPage = () => {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++;
+  }
+};
+
+const prevPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value--;
   }
 };
 

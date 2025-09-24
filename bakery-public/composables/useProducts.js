@@ -10,43 +10,82 @@ import {
 } from 'firebase/firestore'
 
 export const useProducts = () => {
-  const { $db } = useNuxtApp()
-
   // Check if Firestore is available
-  const checkFirestore = () => {
-    if (!$db) {
-      throw new Error('Firestore is not available. Please enable Firestore in Firebase Console.')
+  const checkFirestore = (db) => {
+    if (!db) {
+      console.error('PUBLIC: Firestore is not available from useClientFirebase')
+      throw new Error('PUBLIC: Firestore is not available. Please enable Firestore in Firebase Console.')
     }
+    console.log('✅ PUBLIC: Firestore is available:', !!db)
   }
 
   // Products CRUD (Read-only for public)
   const getProducts = async () => {
     try {
-      checkFirestore()
-      const querySnapshot = await getDocs(collection($db, 'products'))
+      const { db } = useClientFirebase()
+      checkFirestore(db)
+      const querySnapshot = await getDocs(collection(db, 'products'))
       return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
     } catch (error) {
-      console.error('Error getting products:', error)
+      console.error('PUBLIC: Error getting products:', error)
       throw error
     }
   }
 
   const getProductsByCategory = async (category) => {
     try {
-      checkFirestore()
-      const q = query(collection($db, 'products'), where('category', '==', category))
+      const { db } = useClientFirebase()
+      checkFirestore(db)
+      const q = query(collection(db, 'products'), where('category', '==', category))
       const querySnapshot = await getDocs(q)
       return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
     } catch (error) {
-      console.error('Error getting products by category:', error)
+      console.error('PUBLIC: Error getting products by category:', error)
+      throw error
+    }
+  }
+
+  const getProductsByBakeryType = async (typeName) => {
+    try {
+      const { db } = useClientFirebase()
+      checkFirestore(db)
+      const q = query(collection(db, 'products'), where('type', '==', typeName))
+      const querySnapshot = await getDocs(q)
+      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    } catch (error) {
+      console.error('PUBLIC: Error getting products by bakery type:', error)
+      throw error
+    }
+  }
+
+  const getProductsFilteredByBakeryTypes = async () => {
+    try {
+      const { db } = useClientFirebase()
+      checkFirestore(db)
+
+      // First get all bakery types
+      const bakeryTypesSnapshot = await getDocs(collection(db, 'bakeryTypes'))
+      const bakeryTypes = bakeryTypesSnapshot.docs.map(doc => doc.data().name)
+
+      if (bakeryTypes.length === 0) {
+        return []
+      }
+
+      // Then get products that match any of the bakery types
+      const q = query(collection(db, 'products'), where('type', 'in', bakeryTypes))
+      const querySnapshot = await getDocs(q)
+      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    } catch (error) {
+      console.error('PUBLIC: Error getting products filtered by bakery types:', error)
       throw error
     }
   }
 
   const getProductById = async (id) => {
     try {
-      checkFirestore()
-      const docRef = doc($db, 'products', id)
+      const { db } = useClientFirebase()
+      checkFirestore(db)
+      const docRef = doc(db, 'products', id)
       const docSnap = await getDoc(docRef)
       if (docSnap.exists()) {
         return { id: docSnap.id, ...docSnap.data() }
@@ -54,7 +93,7 @@ export const useProducts = () => {
         throw new Error('Product not found')
       }
     } catch (error) {
-      console.error('Error getting product:', error)
+      console.error('PUBLIC: Error getting product:', error)
       throw error
     }
   }
@@ -62,19 +101,21 @@ export const useProducts = () => {
   // Categories CRUD (Read-only for public)
   const getCategories = async () => {
     try {
-      checkFirestore()
-      const querySnapshot = await getDocs(collection($db, 'categories'))
+      const { db } = useClientFirebase()
+      checkFirestore(db)
+      const querySnapshot = await getDocs(collection(db, 'categories'))
       return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
     } catch (error) {
-      console.error('Error getting categories:', error)
+      console.error('PUBLIC: Error getting categories:', error)
       throw error
     }
   }
 
   const getCategoryById = async (id) => {
     try {
-      checkFirestore()
-      const docRef = doc($db, 'categories', id)
+      const { db } = useClientFirebase()
+      checkFirestore(db)
+      const docRef = doc(db, 'categories', id)
       const docSnap = await getDoc(docRef)
       if (docSnap.exists()) {
         return { id: docSnap.id, ...docSnap.data() }
@@ -82,7 +123,7 @@ export const useProducts = () => {
         throw new Error('Category not found')
       }
     } catch (error) {
-      console.error('Error getting category:', error)
+      console.error('PUBLIC: Error getting category:', error)
       throw error
     }
   }
@@ -90,19 +131,23 @@ export const useProducts = () => {
   // Get featured products (products marked as featured)
   const getFeaturedProducts = async () => {
     try {
-      checkFirestore()
-      const q = query(collection($db, 'products'), where('featured', '==', true))
+      const { db } = useClientFirebase()
+      checkFirestore(db)
+      const q = query(collection(db, 'products'), where('featured', '==', true))
       const querySnapshot = await getDocs(q)
       return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
     } catch (error) {
-      console.error('Error getting featured products:', error)
+      console.error('PUBLIC: Error getting featured products:', error)
       throw error
     }
   }
 
   // Real-time listeners
   const subscribeToProducts = (callback, category = null) => {
-    let q = collection($db, 'products')
+    const { db } = useClientFirebase()
+    if (!db) return () => {}
+
+    let q = collection(db, 'products')
 
     if (category) {
       q = query(q, where('category', '==', category))
@@ -118,7 +163,10 @@ export const useProducts = () => {
   }
 
   const subscribeToCategories = (callback) => {
-    const q = collection($db, 'categories')
+    const { db } = useClientFirebase()
+    if (!db) return () => {}
+
+    const q = collection(db, 'categories')
 
     return onSnapshot(q, (querySnapshot) => {
       const categories = querySnapshot.docs.map(doc => ({
@@ -133,6 +181,8 @@ export const useProducts = () => {
     // Products
     getProducts,
     getProductsByCategory,
+    getProductsByBakeryType,
+    getProductsFilteredByBakeryTypes,
     getProductById,
     getFeaturedProducts,
 

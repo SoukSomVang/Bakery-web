@@ -18,10 +18,10 @@
       </div>
     </section>
 
-    <!-- Product Categories -->
+    <!-- All Products Grid -->
     <section class="py-16">
       <div class="container mx-auto px-4">
-        <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">All Bakery</h2>
+        <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">All Bakery Products</h2>
 
         <!-- Loading State -->
         <div v-if="loading" class="flex justify-center items-center py-20">
@@ -39,36 +39,18 @@
           </button>
         </div>
 
-        <!-- Categories Grid -->
-        <div v-else class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div v-for="category in categories" :key="category.id">
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow cursor-pointer hover:shadow-xl"
-                 @click="navigateToCategory(category.slug || 'breads')">
-              <img
-                :src="category.image || cuisant"
-                :alt="category.name"
-                class="w-full h-48 object-cover"
-              />
-              <div class="p-6">
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">{{ category.name }}</h3>
-                <p class="text-gray-600 mb-4">{{ category.description || 'Fresh baked daily' }}</p>
-                <div v-if="category.price" class="text-red-600 font-semibold">
-                  {{ typeof category.price === 'number' ? category.price.toLocaleString() : category.price }} KIP
-                </div>
-              </div>
-            </div>
-          </div>
+        <!-- Search Bar -->
+        <div v-else class="max-w-md mx-auto mb-8">
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search bakery products..."
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none"
+          />
         </div>
-      </div>
-    </section>
-
-    <!-- All Products Grid -->
-    <section class="py-16 bg-gray-50">
-      <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">All Products</h2>
 
         <!-- Products Grid -->
-        <div v-if="!loading && !error && allProducts.length > 0" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div v-if="!loading && !error && filteredProducts.length > 0" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <div v-for="product in paginatedProducts" :key="product.id">
             <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow hover:shadow-xl">
               <img
@@ -79,13 +61,8 @@
               <div class="p-4">
                 <h3 class="text-lg font-bold text-gray-800 mb-2">{{ product.name }}</h3>
                 <p v-if="product.description" class="text-gray-600 text-sm mb-2">{{ product.description }}</p>
-                <div class="flex justify-between items-center">
-                  <span class="text-red-600 font-semibold">
-                    {{ typeof product.price === 'number' ? product.price.toLocaleString() : product.price }} KIP
-                  </span>
-                  <span class="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                    {{ product.category }}
-                  </span>
+                <div class="text-red-600 font-semibold">
+                  {{ typeof product.price === 'number' ? product.price.toLocaleString() : product.price }} KIP
                 </div>
               </div>
             </div>
@@ -93,13 +70,27 @@
         </div>
 
         <!-- No Products Message -->
+        <div v-else-if="!loading && !error && filteredProducts.length === 0 && allProducts.length > 0" class="text-center py-20">
+          <div class="text-gray-600 text-xl">No products found matching your search.</div>
+          <p class="text-gray-500 mt-2">Try adjusting your search terms or filters.</p>
+        </div>
+
+        <!-- No Products Available -->
         <div v-else-if="!loading && !error && allProducts.length === 0" class="text-center py-20">
           <div class="text-gray-600 text-xl">No products available at the moment.</div>
           <p class="text-gray-500 mt-2">Please check back later or contact us for more information.</p>
         </div>
 
+        <!-- Search Results Count -->
+        <div v-if="!loading && !error && searchQuery && filteredProducts.length > 0" class="text-center mb-8">
+          <p class="text-gray-600">
+            Showing {{ filteredProducts.length }} result{{ filteredProducts.length !== 1 ? 's' : '' }}
+            <span v-if="searchQuery">for "{{ searchQuery }}"</span>
+          </p>
+        </div>
+
         <!-- Pagination -->
-        <div v-if="allProducts.length > itemsPerPage && !loading && !error" class="flex justify-center items-center space-x-4">
+        <div v-if="filteredProducts.length > itemsPerPage && !loading && !error" class="flex justify-center items-center space-x-4">
           <button
             @click="prevPage"
             :disabled="currentPage === 1"
@@ -149,58 +140,38 @@
 
 <script setup>
 import { useRouter } from "vue-router";
-import cuisant from "@/assets/images/all-menu/cuisant.jpg";
 
 const router = useRouter();
-const { getCategories, getProducts, getFeaturedProducts } = useProducts();
+const { getProductsFilteredByBakeryTypes } = useProducts();
 
 // Loading states
 const loading = ref(true);
 const error = ref(null);
+
+// Search
+const searchQuery = ref('');
 
 // Pagination
 const currentPage = ref(1);
 const itemsPerPage = 8;
 
 // Data from Firestore
-const categories = ref([]);
-const featuredProducts = ref([]);
 const allProducts = ref([]);
 
-// Fetch data from Firestore
+// Fetch products filtered by bakery types
 const fetchData = async () => {
   try {
+    console.log('🚀 PUBLIC: Fetching products filtered by bakery types...');
     loading.value = true;
     error.value = null;
 
-    // Fetch all data in parallel
-    const [categoriesData, productsData, featuredData] = await Promise.all([
-      getCategories(),
-      getProducts(),
-      getFeaturedProducts()
-    ]);
-
-    categories.value = categoriesData;
-    allProducts.value = productsData;
-    featuredProducts.value = featuredData;
-
-    // If no categories from Firestore, fallback to placeholder
-    if (categories.value.length === 0) {
-      categories.value = [
-        { id: 'fallback-1', name: "Croissant", price: 10000, image: cuisant }
-      ];
-    }
+    allProducts.value = await getProductsFilteredByBakeryTypes();
+    console.log('✅ PUBLIC: Products loaded:', allProducts.value.length);
 
   } catch (err) {
-    console.error('Error fetching data:', err);
-    error.value = 'Failed to load products. Please try again later.';
-
-    // Fallback data if Firestore fails
-    categories.value = [
-      { id: 'fallback-1', name: "Croissant", price: 10000, image: cuisant }
-    ];
+    console.error('❌ PUBLIC: Error fetching products:', err);
+    error.value = `Failed to load products: ${err.message}`;
     allProducts.value = [];
-    featuredProducts.value = [];
   } finally {
     loading.value = false;
   }
@@ -211,15 +182,31 @@ onMounted(() => {
   fetchData();
 });
 
+// Computed properties for filtering
+const filteredProducts = computed(() => {
+  let products = allProducts.value;
+
+  // Filter by search query
+  if (searchQuery.value) {
+    const query = searchQuery.value.toLowerCase();
+    products = products.filter(product =>
+      product.name?.toLowerCase().includes(query) ||
+      product.description?.toLowerCase().includes(query)
+    );
+  }
+
+  return products;
+});
+
 // Computed properties for pagination
 const totalPages = computed(() => {
-  return Math.ceil(allProducts.value.length / itemsPerPage);
+  return Math.ceil(filteredProducts.value.length / itemsPerPage);
 });
 
 const paginatedProducts = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage;
   const end = start + itemsPerPage;
-  return allProducts.value.slice(start, end);
+  return filteredProducts.value.slice(start, end);
 });
 
 // Pagination methods
@@ -234,6 +221,11 @@ const prevPage = () => {
     currentPage.value--;
   }
 };
+
+// Watch for search changes and reset pagination
+watch(searchQuery, () => {
+  currentPage.value = 1;
+});
 
 // Methods
 const navigateToCategory = (category) => {
