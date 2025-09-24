@@ -15,8 +15,17 @@ const firebaseConfig = {
 }
 
 console.log('🔧 Initializing Firebase with config:', firebaseConfig)
-const app = initializeApp(firebaseConfig)
-console.log('🔧 Firebase app initialized:', app ? 'success' : 'failed')
+let app
+try {
+  app = initializeApp(firebaseConfig)
+  console.log('✅ Firebase app initialized successfully:', app ? 'success' : 'failed')
+  console.log('📱 App name:', app.name)
+  console.log('📱 App options:', app.options)
+} catch (error) {
+  console.error('❌ Firebase app initialization failed:', error)
+  console.error('Error details:', error.message)
+  throw error
+}
 
 // Initialize Auth with error handling
 let auth = null
@@ -34,9 +43,12 @@ let db = null
 try {
   db = getFirestore(app)
   console.log('✅ Firestore initialized successfully')
-  console.log('📊 Database object:', db)
-  console.log('📊 Database app:', db.app)
+  console.log('📊 Database object:', !!db)
+  console.log('📊 Database app:', db.app.name)
   console.log('📊 Database type:', db.type)
+
+  // The database is initialized correctly - any permission errors will occur during operations
+  console.log('🔥 Firestore is ready for operations')
 } catch (error) {
   console.error('❌ Firestore initialization failed:', error)
   console.error('Error details:', error.message)
@@ -47,6 +59,14 @@ try {
   // Set a flag so we know initialization failed
   db = null
 }
+
+// Verify database is properly exported
+if (db) {
+  console.log('✅ Database exported successfully')
+} else {
+  console.error('❌ Database is null - export failed')
+}
+
 export { db }
 
 // Initialize Storage with error handling
