@@ -37,7 +37,8 @@
       "Bash(node:*)",
       "Bash(npm install:*)",
       "Bash(firebase init:*)",
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "WebFetch(domain:localhost)"
     ],
     "deny": [],
     "ask": []

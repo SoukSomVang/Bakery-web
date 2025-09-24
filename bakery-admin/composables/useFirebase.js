@@ -44,6 +44,8 @@ export const useFirebase = () => {
   if (!db) {
     console.error('❌ Firebase Database is not initialized in useFirebase')
     console.error('Please check the Firebase configuration')
+    console.error('This might indicate that Firestore is not enabled in your Firebase project.')
+    console.error('Please visit: https://console.firebase.google.com/project/bakery-house-f7e32/firestore')
   } else {
     console.log('✅ Firebase Database found in useFirebase')
   }
@@ -79,16 +81,27 @@ export const useFirebase = () => {
   const addBakeryItem = async (item) => {
     try {
       if (!$db) {
-        throw new Error('Firebase Database is not initialized. Please check your Firebase configuration.')
+        const errorMessage = 'Firebase Database is not initialized. Please check your Firebase configuration.'
+        console.error('❌', errorMessage)
+        console.error('This usually means Firestore is not enabled in your Firebase project.')
+        console.error('Please visit: https://console.firebase.google.com/project/bakery-house-f7e32/firestore')
+        console.error('And click "Create database" if you haven\'t already.')
+        throw new Error(errorMessage)
       }
       const docRef = await addDoc(collection($db, 'bakeryItems'), {
         ...item,
         createdAt: new Date(),
         updatedAt: new Date()
       })
+      console.log('✅ Bakery item added successfully with ID:', docRef.id)
       return docRef.id
     } catch (error) {
-      console.error('Error adding bakery item:', error)
+      console.error('❌ Error adding bakery item:', error)
+      if (error.code === 'permission-denied') {
+        console.error('Permission denied. Check your Firestore security rules.')
+      } else if (error.code === 'unavailable') {
+        console.error('Firestore is unavailable. Check your internet connection.')
+      }
       throw error
     }
   }

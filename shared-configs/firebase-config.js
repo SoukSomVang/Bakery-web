@@ -35,9 +35,17 @@ try {
   db = getFirestore(app)
   console.log('✅ Firestore initialized successfully')
   console.log('📊 Database object:', db)
+  console.log('📊 Database app:', db.app)
+  console.log('📊 Database type:', db.type)
 } catch (error) {
   console.error('❌ Firestore initialization failed:', error)
+  console.error('Error details:', error.message)
+  console.error('Error code:', error.code)
   console.error('Please ensure Firestore is enabled in your Firebase Console')
+  console.error('Visit: https://console.firebase.google.com/project/bakery-house-f7e32/firestore')
+
+  // Set a flag so we know initialization failed
+  db = null
 }
 export { db }
 
