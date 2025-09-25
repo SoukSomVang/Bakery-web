@@ -1,0 +1,72 @@
+/* MDI Icon Alignment for Admin Pages */
+.btn-primary i,
+.btn-secondary i,
+.btn-danger i,
+button i {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 1rem !important;
+  height: 1rem !important;
+  flex-shrink: 0 !important;
+}
+
+/* Navigation link icons */
+.nav-link i {
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+/* Large display icons */
+.text-6xl i {
+  width: auto !important;
+  height: auto !important;
+}
+
+.text-5xl i {
+  width: auto !important;
+  height: auto !important;
+}
+
+.text-4xl i {
+  width: auto !important;
+  height: auto !important;
+}
+
+.text-3xl i {
+  width: auto !important;
+  height: auto !important;
+}
+
+.text-2xl i {
+  width: auto !important;
+  height: auto !important;
+}
+
+/* Pagination icons */
+.flex .space-x-2 button i,
+.space-x-1 button i {
+  width: 1rem !important;
+  height: 1rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+/* Button hover effects */
+button {
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  transform: none;
+}

@@ -8,9 +8,7 @@
             to="/bakeries" 
             class="text-gray-600 hover:text-gray-900 transition-colors duration-200"
           >
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-            </svg>
+            <i class="mdi mdi-arrow-left w-6 h-6"></i>
           </NuxtLink>
           <div>
             <h1 class="text-3xl font-bold text-gray-900">Edit Bakery</h1>

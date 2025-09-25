@@ -12,9 +12,7 @@
             to="/bakeries/create" 
             class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center gap-2"
           >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-            </svg>
+            <i class="mdi mdi-plus w-5 h-5"></i>
             Add New Bakery
           </NuxtLink>
         </div>
@@ -33,9 +31,7 @@
       <!-- Bakeries List -->
       <div v-else class="bg-white shadow-lg rounded-lg overflow-hidden">
         <div v-if="bakeryStore.bakeries.length === 0" class="text-center py-12">
-          <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-          </svg>
+          <i class="mdi mdi-store-plus text-6xl text-gray-300 mx-auto mb-4 block"></i>
           <h3 class="text-lg font-medium text-gray-900 mb-2">No Bakeries Found</h3>
           <p class="text-gray-500 mb-4">Get started by creating your first bakery location.</p>
           <NuxtLink 
@@ -80,9 +76,7 @@
                         v-else 
                         class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center"
                       >
-                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                        </svg>
+                        <i class="mdi mdi-store text-2xl text-blue-600"></i>
                       </div>
                     </div>
                     <div class="ml-4">
@@ -147,9 +141,7 @@
       <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
         <div class="mt-3 text-center">
           <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
-            <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L5.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-            </svg>
+            <i class="mdi mdi-alert-circle-outline h-6 w-6 text-red-600"></i>
           </div>
           <h3 class="text-lg font-medium text-gray-900 mt-2">Delete Bakery</h3>
           <div class="mt-2 px-7 py-3">

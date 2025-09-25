@@ -13,15 +13,13 @@
         <div class="flex items-center space-x-4">
           <select v-model="selectedType" class="form-input max-w-xs">
             <option value="">All Types</option>
-            <option v-for="type in bakeryTypes" :key="type" :value="type">{{ type }}</option>
+            <option v-for="typeName in bakeryTypeNames" :key="typeName" :value="typeName">{{ typeName }}</option>
           </select>
-          <button @click="clearFilter" class="btn-secondary">Clear Filter</button>
+          <button @click="clearFilter" class="btn-secondary">Clear</button>
         </div>
         
         <NuxtLink to="/bakery-items/create" class="btn-primary">
-          <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path>
-          </svg>
+          <i class="mdi mdi-plus w-4 h-4 mr-2"></i>
           Add New Item
         </NuxtLink>
       </div>
@@ -45,9 +43,7 @@
 
       <!-- No Items Message -->
       <div v-if="!loading && filteredItems.length === 0" class="text-center py-12">
-        <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2M4 13h2m6-6h4m-4 0v6"></path>
-        </svg>
+        <i class="mdi mdi-package-variant text-6xl text-gray-400 mx-auto mb-4 block"></i>
         <h3 class="text-lg font-medium text-gray-900 mb-2">No items found</h3>
         <p class="text-gray-500 mb-4">{{ selectedType ? `No ${selectedType.toLowerCase()} items found.` : 'No bakery items found.' }}</p>
         <NuxtLink to="/bakery-items/create" class="btn-primary">Add Your First Item</NuxtLink>
@@ -64,9 +60,7 @@
               class="w-full h-48 object-cover rounded-lg"
             />
             <div v-else class="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center">
-              <svg class="w-12 h-12 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
-              </svg>
+              <i class="mdi mdi-image-outline text-5xl text-gray-400"></i>
             </div>
           </div>
           
@@ -88,23 +82,18 @@
             <div class="flex items-center justify-between pt-3 border-t">
               <span class="text-xs text-gray-500">{{ formatDate(item.createdAt) }}</span>
               <div class="flex space-x-2">
-                <NuxtLink 
-                  :to="`/bakery-items/edit/${item.id}`" 
+                <NuxtLink
+                  :to="`/bakery-items/edit/${item.id}`"
                   class="text-blue-600 hover:text-blue-800"
                 >
-                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
-                  </svg>
+                  <i class="mdi mdi-pencil w-4 h-4"></i>
                 </NuxtLink>
-                <button 
+                <button
                   @click="deleteItem(item)"
                   class="text-red-600 hover:text-red-800"
                   :disabled="loading"
                 >
-                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" clip-rule="evenodd"></path>
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414L9.586 12l-3.293 3.293a1 1 0 101.414 1.414L10 13.414l2.293 2.293a1 1 0 001.414-1.414L11.414 12l2.293-2.293z" clip-rule="evenodd"></path>
-                  </svg>
+                  <i class="mdi mdi-delete w-4 h-4"></i>
                 </button>
               </div>
             </div>
@@ -139,9 +128,7 @@
                   : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600'
               ]"
             >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path>
-              </svg>
+              <i class="mdi mdi-chevron-double-left w-4 h-4"></i>
             </button>
 
             <!-- Previous -->
@@ -155,9 +142,7 @@
                   : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600'
               ]"
             >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-              </svg>
+              <i class="mdi mdi-chevron-left w-4 h-4"></i>
             </button>
 
             <!-- Page Numbers -->
@@ -194,9 +179,7 @@
                   : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600'
               ]"
             >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-              </svg>
+              <i class="mdi mdi-chevron-right w-4 h-4"></i>
             </button>
 
             <!-- Last Page -->
@@ -210,9 +193,7 @@
                   : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600'
               ]"
             >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path>
-              </svg>
+              <i class="mdi mdi-chevron-double-right w-4 h-4"></i>
             </button>
           </div>
 
@@ -259,6 +240,7 @@
 <script setup>
 const bakeryStore = useBakeryStore()
 const { bakeryItems, bakeryTypes, loading, error } = storeToRefs(bakeryStore)
+const bakeryTypeNames = computed(() => bakeryStore.bakeryTypeNames)
 const { convertGoogleDriveUrl } = useGoogleDrive()
 
 // State
@@ -400,5 +382,27 @@ button:hover {
 
 button:disabled {
   transform: none;
+}
+
+/* Ensure MDI icons are properly aligned in buttons */
+.btn-primary i,
+.btn-secondary i,
+button i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+/* Ensure consistent icon alignment in pagination */
+.flex .space-x-2 button i {
+  width: 1rem;
+  height: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 </style>

@@ -7,6 +7,9 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt'
   ],
+  css: [
+    '~/assets/css/admin-icons.css'
+  ],
   tailwindcss: {
     cssPath: '~/assets/css/main.css'
   },

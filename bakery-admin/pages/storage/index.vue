@@ -21,9 +21,7 @@
         </div>
         
         <NuxtLink to="/storage/create" class="btn-primary">
-          <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path>
-          </svg>
+          <i class="mdi mdi-plus w-4 h-4 mr-2"></i>
           Add Storage Record
         </NuxtLink>
       </div>
@@ -35,9 +33,7 @@
 
       <!-- Empty State -->
       <div v-if="!loading && filteredStorageData.length === 0" class="text-center py-12">
-        <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
-        </svg>
+        <i class="mdi mdi-database-outline text-6xl text-gray-400 mx-auto mb-4 block"></i>
         <h3 class="text-lg font-medium text-gray-900 mb-2">No storage records found</h3>
         <p class="text-gray-500 mb-4">{{ searchQuery ? 'No records match your search criteria.' : 'No storage records found.' }}</p>
         <NuxtLink to="/storage/create" class="btn-primary">Add Your First Record</NuxtLink>
@@ -95,19 +91,14 @@
                       :to="`/storage/edit/${record.id}`"
                       class="text-blue-600 hover:text-blue-800"
                     >
-                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
-                      </svg>
+                      <i class="mdi mdi-pencil w-4 h-4"></i>
                     </NuxtLink>
                     <button 
                       @click="deleteRecord(record)"
                       class="text-red-600 hover:text-red-800"
                       :disabled="loading"
                     >
-                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" clip-rule="evenodd"></path>
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414L9.586 12l-3.293 3.293a1 1 0 101.414 1.414L10 13.414l2.293 2.293a1 1 0 001.414-1.414L11.414 12l2.293-2.293z" clip-rule="evenodd"></path>
-                      </svg>
+                      <i class="mdi mdi-delete w-4 h-4"></i>
                     </button>
                   </div>
                 </td>
