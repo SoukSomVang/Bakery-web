@@ -8,41 +8,9 @@ import {
   orderBy,
   onSnapshot
 } from 'firebase/firestore'
-import { initializeApp } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore'
-
-// Initialize Firebase directly in the composable
-const firebaseConfig = {
-  apiKey: "AIzaSyA-mTuHs5LPPthtSn5jFOe0hOQVpBI1Sj0",
-  authDomain: "bakery-house-f7e32.firebaseapp.com",
-  projectId: "bakery-house-f7e32",
-  storageBucket: "bakery-house-f7e32.appspot.com",
-  messagingSenderId: "617557360769",
-  appId: "1:617557360769:web:b47a7378ac07ae9e940d80",
-  measurementId: "G-SN3VG7L5XX"
-}
-
-let firebaseApp = null
-let $db = null
-
-const initializeFirebase = () => {
-  if (!firebaseApp) {
-    try {
-      console.log('🔧 Initializing Firebase in public useFirebase...')
-      firebaseApp = initializeApp(firebaseConfig)
-      $db = getFirestore(firebaseApp)
-      console.log('✅ Firebase initialized successfully in public useFirebase')
-    } catch (error) {
-      console.error('❌ Firebase initialization failed in public useFirebase:', error)
-    }
-  }
-  return { $db }
-}
+import { db } from '../../shared-configs/firebase-config.js'
 
 export const useFirebase = () => {
-  // Initialize Firebase when composable is used
-  const { $db: db } = initializeFirebase()
-
   // Debug database initialization
   if (!db) {
     console.error('❌ Firebase Database is not initialized in public useFirebase')

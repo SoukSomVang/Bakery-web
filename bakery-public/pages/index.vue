@@ -317,22 +317,15 @@ import { useFirebase } from '~/composables/useFirebase'
 
 const router = useRouter();
 const { getBakeries } = useFirebase()
+const { getProductsByBakeryType } = useProducts()
 
 // Bakery locations data
 const bakeries = ref([])
 const bakeriesLoading = ref(true)
 
-// Product data
-const bakeryProducts = ref([
-  { id: 1, name: "Ham cheese croissant", image: "" },
-  { id: 2, name: "Chocolate two tone lava", image: "" },
-  { id: 3, name: "Almond croissant", image: "" },
-  { id: 4, name: "White chocolate Oreo", image: "" },
-  { id: 5, name: "Butter croissant", image: "" },
-  { id: 6, name: "Spinach and cheese croissant", image: "" },
-  { id: 7, name: "Cookie red velvet", image: "" },
-  { id: 8, name: "Cookie Chocolate", image: "" },
-]);
+// Product data from Firestore
+const bakeryProducts = ref([]);
+const productsLoading = ref(true);
 
 const cakeProducts = ref([
   { id: 9, name: "Cookie matcha", image: "" },
@@ -356,14 +349,20 @@ const additionalProducts = ref([
   { id: 24, name: "Eggs tart", image: "" },
 ]);
 
-// Load bakery locations
+// Load bakery locations and products
 onMounted(async () => {
   try {
+    // Load bakery locations
     bakeries.value = await getBakeries()
+
+    // Load bakery products
+    bakeryProducts.value = await getProductsByBakeryType('bakery')
+    console.log('✅ HOME: Bakery products loaded:', bakeryProducts.value.length)
   } catch (error) {
-    console.error('Failed to load bakeries:', error)
+    console.error('Failed to load data:', error)
   } finally {
     bakeriesLoading.value = false
+    productsLoading.value = false
   }
 })
 

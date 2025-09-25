@@ -24,7 +24,7 @@ export const useProducts = () => {
     try {
       const { db } = useClientFirebase()
       checkFirestore(db)
-      const querySnapshot = await getDocs(collection(db, 'products'))
+      const querySnapshot = await getDocs(collection(db, 'bakeryItems'))
       return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
     } catch (error) {
       console.error('PUBLIC: Error getting products:', error)
@@ -36,7 +36,7 @@ export const useProducts = () => {
     try {
       const { db } = useClientFirebase()
       checkFirestore(db)
-      const q = query(collection(db, 'products'), where('category', '==', category))
+      const q = query(collection(db, 'bakeryItems'), where('category', '==', category))
       const querySnapshot = await getDocs(q)
       return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
     } catch (error) {
@@ -49,7 +49,7 @@ export const useProducts = () => {
     try {
       const { db } = useClientFirebase()
       checkFirestore(db)
-      const q = query(collection(db, 'products'), where('type', '==', typeName))
+      const q = query(collection(db, 'bakeryItems'), where('type', '==', typeName))
       const querySnapshot = await getDocs(q)
       return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
     } catch (error) {
@@ -72,7 +72,7 @@ export const useProducts = () => {
       }
 
       // Then get products that match any of the bakery types
-      const q = query(collection(db, 'products'), where('type', 'in', bakeryTypes))
+      const q = query(collection(db, 'bakeryItems'), where('type', 'in', bakeryTypes))
       const querySnapshot = await getDocs(q)
       return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
     } catch (error) {
@@ -85,7 +85,7 @@ export const useProducts = () => {
     try {
       const { db } = useClientFirebase()
       checkFirestore(db)
-      const docRef = doc(db, 'products', id)
+      const docRef = doc(db, 'bakeryItems', id)
       const docSnap = await getDoc(docRef)
       if (docSnap.exists()) {
         return { id: docSnap.id, ...docSnap.data() }
@@ -133,7 +133,7 @@ export const useProducts = () => {
     try {
       const { db } = useClientFirebase()
       checkFirestore(db)
-      const q = query(collection(db, 'products'), where('featured', '==', true))
+      const q = query(collection(db, 'bakeryItems'), where('featured', '==', true))
       const querySnapshot = await getDocs(q)
       return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
     } catch (error) {
@@ -147,7 +147,7 @@ export const useProducts = () => {
     const { db } = useClientFirebase()
     if (!db) return () => {}
 
-    let q = collection(db, 'products')
+    let q = collection(db, 'bakeryItems')
 
     if (category) {
       q = query(q, where('category', '==', category))

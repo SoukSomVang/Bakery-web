@@ -50,11 +50,11 @@
         </div>
 
         <!-- Cakes Grid -->
-        <div v-if="!loading && !error" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div v-if="!loading && !error && filteredCakes.length > 0" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <div v-for="cake in paginatedCakes" :key="cake.id">
             <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow hover:shadow-xl">
               <img
-                :src="cake.image || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=200&fit=crop'"
+                :src="cake.imageUrl || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=200&fit=crop'"
                 :alt="cake.name"
                 class="w-full h-48 object-cover"
               />
@@ -69,71 +69,133 @@
           </div>
         </div>
 
+        <!-- Advanced Pagination -->
+        <div v-if="filteredCakes.length > 0 && !loading && !error" class="mt-12">
+          <!-- Main Pagination with Items Per Page -->
+          <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <!-- Pagination Info Display -->
+            <div class="text-sm text-gray-600">
+              Showing {{ startItem }}-{{ endItem }} of {{ filteredCakes.length }} cakes
+            </div>
+
+            <!-- Pagination Controls -->
+            <div class="flex items-center space-x-2">
+              <!-- First Page -->
+              <button
+                @click="goToFirstPage"
+                :disabled="currentPage === 1"
+                :class="[
+                  'px-3 py-2 rounded-lg font-medium transition-colors border',
+                  currentPage === 1
+                    ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                    : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50 hover:border-red-300 hover:text-red-600'
+                ]"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path>
+                </svg>
+              </button>
+
+              <!-- Previous -->
+              <button
+                @click="prevPage"
+                :disabled="currentPage === 1"
+                :class="[
+                  'px-3 py-2 rounded-lg font-medium transition-colors border',
+                  currentPage === 1
+                    ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                    : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50 hover:border-red-300 hover:text-red-600'
+                ]"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+              </button>
+
+              <!-- Page Numbers -->
+              <div class="flex space-x-1 mx-4">
+                <!-- Show ellipsis if needed -->
+                <span v-if="visiblePages[0] > 1" class="px-3 py-2 text-gray-500 font-medium">...</span>
+
+                <button
+                  v-for="page in visiblePages"
+                  :key="page"
+                  @click="goToPage(page)"
+                  :class="[
+                    'min-w-[44px] px-3 py-2 rounded-lg font-medium transition-colors border text-center',
+                    currentPage === page
+                      ? 'bg-red-600 text-white border-red-600 shadow-md'
+                      : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50 hover:border-red-300 hover:text-red-600'
+                  ]"
+                >
+                  {{ page }}
+                </button>
+
+                <!-- Show ellipsis if needed -->
+                <span v-if="visiblePages[visiblePages.length - 1] < totalPages" class="px-3 py-2 text-gray-500 font-medium">...</span>
+              </div>
+
+              <!-- Next -->
+              <button
+                @click="nextPage"
+                :disabled="currentPage === totalPages"
+                :class="[
+                  'px-3 py-2 rounded-lg font-medium transition-colors border',
+                  currentPage === totalPages
+                    ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                    : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50 hover:border-red-300 hover:text-red-600'
+                ]"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </button>
+
+              <!-- Last Page -->
+              <button
+                @click="goToLastPage"
+                :disabled="currentPage === totalPages"
+                :class="[
+                  'px-3 py-2 rounded-lg font-medium transition-colors border',
+                  currentPage === totalPages
+                    ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                    : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50 hover:border-red-300 hover:text-red-600'
+                ]"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Items Per Page Selector -->
+            <div class="flex items-center gap-2">
+              <span class="text-sm text-gray-600">Cakes per page:</span>
+              <select
+                v-model="itemsPerPage"
+                @change="changeItemsPerPage(itemsPerPage)"
+                class="border border-gray-300 rounded px-3 py-1 text-sm focus:ring-2 focus:ring-red-500 focus:border-red-500"
+              >
+                <option v-for="option in itemsPerPageOptions" :key="option" :value="option">
+                  {{ option }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <!-- No Cakes Message -->
-        <div v-if="!loading && !error && filteredCakes.length === 0" class="text-center py-20">
+        <div v-else-if="!loading && !error && filteredCakes.length === 0" class="text-center py-20">
           <div class="text-gray-600 text-xl">No cakes found.</div>
           <p class="text-gray-500 mt-2">{{ searchQuery ? 'Try adjusting your search terms.' : 'Check back later for new cake varieties.' }}</p>
         </div>
       </div>
     </section>
 
-    <!-- All Products Grid -->
-    <section class="py-16 bg-gray-50">
-      <div class="container mx-auto px-4">
-
-        <!-- Pagination -->
-        <div v-if="filteredCakes.length > itemsPerPage && !loading && !error" class="flex justify-center items-center space-x-4">
-          <button
-            @click="prevPage"
-            :disabled="currentPage === 1"
-            :class="[
-              'px-4 py-2 rounded-lg font-semibold transition-colors',
-              currentPage === 1
-                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                : 'bg-red-900 text-white hover:bg-red-950'
-            ]"
-          >
-            Previous
-          </button>
-
-          <div class="flex space-x-2">
-            <button
-              v-for="page in totalPages"
-              :key="page"
-              @click="currentPage = page"
-              :class="[
-                'px-3 py-2 rounded-lg font-semibold transition-colors',
-                currentPage === page
-                  ? 'bg-red-900 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-100'
-              ]"
-            >
-              {{ page }}
-            </button>
-          </div>
-
-          <button
-            @click="nextPage"
-            :disabled="currentPage === totalPages"
-            :class="[
-              'px-4 py-2 rounded-lg font-semibold transition-colors',
-              currentPage === totalPages
-                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                : 'bg-red-900 text-white hover:bg-red-950'
-            ]"
-          >
-            Next
-          </button>
-        </div>
-      </div>
-    </section>
   </div>
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
-
-const router = useRouter();
 const { getProductsByBakeryType } = useProducts();
 
 // Loading and error states
@@ -145,7 +207,8 @@ const searchQuery = ref('');
 
 // Pagination
 const currentPage = ref(1);
-const itemsPerPage = 8;
+const itemsPerPage = ref(8);
+const itemsPerPageOptions = [8, 16, 24];
 
 // Data
 const allCakes = ref([]);
@@ -185,13 +248,42 @@ const filteredCakes = computed(() => {
 
 // Computed properties for pagination
 const totalPages = computed(() => {
-  return Math.ceil(filteredCakes.value.length / itemsPerPage);
+  return Math.ceil(filteredCakes.value.length / itemsPerPage.value);
 });
 
 const paginatedCakes = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
   return filteredCakes.value.slice(start, end);
+});
+
+// Computed for pagination display info
+const startItem = computed(() => {
+  return filteredCakes.value.length > 0 ? (currentPage.value - 1) * itemsPerPage.value + 1 : 0;
+});
+
+const endItem = computed(() => {
+  const end = currentPage.value * itemsPerPage.value;
+  return Math.min(end, filteredCakes.value.length);
+});
+
+// Generate visible page numbers for pagination
+const visiblePages = computed(() => {
+  const total = totalPages.value;
+  const current = currentPage.value;
+  const delta = 2;
+
+  let start = Math.max(1, current - delta);
+  let end = Math.min(total, current + delta);
+
+  if (current <= delta) {
+    end = Math.min(total, 2 * delta + 1);
+  }
+  if (current + delta >= total) {
+    start = Math.max(1, total - 2 * delta);
+  }
+
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 });
 
 // Watch for search changes and reset pagination
@@ -212,9 +304,23 @@ const prevPage = () => {
   }
 };
 
-// Methods
-const navigateToCategory = (category) => {
-  router.push(`/products/${category}`);
+const goToPage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+  }
+};
+
+const goToFirstPage = () => {
+  currentPage.value = 1;
+};
+
+const goToLastPage = () => {
+  currentPage.value = totalPages.value;
+};
+
+const changeItemsPerPage = (newItemsPerPage) => {
+  itemsPerPage.value = newItemsPerPage;
+  currentPage.value = 1;
 };
 
 // Fetch data on component mount
