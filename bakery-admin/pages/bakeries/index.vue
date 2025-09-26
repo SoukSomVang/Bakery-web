@@ -29,7 +29,7 @@
       </div>
 
       <!-- Bakeries List -->
-      <div v-else class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <div v-else class="rounded-lg overflow-hidden">
         <div v-if="bakeryStore.bakeries.length === 0" class="text-center py-12">
           <i class="mdi mdi-store-plus text-6xl text-gray-300 mx-auto mb-4 block"></i>
           <h3 class="text-lg font-medium text-gray-900 mb-2">No Bakeries Found</h3>

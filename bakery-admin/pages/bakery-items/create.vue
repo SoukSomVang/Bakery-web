@@ -10,9 +10,9 @@
         <form @submit.prevent="submitForm" class="space-y-6">
           <!-- Basic Information -->
           <div class="card">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Basic Information</h3>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Item Information</h3>
+
+            <div class="space-y-4">
               <div>
                 <label class="form-label">Item Name *</label>
                 <input
@@ -23,52 +23,43 @@
                   required
                 />
               </div>
-              
-              <div>
-                <label class="form-label">Type *</label>
-                <select v-model="form.type" class="form-input" required>
-                  <option value="">Select a type</option>
-                  <option v-for="type in bakeryTypeNames" :key="type" :value="type">{{ type }}</option>
-                </select>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="form-label">Type *</label>
+                  <select v-model="form.type" class="form-input" required>
+                    <option value="">Select a type</option>
+                    <option v-for="type in bakeryTypeNames" :key="type" :value="type">{{ type }}</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="form-label">Price *</label>
+                  <input
+                    v-model.number="form.price"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    class="form-input"
+                    placeholder="0.00"
+                    required
+                  />
+                </div>
               </div>
-              
+
               <div>
-                <label class="form-label">Price *</label>
-                <input
-                  v-model.number="form.price"
-                  type="number"
-                  step="0.01"
-                  min="0"
+                <label class="form-label">Description</label>
+                <textarea
+                  v-model="form.description"
                   class="form-input"
-                  placeholder="0.00"
-                  required
-                />
+                  rows="4"
+                  placeholder="Describe your bakery item..."
+                ></textarea>
               </div>
-              
-              <div>
-                <label class="form-label">Stock Quantity</label>
-                <input
-                  v-model.number="form.stock"
-                  type="number"
-                  min="0"
-                  class="form-input"
-                  placeholder="0"
-                />
-              </div>
-            </div>
-            
-            <div class="mt-4">
-              <label class="form-label">Description</label>
-              <textarea
-                v-model="form.description"
-                class="form-input"
-                rows="3"
-                placeholder="Describe your bakery item..."
-              ></textarea>
             </div>
           </div>
 
-          <!-- Image URL -->
+          <!-- Product Image -->
           <div class="card">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Product Image</h3>
 
@@ -141,70 +132,6 @@
               <div v-if="form.imageUrl && imageError" class="mt-2">
                 <p class="text-sm text-red-600">⚠️ Unable to load image. Please check the URL.</p>
               </div>
-            </div>
-          </div>
-
-          <!-- Additional Details -->
-          <div class="card">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Additional Details</h3>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label class="form-label">Ingredients</label>
-                <textarea
-                  v-model="form.ingredients"
-                  class="form-input"
-                  rows="3"
-                  placeholder="List main ingredients..."
-                ></textarea>
-              </div>
-              
-              <div>
-                <label class="form-label">Allergens</label>
-                <textarea
-                  v-model="form.allergens"
-                  class="form-input"
-                  rows="3"
-                  placeholder="List allergens (nuts, gluten, dairy, etc.)..."
-                ></textarea>
-              </div>
-              
-              <div>
-                <label class="form-label">Preparation Time (minutes)</label>
-                <input
-                  v-model.number="form.preparationTime"
-                  type="number"
-                  min="0"
-                  class="form-input"
-                  placeholder="30"
-                />
-              </div>
-              
-              <div>
-                <label class="form-label">Shelf Life (days)</label>
-                <input
-                  v-model.number="form.shelfLife"
-                  type="number"
-                  min="0"
-                  class="form-input"
-                  placeholder="3"
-                />
-              </div>
-            </div>
-            
-            <div class="mt-4 flex items-center space-x-6">
-              <label class="flex items-center">
-                <input v-model="form.isVegan" type="checkbox" class="mr-2" />
-                <span class="text-sm">Vegan</span>
-              </label>
-              <label class="flex items-center">
-                <input v-model="form.isGlutenFree" type="checkbox" class="mr-2" />
-                <span class="text-sm">Gluten Free</span>
-              </label>
-              <label class="flex items-center">
-                <input v-model="form.isAvailable" type="checkbox" class="mr-2" />
-                <span class="text-sm">Available</span>
-              </label>
             </div>
           </div>
 

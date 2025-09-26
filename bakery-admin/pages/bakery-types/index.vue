@@ -178,21 +178,7 @@ const confirmDelete = async () => {
 }
 
 const formatDate = (date) => {
-  if (!date) return 'N/A'
-
-  // Handle Firebase Timestamp objects
-  if (date && typeof date === 'object' && date.toDate) {
-    return date.toDate().toLocaleDateString()
-  }
-
-  // Handle Firebase Timestamp with seconds and nanoseconds
-  if (date && typeof date === 'object' && date.seconds) {
-    return new Date(date.seconds * 1000).toLocaleDateString()
-  }
-
-  // Handle regular date strings/numbers
-  const parsedDate = new Date(date)
-  return isNaN(parsedDate.getTime()) ? `Invalid: ${JSON.stringify(date)}` : parsedDate.toLocaleDateString()
+  return new Date(date).toLocaleDateString()
 }
 
 // Load data on mount
