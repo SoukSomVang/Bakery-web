@@ -56,7 +56,7 @@
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="record in filteredStorageData" :key="record.id" class="hover:bg-gray-50">
+              <tr v-for="record in paginatedStorageData" :key="record.id" class="hover:bg-gray-50">
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div>
                     <div class="text-sm font-medium text-gray-900">{{ record.itemName }}</div>
@@ -108,6 +108,22 @@
         </div>
       </div>
 
+      <!-- Pagination -->
+      <AdminPagination
+        v-if="!loading"
+        :current-page="currentPage"
+        :total-items="filteredStorageData.length"
+        :items-per-page="itemsPerPage"
+        :items-per-page-options="itemsPerPageOptions"
+        item-label="storage records"
+        @go-to-first-page="goToFirstPage"
+        @prev-page="prevPage"
+        @next-page="nextPage"
+        @go-to-last-page="goToLastPage"
+        @go-to-page="goToPage"
+        @change-items-per-page="changeItemsPerPage"
+      />
+
       <!-- Loading State -->
       <div v-if="loading" class="flex justify-center py-12">
         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -141,12 +157,17 @@ const searchQuery = ref('')
 const showDeleteModal = ref(false)
 const recordToDelete = ref(null)
 
+// Pagination
+const currentPage = ref(1)
+const itemsPerPage = ref(10)
+const itemsPerPageOptions = [10, 20, 50]
+
 // Computed
 const filteredStorageData = computed(() => {
   if (!searchQuery.value) return storageData.value
-  
+
   const query = searchQuery.value.toLowerCase()
-  return storageData.value.filter(record => 
+  return storageData.value.filter(record =>
     record.itemName.toLowerCase().includes(query) ||
     record.type.toLowerCase().includes(query) ||
     record.location.toLowerCase().includes(query) ||
@@ -154,10 +175,57 @@ const filteredStorageData = computed(() => {
   )
 })
 
+const paginatedStorageData = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value
+  const end = start + itemsPerPage.value
+  return filteredStorageData.value.slice(start, end)
+})
+
 // Methods
 const clearSearch = () => {
   searchQuery.value = ''
+  currentPage.value = 1
 }
+
+// Pagination methods
+const nextPage = () => {
+  const totalPages = Math.ceil(filteredStorageData.value.length / itemsPerPage.value)
+  if (currentPage.value < totalPages) {
+    currentPage.value++
+  }
+}
+
+const prevPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value--
+  }
+}
+
+const goToPage = (page) => {
+  const totalPages = Math.ceil(filteredStorageData.value.length / itemsPerPage.value)
+  if (page >= 1 && page <= totalPages) {
+    currentPage.value = page
+  }
+}
+
+const goToFirstPage = () => {
+  currentPage.value = 1
+}
+
+const goToLastPage = () => {
+  const totalPages = Math.ceil(filteredStorageData.value.length / itemsPerPage.value)
+  currentPage.value = totalPages
+}
+
+const changeItemsPerPage = (newItemsPerPage) => {
+  itemsPerPage.value = newItemsPerPage
+  currentPage.value = 1
+}
+
+// Watch for search changes and reset pagination
+watch(searchQuery, () => {
+  currentPage.value = 1
+})
 
 const getStatusClass = (status) => {
   const baseClass = 'px-2 py-1 text-xs rounded-full'

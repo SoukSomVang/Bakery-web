@@ -11,6 +11,12 @@
       <!-- Filter and Actions -->
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div class="flex items-center space-x-4">
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search by name..."
+            class="form-input max-w-xs"
+          />
           <select v-model="selectedType" class="form-input max-w-xs">
             <option value="">All Types</option>
             <option v-for="typeName in bakeryTypeNames" :key="typeName" :value="typeName">{{ typeName }}</option>
@@ -18,10 +24,16 @@
           <button @click="clearFilter" class="btn-secondary">Clear</button>
         </div>
         
-        <NuxtLink to="/bakery-items/create" class="btn-primary">
-          <i class="mdi mdi-plus w-4 h-4 mr-2"></i>
-          Add New Item
-        </NuxtLink>
+        <div class="flex space-x-2">
+          <NuxtLink to="/bakery-items/manual" class="btn-secondary">
+            <i class="mdi mdi-table w-4 h-4 mr-2"></i>
+            Manual View
+          </NuxtLink>
+          <NuxtLink to="/bakery-items/create" class="btn-primary">
+            <i class="mdi mdi-plus w-4 h-4 mr-2"></i>
+            Add New Item
+          </NuxtLink>
+        </div>
       </div>
 
       <!-- Error Message -->
@@ -101,117 +113,21 @@
         </div>
       </div>
 
-      <!-- Advanced Pagination -->
-      <div v-if="filteredItems.length > itemsPerPage && !loading" class="mt-8">
-        <!-- Main Pagination with Items Per Page -->
-        <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-          <!-- Pagination Info Display -->
-          <div class="text-sm text-gray-600">
-            <span v-if="selectedType">
-              Showing {{ startItem }}-{{ endItem }} of {{ filteredItems.length }} {{ selectedType.toLowerCase() }} items
-            </span>
-            <span v-else>
-              Showing {{ startItem }}-{{ endItem }} of {{ filteredItems.length }} bakery items
-            </span>
-          </div>
-
-          <!-- Pagination Controls -->
-          <div class="flex items-center space-x-2">
-            <!-- First Page -->
-            <button
-              @click="goToFirstPage"
-              :disabled="currentPage === 1"
-              :class="[
-                'px-3 py-2 rounded-lg font-medium transition-colors border',
-                currentPage === 1
-                  ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600'
-              ]"
-            >
-              <i class="mdi mdi-chevron-double-left w-4 h-4"></i>
-            </button>
-
-            <!-- Previous -->
-            <button
-              @click="prevPage"
-              :disabled="currentPage === 1"
-              :class="[
-                'px-3 py-2 rounded-lg font-medium transition-colors border',
-                currentPage === 1
-                  ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600'
-              ]"
-            >
-              <i class="mdi mdi-chevron-left w-4 h-4"></i>
-            </button>
-
-            <!-- Page Numbers -->
-            <div class="flex space-x-1 mx-4">
-              <!-- Show ellipsis if needed -->
-              <span v-if="visiblePages[0] > 1" class="px-3 py-2 text-gray-500 font-medium">...</span>
-
-              <button
-                v-for="page in visiblePages"
-                :key="page"
-                @click="goToPage(page)"
-                :class="[
-                  'min-w-[44px] px-3 py-2 rounded-lg font-medium transition-colors border text-center',
-                  currentPage === page
-                    ? 'bg-blue-600 text-white border-blue-600 shadow-md'
-                    : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600'
-                ]"
-              >
-                {{ page }}
-              </button>
-
-              <!-- Show ellipsis if needed -->
-              <span v-if="visiblePages[visiblePages.length - 1] < totalPages" class="px-3 py-2 text-gray-500 font-medium">...</span>
-            </div>
-
-            <!-- Next -->
-            <button
-              @click="nextPage"
-              :disabled="currentPage === totalPages"
-              :class="[
-                'px-3 py-2 rounded-lg font-medium transition-colors border',
-                currentPage === totalPages
-                  ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600'
-              ]"
-            >
-              <i class="mdi mdi-chevron-right w-4 h-4"></i>
-            </button>
-
-            <!-- Last Page -->
-            <button
-              @click="goToLastPage"
-              :disabled="currentPage === totalPages"
-              :class="[
-                'px-3 py-2 rounded-lg font-medium transition-colors border',
-                currentPage === totalPages
-                  ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600'
-              ]"
-            >
-              <i class="mdi mdi-chevron-double-right w-4 h-4"></i>
-            </button>
-          </div>
-
-          <!-- Items Per Page Selector -->
-          <div class="flex items-center gap-2">
-            <span class="text-sm text-gray-600">Items per page:</span>
-            <select
-              v-model="itemsPerPage"
-              @change="changeItemsPerPage(itemsPerPage)"
-              class="border border-gray-300 rounded px-3 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option v-for="option in itemsPerPageOptions" :key="option" :value="option">
-                {{ option }}
-              </option>
-            </select>
-          </div>
-        </div>
-      </div>
+      <!-- Pagination -->
+      <AdminPagination
+        v-if="!loading"
+        :current-page="currentPage"
+        :total-items="filteredItems.length"
+        :items-per-page="itemsPerPage"
+        :items-per-page-options="itemsPerPageOptions"
+        :item-label="selectedType ? `${selectedType.toLowerCase()} items` : 'bakery items'"
+        @go-to-first-page="goToFirstPage"
+        @prev-page="prevPage"
+        @next-page="nextPage"
+        @go-to-last-page="goToLastPage"
+        @go-to-page="goToPage"
+        @change-items-per-page="changeItemsPerPage"
+      />
 
       <!-- Loading State -->
       <div v-if="loading" class="flex justify-center py-12">
@@ -244,19 +160,34 @@ const bakeryTypeNames = computed(() => bakeryStore.bakeryTypeNames)
 const { convertGoogleDriveUrl } = useGoogleDrive()
 
 // State
+const searchQuery = ref('')
 const selectedType = ref('')
 const showDeleteModal = ref(false)
 const itemToDelete = ref(null)
 
 // Pagination
 const currentPage = ref(1)
-const itemsPerPage = ref(12)
-const itemsPerPageOptions = [12, 24, 48]
+const itemsPerPage = ref(10)
+const itemsPerPageOptions = [10, 20, 50]
 
 // Computed
 const filteredItems = computed(() => {
-  if (!selectedType.value) return bakeryItems.value
-  return bakeryItems.value.filter(item => item.type === selectedType.value)
+  let items = bakeryItems.value
+
+  // Filter by search query (name)
+  if (searchQuery.value) {
+    const query = searchQuery.value.toLowerCase()
+    items = items.filter(item =>
+      item.name.toLowerCase().includes(query)
+    )
+  }
+
+  // Filter by type
+  if (selectedType.value) {
+    items = items.filter(item => item.type === selectedType.value)
+  }
+
+  return items
 })
 
 // Pagination computed properties
@@ -299,9 +230,15 @@ const visiblePages = computed(() => {
 
 // Methods
 const clearFilter = () => {
+  searchQuery.value = ''
   selectedType.value = ''
   currentPage.value = 1
 }
+
+// Watch for search changes and reset pagination
+watch(searchQuery, () => {
+  currentPage.value = 1
+})
 
 // Pagination methods
 const nextPage = () => {

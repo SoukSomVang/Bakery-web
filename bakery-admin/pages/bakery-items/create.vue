@@ -187,6 +187,7 @@
 
               <!-- Reheating Information -->
               <div>
+                <label class="form-label mb-3 block">Reheat Methods</label>
                 <div class="flex items-center mb-4">
                   <input v-model="form.can_reheat" type="checkbox" class="mr-2" id="can_reheat" />
                   <label for="can_reheat" class="form-label mb-0">Can be reheated</label>

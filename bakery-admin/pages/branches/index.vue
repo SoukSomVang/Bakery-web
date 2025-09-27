@@ -41,7 +41,7 @@
 
       <!-- Branches Grid -->
       <div v-else-if="!loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div v-for="branch in filteredBranches" :key="branch.id" class="card hover:shadow-lg transition-shadow">
+        <div v-for="branch in paginatedBranches" :key="branch.id" class="card hover:shadow-lg transition-shadow">
           <!-- Branch Header -->
           <div class="flex items-start justify-between mb-4">
             <div class="flex items-center space-x-3">
@@ -109,6 +109,22 @@
         </div>
       </div>
 
+      <!-- Pagination -->
+      <AdminPagination
+        v-if="!loading"
+        :current-page="currentPage"
+        :total-items="filteredBranches.length"
+        :items-per-page="itemsPerPage"
+        :items-per-page-options="itemsPerPageOptions"
+        item-label="branches"
+        @go-to-first-page="goToFirstPage"
+        @prev-page="prevPage"
+        @next-page="nextPage"
+        @go-to-last-page="goToLastPage"
+        @go-to-page="goToPage"
+        @change-items-per-page="changeItemsPerPage"
+      />
+
       <!-- Loading State -->
       <div v-if="loading" class="flex justify-center py-12">
         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -142,12 +158,17 @@ const searchQuery = ref('')
 const showDeleteModal = ref(false)
 const branchToDelete = ref(null)
 
+// Pagination
+const currentPage = ref(1)
+const itemsPerPage = ref(10)
+const itemsPerPageOptions = [10, 20, 50]
+
 // Computed
 const filteredBranches = computed(() => {
   if (!searchQuery.value) return branches.value
-  
+
   const query = searchQuery.value.toLowerCase()
-  return branches.value.filter(branch => 
+  return branches.value.filter(branch =>
     branch.name.toLowerCase().includes(query) ||
     branch.address?.toLowerCase().includes(query) ||
     branch.city?.toLowerCase().includes(query) ||
@@ -155,10 +176,57 @@ const filteredBranches = computed(() => {
   )
 })
 
+const paginatedBranches = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value
+  const end = start + itemsPerPage.value
+  return filteredBranches.value.slice(start, end)
+})
+
 // Methods
 const clearSearch = () => {
   searchQuery.value = ''
+  currentPage.value = 1
 }
+
+// Pagination methods
+const nextPage = () => {
+  const totalPages = Math.ceil(filteredBranches.value.length / itemsPerPage.value)
+  if (currentPage.value < totalPages) {
+    currentPage.value++
+  }
+}
+
+const prevPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value--
+  }
+}
+
+const goToPage = (page) => {
+  const totalPages = Math.ceil(filteredBranches.value.length / itemsPerPage.value)
+  if (page >= 1 && page <= totalPages) {
+    currentPage.value = page
+  }
+}
+
+const goToFirstPage = () => {
+  currentPage.value = 1
+}
+
+const goToLastPage = () => {
+  const totalPages = Math.ceil(filteredBranches.value.length / itemsPerPage.value)
+  currentPage.value = totalPages
+}
+
+const changeItemsPerPage = (newItemsPerPage) => {
+  itemsPerPage.value = newItemsPerPage
+  currentPage.value = 1
+}
+
+// Watch for search changes and reset pagination
+watch(searchQuery, () => {
+  currentPage.value = 1
+})
 
 const getStatusClass = (status) => {
   const baseClass = 'px-2 py-1 text-xs rounded-full'

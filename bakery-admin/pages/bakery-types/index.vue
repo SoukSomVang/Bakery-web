@@ -8,12 +8,24 @@
     />
 
     <div class="p-6">
-      <!-- Add New Type -->
-      <div class="mb-6 flex justify-end">
-        <button @click="showAddModal = true" class="btn-primary">
-          <i class="mdi mdi-plus w-4 h-4 mr-2"></i>
-          Add New Type
-        </button>
+      <!-- Filter and Actions -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <div class="flex items-center space-x-4">
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search types..."
+            class="form-input max-w-xs"
+          />
+          <button @click="clearSearch" class="btn-secondary">Clear</button>
+        </div>
+
+        <div>
+          <button @click="showAddModal = true" class="btn-primary">
+            <i class="mdi mdi-plus w-4 h-4 mr-2"></i>
+            Add New Type
+          </button>
+        </div>
       </div>
 
       <!-- Error Message -->
@@ -21,17 +33,17 @@
         {{ error }}
       </div>
 
-      <!-- Types List -->
-      <div v-if="!loading && bakeryTypes.length === 0" class="text-center py-12">
+      <!-- Empty State -->
+      <div v-if="!loading && filteredTypes.length === 0" class="text-center py-12">
         <i class="mdi mdi-tag-multiple text-6xl text-gray-400 mx-auto mb-4 block"></i>
         <h3 class="text-lg font-medium text-gray-900 mb-2">No types found</h3>
-        <p class="text-gray-500 mb-4">Create your first bakery type to get started.</p>
+        <p class="text-gray-500 mb-4">{{ searchQuery ? 'No types match your search criteria.' : 'Create your first bakery type to get started.' }}</p>
         <button @click="showAddModal = true" class="btn-primary">Add Your First Type</button>
       </div>
 
       <!-- Types Grid -->
-      <div v-else-if="!loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <div v-for="type in bakeryTypes" :key="type.id" class="card hover:shadow-lg transition-shadow">
+      <div v-else-if="!loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+        <div v-for="type in paginatedTypes" :key="type.id" class="card hover:shadow-lg transition-shadow">
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold text-gray-900">{{ type.name }}</h3>
             <div class="flex space-x-2">
@@ -57,6 +69,22 @@
           </div>
         </div>
       </div>
+
+      <!-- Pagination -->
+      <AdminPagination
+        v-if="!loading"
+        :current-page="currentPage"
+        :total-items="filteredTypes.length"
+        :items-per-page="itemsPerPage"
+        :items-per-page-options="itemsPerPageOptions"
+        item-label="types"
+        @go-to-first-page="goToFirstPage"
+        @prev-page="prevPage"
+        @next-page="nextPage"
+        @go-to-last-page="goToLastPage"
+        @go-to-page="goToPage"
+        @change-items-per-page="changeItemsPerPage"
+      />
 
       <!-- Loading State -->
       <div v-if="loading" class="flex justify-center py-12">
@@ -116,17 +144,84 @@ const bakeryStore = useBakeryStore()
 const { bakeryTypes, loading, error } = storeToRefs(bakeryStore)
 
 // State
+const searchQuery = ref('')
 const showAddModal = ref(false)
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
 const typeToDelete = ref(null)
 const editingType = ref(null)
 
+// Pagination
+const currentPage = ref(1)
+const itemsPerPage = ref(10)
+const itemsPerPageOptions = [10, 20, 50]
+
 const typeForm = ref({
   name: ''
 })
 
+// Computed
+const filteredTypes = computed(() => {
+  if (!searchQuery.value) return bakeryTypes.value
+
+  const query = searchQuery.value.toLowerCase()
+  return bakeryTypes.value.filter(type =>
+    type.name.toLowerCase().includes(query)
+  )
+})
+
+const paginatedTypes = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value
+  const end = start + itemsPerPage.value
+  return filteredTypes.value.slice(start, end)
+})
+
 // Methods
+const clearSearch = () => {
+  searchQuery.value = ''
+  currentPage.value = 1
+}
+
+// Pagination methods
+const nextPage = () => {
+  const totalPages = Math.ceil(filteredTypes.value.length / itemsPerPage.value)
+  if (currentPage.value < totalPages) {
+    currentPage.value++
+  }
+}
+
+const prevPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value--
+  }
+}
+
+const goToPage = (page) => {
+  const totalPages = Math.ceil(filteredTypes.value.length / itemsPerPage.value)
+  if (page >= 1 && page <= totalPages) {
+    currentPage.value = page
+  }
+}
+
+const goToFirstPage = () => {
+  currentPage.value = 1
+}
+
+const goToLastPage = () => {
+  const totalPages = Math.ceil(filteredTypes.value.length / itemsPerPage.value)
+  currentPage.value = totalPages
+}
+
+const changeItemsPerPage = (newItemsPerPage) => {
+  itemsPerPage.value = newItemsPerPage
+  currentPage.value = 1
+}
+
+// Watch for search changes and reset pagination
+watch(searchQuery, () => {
+  currentPage.value = 1
+})
+
 const refreshData = () => {
   bakeryStore.fetchBakeryTypes()
 }
