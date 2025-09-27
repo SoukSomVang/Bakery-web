@@ -4,6 +4,45 @@ service cloud.firestore {
     // Admin Panel Collections - Allow all operations for now (secure in production)
     match /bakeryItems/{document} {
       allow read, write: if true; // Change to require auth in production
+
+      // Validation for bakery items with new storage/handling fields
+      allow create, update: if validateBakeryItem(request.resource.data);
+    }
+
+    // Validation function for bakery items
+    function validateBakeryItem(data) {
+      return data.keys().hasAll(['name', 'type', 'price', 'shelf_life_days',
+                                'can_reheat', 'storage_methods', 'display_methods',
+                                'avoid_sunlight', 'avoid_moisture', 'temperature_sensitive']) &&
+             data.name is string && data.name.size() > 0 &&
+             data.type is string && data.type.size() > 0 &&
+             data.price is number && data.price >= 0 &&
+             data.shelf_life_days is number && data.shelf_life_days > 0 &&
+             data.can_reheat is bool &&
+             data.storage_methods is list && data.storage_methods.size() > 0 &&
+             data.display_methods is list && data.display_methods.size() > 0 &&
+             data.avoid_sunlight is bool &&
+             data.avoid_moisture is bool &&
+             data.temperature_sensitive is bool &&
+             // Validate storage method values
+             data.storage_methods.hasOnly(["store_at_cold_temperature", "store_in_box",
+                                          "keep_airtight", "store_in_refrigerator",
+                                          "store_in_cake_display_case"]) &&
+             // Validate display method values
+             data.display_methods.hasOnly(["arrange_in_bakery_display_case",
+                                          "arrange_in_glass_dome",
+                                          "arrange_in_cake_display_case"]) &&
+             // Reheat fields validation - only required if can_reheat is true
+             (!data.can_reheat || (
+               data.reheat_temperature is number &&
+               data.reheat_temperature >= 100 &&
+               data.reheat_temperature <= 200 &&
+               // Time fields are optional - can be null or numbers
+               (data.reheat_time_min == null || (data.reheat_time_min is number && data.reheat_time_min > 0)) &&
+               (data.reheat_time_max == null || (data.reheat_time_max is number && data.reheat_time_max > 0)) &&
+               // If both are provided, max should be >= min
+               (data.reheat_time_min == null || data.reheat_time_max == null || data.reheat_time_max >= data.reheat_time_min)
+             ));
     }
     
     match /storageData/{document} {

@@ -145,22 +145,55 @@
         <h2 class="text-4xl font-bold mb-8 text-gray-800 underline">
           Branches
         </h2>
-        <div class="space-y-4 max-w-md mx-auto">
-          <div class="text-lg font-medium text-gray-700 underline">
-            Treekoff NorngNieng
+
+        <!-- Loading State -->
+        <div v-if="branchesLoading" class="text-center">
+          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600 mx-auto"></div>
+        </div>
+
+        <!-- Branches List -->
+        <div v-else-if="branches.length > 0" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div
+            v-for="branch in branches"
+            :key="branch.id"
+            class="text-center"
+          >
+            <h3
+              @click="handleLocationClick(branch)"
+              class="text-lg font-medium text-red-700 underline cursor-pointer hover:text-red-900 transition-colors"
+            >
+              {{ branch.name }}
+            </h3>
           </div>
-          <div class="text-lg font-medium text-gray-700 underline">
-            Treekoff Dongpalan
-          </div>
-          <div class="text-lg font-medium text-gray-700 underline">
-            Treekoff Wattainoy
-          </div>
-          <div class="text-lg font-medium text-gray-700 underline">
-            Treekoff Vatchan
-          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div v-else class="text-center py-8">
+          <p class="text-gray-500">No branches available at the moment.</p>
         </div>
       </div>
     </section>
+
+    <!-- Location Dialog -->
+    <div v-if="showLocationDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+        <div class="text-center">
+          <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+          </svg>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Location Not Available</h3>
+          <p class="text-gray-600 mb-6">
+            Branch does not have location data
+          </p>
+          <button
+            @click="closeDialog"
+            class="bg-red-900 hover:bg-red-950 text-white px-6 py-2 rounded-md font-semibold transition-colors"
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- Call to Action Section -->
     <section class="py-16 bg-gradient-to-r from-red-900 to-red-700 text-white">
@@ -188,6 +221,45 @@
 </template>
 
 <script setup>
+import { useFirebase } from '~/composables/useFirebase'
+
+const { getBranches } = useFirebase()
+
+// Branch locations data
+const branches = ref([])
+const branchesLoading = ref(true)
+const showLocationDialog = ref(false)
+const selectedBranch = ref(null)
+
+// Handle location button click
+const handleLocationClick = (branch) => {
+  if (branch.locationUrl && branch.locationUrl.trim()) {
+    // Open location URL in new tab
+    window.open(branch.locationUrl, '_blank')
+  } else {
+    // Show dialog for missing location
+    selectedBranch.value = branch
+    showLocationDialog.value = true
+  }
+}
+
+// Close dialog
+const closeDialog = () => {
+  showLocationDialog.value = false
+  selectedBranch.value = null
+}
+
+// Load branch locations
+onMounted(async () => {
+  try {
+    branches.value = await getBranches()
+  } catch (error) {
+    console.error('Failed to load branches:', error)
+  } finally {
+    branchesLoading.value = false
+  }
+})
+
 // Meta tags for SEO
 useHead({
   title: "About Us - Bakery House | Artisan Baking Since 2024",
@@ -208,50 +280,6 @@ useHead({
     },
   ],
 });
-
-// You can add reactive data here if needed for Firebase integration
-const bakeryData = ref({
-  foundedYear: 2024,
-  branches: [
-    {
-      name: "Treekoff NornqNieng",
-      specialty: "Artisan breads, Croissants",
-      hours: "6:00 AM - 8:00 PM",
-      phone: "+1 555-555-5556",
-    },
-    {
-      name: "Treekoff Dongpalan",
-      specialty: "Pastries, Coffee pairings",
-      hours: "6:30 AM - 7:30 PM",
-      phone: "+1 555-555-5557",
-    },
-    {
-      name: "Treekoff Wattainoy",
-      specialty: "Quick service, Cakes",
-      hours: "5:30 AM - 9:00 PM",
-      phone: "+1 555-555-5558",
-    },
-    {
-      name: "Treekoff Vatchan",
-      specialty: "Full menu, Custom orders",
-      hours: "6:00 AM - 8:30 PM",
-      phone: "+1 555-555-5559",
-    },
-  ],
-});
-
-// If you want to fetch data from Firebase Firestore
-// const { $firestore } = useNuxtApp()
-// onMounted(async () => {
-//   try {
-//     const doc = await $firestore.collection('bakery-info').doc('about').get()
-//     if (doc.exists) {
-//       bakeryData.value = { ...bakeryData.value, ...doc.data() }
-//     }
-//   } catch (error) {
-//     console.error('Error fetching about data:', error)
-//   }
-// })
 </script>
 
 <style scoped>

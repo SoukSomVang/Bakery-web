@@ -135,6 +135,120 @@
             </div>
           </div>
 
+          <!-- Storage & Handling Information -->
+          <div class="card">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Storage & Handling</h3>
+
+            <div class="space-y-4">
+              <!-- Shelf Life -->
+              <div>
+                <label class="form-label">Shelf Life (days) *</label>
+                <input
+                  v-model.number="form.shelf_life_days"
+                  type="number"
+                  min="1"
+                  class="form-input max-w-xs"
+                  placeholder="7"
+                  required
+                />
+              </div>
+
+              <!-- Storage Methods (checkboxes) -->
+              <div>
+                <label class="form-label mb-3 block">Storage Methods *</label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <label v-for="method in STORAGE_METHODS" :key="method.value" class="flex items-center">
+                    <input
+                      v-model="form.storage_methods"
+                      :value="method.value"
+                      type="checkbox"
+                      class="mr-2"
+                    />
+                    <span class="text-sm">{{ method.label }}</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Display Methods (checkboxes) -->
+              <div>
+                <label class="form-label mb-3 block">Display Methods *</label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <label v-for="method in DISPLAY_METHODS" :key="method.value" class="flex items-center">
+                    <input
+                      v-model="form.display_methods"
+                      :value="method.value"
+                      type="checkbox"
+                      class="mr-2"
+                    />
+                    <span class="text-sm">{{ method.label }}</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Reheating Information -->
+              <div>
+                <div class="flex items-center mb-4">
+                  <input v-model="form.can_reheat" type="checkbox" class="mr-2" id="can_reheat" />
+                  <label for="can_reheat" class="form-label mb-0">Can be reheated</label>
+                </div>
+
+                <!-- Reheating Instructions (shown only if can_reheat is true) -->
+                <div v-if="form.can_reheat" class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-blue-50 rounded-lg">
+                  <div>
+                    <label class="form-label">Reheat Temperature (°C)</label>
+                    <input
+                      v-model.number="form.reheat_temperature"
+                      type="number"
+                      min="100"
+                      max="200"
+                      class="form-input"
+                      placeholder="150"
+                    />
+                  </div>
+                  <div>
+                    <label class="form-label">Min Time (minutes) <span class="text-xs text-gray-500">(optional)</span></label>
+                    <input
+                      v-model.number="form.reheat_time_min"
+                      type="number"
+                      min="1"
+                      class="form-input"
+                      placeholder="5"
+                    />
+                  </div>
+                  <div>
+                    <label class="form-label">Max Time (minutes) <span class="text-xs text-gray-500">(optional)</span></label>
+                    <input
+                      v-model.number="form.reheat_time_max"
+                      type="number"
+                      min="1"
+                      class="form-input"
+                      placeholder="10"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Storage Requirements -->
+              <div>
+                <label class="form-label mb-3 block">Storage Requirements</label>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <label class="flex items-center">
+                    <input v-model="form.avoid_sunlight" type="checkbox" class="mr-2" />
+                    <span class="text-sm">Avoid sunlight</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input v-model="form.avoid_moisture" type="checkbox" class="mr-2" />
+                    <span class="text-sm">Keep dry</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input v-model="form.temperature_sensitive" type="checkbox" class="mr-2" />
+                    <span class="text-sm">Temperature sensitive</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Error Message -->
           <div v-if="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
             {{ error }}
@@ -154,6 +268,8 @@
 </template>
 
 <script setup>
+import { STORAGE_METHODS, DISPLAY_METHODS } from '../../../shared-configs/types.js'
+
 const router = useRouter()
 const bakeryStore = useBakeryStore()
 const { bakeryTypeNames, loading, error } = storeToRefs(bakeryStore)
@@ -164,15 +280,19 @@ const form = ref({
   type: '',
   description: '',
   price: '',
-  stock: 0,
-  ingredients: '',
-  allergens: '',
-  preparationTime: '',
-  shelfLife: '',
-  isVegan: false,
-  isGlutenFree: false,
-  isAvailable: true,
-  imageUrl: ''
+  imageUrl: '',
+
+  // New storage and handling fields
+  shelf_life_days: 7,
+  can_reheat: false,
+  reheat_temperature: 150,
+  reheat_time_min: null,
+  reheat_time_max: null,
+  storage_methods: [],
+  display_methods: [],
+  avoid_sunlight: false,
+  avoid_moisture: false,
+  temperature_sensitive: false
 })
 
 const imagePreview = ref(null)
@@ -229,6 +349,16 @@ const removeImage = () => {
 
 const submitForm = async () => {
   try {
+    // Validate required fields
+    if (form.value.storage_methods.length === 0) {
+      alert('Please select at least one storage method')
+      return
+    }
+    if (form.value.display_methods.length === 0) {
+      alert('Please select at least one display method')
+      return
+    }
+
     // Convert Google Drive URL before saving to database
     const itemData = { ...form.value }
     if (itemData.imageUrl) {

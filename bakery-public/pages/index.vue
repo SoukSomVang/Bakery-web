@@ -212,11 +212,13 @@
               </p>
               <div class="flex flex-col sm:flex-row gap-4">
                 <button
+                  @click="$router.push('/whole-bread')"
                   class="bg-red-800 hover:bg-red-900 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                 >
-                  Learn More
+                  View Whole Bread
                 </button>
                 <button
+                  @click="$router.push('/products')"
                   class="border-2 border-red-800 text-red-800 hover:bg-red-800 hover:text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300"
                 >
                   View All Products
@@ -253,61 +255,53 @@
         </div>
         
         <!-- Loading State -->
-        <div v-if="bakeriesLoading" class="text-center">
+        <div v-if="branchesLoading" class="text-center">
           <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600 mx-auto"></div>
         </div>
-        
-        <!-- Bakeries Grid -->
-        <div v-else-if="bakeries.length > 0" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <div 
-            v-for="bakery in bakeries.slice(0, 6)" 
-            :key="bakery.id"
-            class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6"
+
+        <!-- Branches List -->
+        <div v-else-if="branches.length > 0" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div
+            v-for="branch in branches.slice(0, 6)"
+            :key="branch.id"
+            class="text-center"
           >
-            <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ bakery.name }}</h3>
-            <div class="text-sm text-gray-600 mb-2">
-              {{ bakery.address }}
-            </div>
-            <div class="text-sm text-gray-500">
-              {{ bakery.city }}, {{ bakery.country }}
-            </div>
-            <div v-if="bakery.operatingHours" class="text-sm text-gray-500 mt-2">
-              {{ bakery.operatingHours }}
-            </div>
+            <h3
+              @click="handleLocationClick(branch)"
+              class="text-lg font-medium text-gray-700 underline cursor-pointer hover:text-red-700 transition-colors"
+            >
+              {{ branch.name }}
+            </h3>
           </div>
         </div>
-        
-        <!-- Fallback to static branches if no bakeries -->
-        <div v-else class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div class="bg-white rounded-lg shadow-md p-6 text-center">
-            <h3 class="text-lg font-medium text-gray-700">Treekoff NorngNieng</h3>
-          </div>
-          <div class="bg-white rounded-lg shadow-md p-6 text-center">
-            <h3 class="text-lg font-medium text-gray-700">Treekoff Dongpalan</h3>
-          </div>
-          <div class="bg-white rounded-lg shadow-md p-6 text-center">
-            <h3 class="text-lg font-medium text-gray-700">Treekoff Wattainoy</h3>
-          </div>
-          <div class="bg-white rounded-lg shadow-md p-6 text-center">
-            <h3 class="text-lg font-medium text-gray-700">Treekoff Vatchan</h3>
-          </div>
-        </div>
-        
-        <!-- View All Locations Button -->
-        <div class="text-center">
-          <NuxtLink 
-            to="/bakeries"
-            class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200 inline-flex items-center gap-2"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-            </svg>
-            View All Locations
-          </NuxtLink>
+
+        <!-- Empty State -->
+        <div v-else class="text-center py-8">
+          <p class="text-gray-500">No branches available at the moment.</p>
         </div>
       </div>
     </section>
+
+    <!-- Location Dialog -->
+    <div v-if="showLocationDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+        <div class="text-center">
+          <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+          </svg>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Location Not Available</h3>
+          <p class="text-gray-600 mb-6">
+            Branch does not have location data
+          </p>
+          <button
+            @click="closeDialog"
+            class="bg-red-900 hover:bg-red-950 text-white px-6 py-2 rounded-md font-semibold transition-colors"
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -316,12 +310,14 @@ import { useRouter } from "vue-router";
 import { useFirebase } from '~/composables/useFirebase'
 
 const router = useRouter();
-const { getBakeries } = useFirebase()
+const { getBranches } = useFirebase()
 const { getProductsByBakeryType } = useProducts()
 
-// Bakery locations data
-const bakeries = ref([])
-const bakeriesLoading = ref(true)
+// Branch locations data
+const branches = ref([])
+const branchesLoading = ref(true)
+const showLocationDialog = ref(false)
+const selectedBranch = ref(null)
 
 // Product data from Firestore
 const bakeryProducts = ref([]);
@@ -349,11 +345,29 @@ const additionalProducts = ref([
   { id: 24, name: "Eggs tart", image: "" },
 ]);
 
-// Load bakery locations and products
+// Handle location button click
+const handleLocationClick = (branch) => {
+  if (branch.locationUrl && branch.locationUrl.trim()) {
+    // Open location URL in new tab
+    window.open(branch.locationUrl, '_blank')
+  } else {
+    // Show dialog for missing location
+    selectedBranch.value = branch
+    showLocationDialog.value = true
+  }
+}
+
+// Close dialog
+const closeDialog = () => {
+  showLocationDialog.value = false
+  selectedBranch.value = null
+}
+
+// Load branch locations and products
 onMounted(async () => {
   try {
-    // Load bakery locations
-    bakeries.value = await getBakeries()
+    // Load branch locations
+    branches.value = await getBranches()
 
     // Load bakery products
     bakeryProducts.value = await getProductsByBakeryType('bakery')
@@ -361,7 +375,7 @@ onMounted(async () => {
   } catch (error) {
     console.error('Failed to load data:', error)
   } finally {
-    bakeriesLoading.value = false
+    branchesLoading.value = false
     productsLoading.value = false
   }
 })

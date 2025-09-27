@@ -1,8 +1,8 @@
 <template>
   <div>
     <AdminHeader
-      title="Add New Branch"
-      subtitle="Create a new bakery branch location"
+      title="Edit Branch"
+      subtitle="Update branch information"
     />
 
     <div class="p-6">
@@ -46,7 +46,7 @@
           <div class="flex justify-end space-x-3">
             <NuxtLink to="/branches" class="btn-secondary">Cancel</NuxtLink>
             <button type="submit" class="btn-primary" :disabled="loading">
-              {{ loading ? 'Creating...' : 'Create Branch' }}
+              {{ loading ? 'Updating...' : 'Update Branch' }}
             </button>
           </div>
         </form>
@@ -57,8 +57,12 @@
 
 <script setup>
 const router = useRouter()
+const route = useRoute()
 const bakeryStore = useBakeryStore()
 const { loading, error } = storeToRefs(bakeryStore)
+
+// Get branch ID from route params
+const branchId = route.params.id
 
 // Form state
 const form = ref({
@@ -66,13 +70,43 @@ const form = ref({
   locationUrl: ''
 })
 
+// Load branch data
+const loadBranch = async () => {
+  try {
+    // First ensure branches are loaded
+    if (bakeryStore.branches.length === 0) {
+      await bakeryStore.fetchBranches()
+    }
+
+    // Get branch from store
+    const branch = bakeryStore.getBranchById(branchId)
+    if (branch) {
+      form.value = {
+        name: branch.name || '',
+        locationUrl: branch.locationUrl || ''
+      }
+    } else {
+      // Branch not found, redirect back
+      router.push('/branches')
+    }
+  } catch (err) {
+    console.error('Failed to load branch:', err)
+    bakeryStore.setError('Failed to load branch data')
+  }
+}
+
 // Methods
 const submitForm = async () => {
   try {
-    await bakeryStore.addBranch(form.value)
+    await bakeryStore.updateBranch(branchId, form.value)
     router.push('/branches')
   } catch (err) {
-    console.error('Failed to create branch:', err)
+    console.error('Failed to update branch:', err)
   }
 }
+
+// Load data on mount
+onMounted(() => {
+  loadBranch()
+})
 </script>
