@@ -219,15 +219,27 @@
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/room-temp.png" alt="Room temperature" class="w-8 h-8" />
+                <img src="/assets/images/icons/temperature.png" alt="Room temperature" class="w-8 h-8" />
               </div>
-              <span>ອຸນຫະພູມປົກກະຕິ / Room temperature</span>
+              <span>ອຸນຫະພູມເຢັນ / Cool temperature</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/package.png" alt="Store in box" class="w-8 h-8" />
+                <img src="/assets/images/icons/lunch-box.png" alt="Store in box" class="w-8 h-8" />
               </div>
               <span>ເກັບເຂົ້າກ່ອງ / Store in box</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded flex items-center justify-center">
+                <img src="/assets/images/icons/cake-case.jpg" alt="Store in box" class="w-8 h-8" />
+              </div>
+              <span>ເກັບເຂົ້າຕູ້ເຄັກ / Store in cake case</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded flex items-center justify-center">
+                <img src="/assets/images/icons/air-sensitive.png" alt="Store in box" class="w-8 h-8" />
+              </div>
+              <span>ບໍ່ໃຫ້ລົມເຂົ້າ / Do not let air in</span>
             </div>
           </div>
 
@@ -236,19 +248,19 @@
             <h4 class="font-semibold text-gray-700">ການຈັດວາງ / Display:</h4>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/croissant.png" alt="Bakery counter" class="w-8 h-8" />
+                <img src="/assets/images/icons/bakery-case.jpg" alt="Bakery counter" class="w-8 h-8" />
               </div>
-              <span>ຕູ້ເບເກີຣີ / Bakery counter</span>
+              <span>ຕູ້ເບເກີຣີ / Bakery display case</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/cake-stand.png" alt="Cake display" class="w-8 h-8" />
+                <img src="/assets/images/icons/cake-case.jpg" alt="Cake display" class="w-8 h-8" />
               </div>
-              <span>ຕູ້ເຄັກ / Cake display</span>
+              <span>ຕູ້ເຄັກ / Cake display case</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/display-case.png" alt="Glass case" class="w-8 h-8" />
+                <img src="/assets/images/icons/cover.png" alt="Glass case" class="w-8 h-8" />
               </div>
               <span>ໂຄມແກ້ວ / Glass case</span>
             </div>
@@ -259,7 +271,7 @@
             <h4 class="font-semibold text-gray-700">ຂໍ້ຄວນລະວັງ / Precautions:</h4>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/water-drop.png" alt="Avoid moisture" class="w-8 h-8" />
+                <img src="/assets/images/icons/drop.png" alt="Avoid moisture" class="w-8 h-8" />
               </div>
               <span>ບໍ່ໃຫ້ຖືກນ້ຳ / Avoid moisture</span>
             </div>
@@ -271,13 +283,13 @@
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/thermometer-alert.png" alt="Temperature sensitive" class="w-8 h-8" />
+                <img src="/assets/images/icons/humidity-sensor.png" alt="Temperature sensitive" class="w-8 h-8" />
               </div>
               <span>ຄວນລະວັງອຸນຫະພູມ / Temperature sensitive</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/alert.png" alt="Handle with care" class="w-8 h-8" />
+                <img src="/assets/images/icons/warning.png" alt="Handle with care" class="w-8 h-8" />
               </div>
               <span>ລະວັງ / Handle with care</span>
             </div>
