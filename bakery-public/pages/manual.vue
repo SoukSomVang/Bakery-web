@@ -1,325 +1,325 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
-    <div class="p-6 w-[88%] mx-auto">
-      <!-- Search and Filter Controls -->
-      <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
-        <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-          <input
-            v-model="searchQuery"
-            type="text"
-            placeholder="Search by name, type, or description..."
-            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-800 focus:border-red-800 outline-none w-full sm:max-w-xs"
-          />
-          <select v-model="selectedType" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-800 focus:border-red-800 outline-none w-full sm:max-w-xs">
-            <option value="">All Types</option>
-            <option v-for="typeName in bakeryTypeNames" :key="typeName" :value="typeName">{{ typeName }}</option>
-          </select>
-          <button @click="clearFilter" class="px-4 py-2 bg-red-800 text-white rounded-lg hover:bg-gray-600 transition-colors w-full sm:w-auto">Clear</button>
+  <div class="min-h-screen bg-white">
+    <!-- PDF-Style Header -->
+    <div class="bg-white border-b-2 border-gray-200 print:border-black">
+      <div class="max-w-7xl mx-auto px-6 py-4">
+        <!-- Manual Title -->
+        <div class="text-center mb-6">
+          <h2 class="text-lg">Product Manual & Guidelines</h2>
+        </div>
+
+        <!-- Search Controls (minimal design) -->
+        <div class="flex justify-center mb-4">
+          <div class="flex gap-4 items-center">
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="ຄົ້ນຫາສິນຄ້າ / Search products..."
+              class="px-4 py-2 border border-gray-300 rounded text-sm w-64 focus:ring-2 focus:ring-red-800 focus:border-red-800"
+            />
+            <select v-model="selectedType" class="px-4 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-red-800 focus:border-red-800">
+              <option value="">All Types</option>
+              <option v-for="typeName in bakeryTypeNames" :key="typeName" :value="typeName">{{ typeName }}</option>
+            </select>
+            <button @click="clearFilter" class="px-4 py-2 bg-red-800 text-white rounded text-sm hover:bg-red-700">
+              Clear
+            </button>
+          </div>
         </div>
       </div>
+    </div>
 
+    <div class="max-w-7xl mx-auto px-6 py-6">
       <!-- Error Message -->
-      <div v-if="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+      <div v-if="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6 text-center">
         {{ error }}
-      </div>
-
-      <!-- Results Summary -->
-      <div v-if="!loading && filteredItems.length > 0" class="mb-4">
-        <p class="text-gray-600">
-          {{ filteredItems.length }} {{ selectedType ? selectedType.toLowerCase() : 'bakery' }} items found
-        </p>
       </div>
 
       <!-- No Items Message -->
       <div v-if="!loading && filteredItems.length === 0" class="text-center py-12">
-        <i class="mdi mdi-package-variant text-6xl text-gray-400 mx-auto mb-4 block"></i>
-        <h3 class="text-lg font-medium text-gray-900 mb-2">No items found</h3>
-        <p class="text-gray-500 mb-4">{{ selectedType ? `No ${selectedType.toLowerCase()} items found.` : 'No bakery items found.' }}</p>
+        <div class="text-gray-500 text-lg">No items found</div>
       </div>
 
-      <!-- Table -->
-      <div v-else-if="!loading && filteredItems.length > 0" class="w-[100%] overflow-scroll">
-        <div class="bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
-          <div class="overflow-auto max-h-[70vh] w-full">
-            <table class="min-w-full divide-y divide-gray-200 table-fixed w-full">
-            <thead class="bg-gray-50">
-              <tr>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">#</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Image</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Name</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Type</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Price</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Description</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Shelf Life</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Reheat Info</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Storage Methods</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Display Methods</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Environment</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Dates</th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="(item, index) in paginatedItems" :key="item.id" class="hover:bg-gray-50">
-                <!-- Row Number -->
-                <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  {{ (currentPage - 1) * itemsPerPage + index + 1 }}
-                </td>
+      <!-- PDF-Style Table -->
+      <div v-else-if="!loading && filteredItems.length > 0" class="bg-white border-2 border-gray-300">
+        <table class="w-full text-sm border-collapse">
+          <!-- Table Header -->
+          <thead>
+            <tr class="bg-red-800 text-white">
+              <th class="border border-gray-300 px-2 py-3 text-center text-xs font-bold">ລຳດັບ<br>NO.</th>
+              <th class="border border-gray-300 px-2 py-3 text-center text-xs font-bold">ລາຍການ<br>ITEMS</th>
+              <th class="border border-gray-300 px-2 py-3 text-center text-xs font-bold">ຮູບສິນຄ້າ<br>IMAGE</th>
+              <th class="border border-gray-300 px-2 py-3 text-center text-xs font-bold">ອາຍຸການເກັບ<br>SHELF LIFE</th>
+              <th class="border border-gray-300 px-2 py-3 text-center text-xs font-bold">ສາມາດອຸ່ນໃຫ້ລູກຄ້າ<br>REHEAT FOR CUSTOMER</th>
+              <th class="border border-gray-300 px-2 py-3 text-center text-xs font-bold">ເວລາໃນການອຸ່ນ<br>REHEAT TIME</th>
+              <th class="border border-gray-300 px-2 py-3 text-center text-xs font-bold">ການຈັດເກັບເວລາປິດຮ້ານ<br>STORAGE AFTER CLOSING</th>
+              <th class="border border-gray-300 px-2 py-3 text-center text-xs font-bold">ການຈັດວາງຂາຍ<br>DISPLAY METHOD</th>
+              <th class="border border-gray-300 px-2 py-3 text-center text-xs font-bold">ຂໍ້ຄວນລະວັງ<br>PRECAUTIONS</th>
+            </tr>
+          </thead>
 
-                <!-- Image -->
-                <td class="px-4 py-4 whitespace-nowrap">
-                  <div class="w-16 h-16">
-                    <img
-                      v-if="item.imageUrl"
-                      :src="convertGoogleDriveUrl(item.imageUrl)"
-                      :alt="item.name"
-                      class="w-full h-full object-cover rounded-lg"
-                    />
-                    <div v-else class="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center">
-                      <i class="mdi mdi-image-outline text-2xl text-gray-400"></i>
-                    </div>
+          <!-- Table Body -->
+          <tbody>
+            <tr v-for="(item, index) in paginatedItems" :key="item.id" class="border-b border-gray-300 hover:bg-gray-50">
+              <!-- Row Number -->
+              <td class="border border-gray-300 px-2 py-4 text-center font-bold">
+                {{ (currentPage - 1) * itemsPerPage + index + 1 }}
+              </td>
+
+              <!-- Item Name -->
+              <td class="border border-gray-300 px-3 py-4">
+                <div class="font-medium text-gray-900">{{ item.name }}</div>
+              </td>
+
+              <!-- Image -->
+              <td class="border border-gray-300 px-2 py-4 text-center">
+                <div class="w-16 h-16 mx-auto">
+                  <img
+                    :src="getProductImageWithFallback(item)"
+                    :alt="item.name"
+                    class="w-full h-full object-cover rounded-lg shadow-sm"
+                    @error="handleImageError($event, item)"
+                    loading="lazy"
+                  />
+                </div>
+              </td>
+
+              <!-- Shelf Life -->
+              <td class="border border-gray-300 px-2 py-4 text-center">
+                <div class="font-bold text-lg">{{ item.shelf_life_days || 7 }}</div>
+                <div class="text-xs text-gray-600">days</div>
+              </td>
+
+              <!-- Can Reheat -->
+              <td class="border border-gray-300 px-2 py-4 text-center">
+                <div class="flex justify-center mb-2">
+                  <div v-if="item.can_reheat" class="w-12 h-12 rounded flex items-center justify-center">
+                    <img src="/assets/images/icons/oven.png" alt="Can reheat" class="w-8 h-8" />
                   </div>
-                </td>
-
-                <!-- Name -->
-                <td class="px-4 py-4">
-                  <div class="text-sm font-medium text-gray-900">{{ item.name }}</div>
-                </td>
-
-                <!-- Type -->
-                <td class="px-4 py-4 whitespace-nowrap">
-                  <span class="px-2 py-1 text-xs bg-red-100 text-red-800 rounded-full">
-                    {{ item.type || 'N/A' }}
-                  </span>
-                </td>
-
-                <!-- Price -->
-                <td class="px-4 py-4 whitespace-nowrap">
-                  <div class="text-sm font-semibold text-green-600">
-                    {{ typeof item.price === 'number' ? item.price.toLocaleString() : (item.price || '0') }} KIP
+                  <div v-else class="w-12 h-12 rounded flex items-center justify-center">
+                    <img src="/assets/images/icons/no-heat.png" alt="Cannot reheat" class="w-8 h-8" />
                   </div>
-                </td>
+                </div>
+                <div v-if="item.can_reheat && item.reheat_temperature" class="text-xs">
+                  {{ item.reheat_temperature }}°C
+                </div>
+              </td>
 
-                <!-- Description -->
-                <td class="px-4 py-4">
-                  <div class="text-sm text-gray-600 max-w-xs">
-                    <div class="line-clamp-3">{{ item.description || 'No description' }}</div>
+              <!-- Reheat Time -->
+              <td class="border border-gray-300 px-2 py-4 text-center">
+                <div v-if="item.can_reheat" class="flex items-center justify-center gap-1">
+                  <div class="w-12 h-12 rounded-full flex items-center justify-center">
+                    <img src="/assets/images/icons/clock.png" alt="Reheat time" class="w-8 h-8" />
                   </div>
-                </td>
+                  <div class="text-xs">
+                    {{ item.reheat_time_min || 5 }} - {{ item.reheat_time_max || 7 }} min
+                  </div>
+                </div>
+                <div v-else class="text-gray-400">-</div>
+              </td>
 
-                <!-- Shelf Life -->
-                <td class="px-4 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">
-                    {{ item.shelf_life_days || 'N/A' }} days
+              <!-- Storage Method -->
+              <td class="border border-gray-300 px-2 py-4 text-center">
+                <div class="flex justify-center gap-1 flex-wrap">
+                  <!-- Cold Storage Icon -->
+                  <div v-if="needsColdStorage(item)" class="w-8 h-8 rounded flex items-center justify-center" title="Cold Storage">
+                    <img src="/assets/images/icons/fridge.png" alt="Cold storage" class="w-8 h-8" />
                   </div>
-                </td>
+                  <!-- Room Temperature Icon -->
+                  <div v-else class="w-8 h-8 rounded flex items-center justify-center" title="Room Temperature">
+                    <img src="/assets/images/icons/room-temp.png" alt="Room temperature" class="w-8 h-8" />
+                  </div>
+                  <!-- Box Storage Icon -->
+                  <div class="w-8 h-8 rounded flex items-center justify-center" title="Store in Box">
+                    <img src="/assets/images/icons/package.png" alt="Store in box" class="w-8 h-8" />
+                  </div>
+                </div>
+              </td>
 
-                <!-- Reheat Info -->
-                <td class="px-4 py-4">
-                  <div class="text-sm text-gray-600">
-                    <div class="mb-1">
-                      <span class="font-medium">Can Reheat:</span>
-                      <span :class="item.can_reheat ? 'text-green-600' : 'text-red-600'">
-                        {{ item.can_reheat ? 'Yes' : 'No' }}
-                      </span>
-                    </div>
-                    <div v-if="item.can_reheat">
-                      <div v-if="item.reheat_temperature">
-                        <span class="font-medium">Temp:</span> {{ item.reheat_temperature }}°
-                      </div>
-                      <div v-if="item.reheat_time_min || item.reheat_time_max">
-                        <span class="font-medium">Time:</span>
-                        {{ item.reheat_time_min || 0 }}-{{ item.reheat_time_max || 0 }} min
-                      </div>
-                    </div>
+              <!-- Display Method -->
+              <td class="border border-gray-300 px-2 py-4 text-center">
+                <div class="flex justify-center gap-1 flex-wrap">
+                  <!-- Bakery Counter -->
+                  <div class="w-8 h-8 rounded flex items-center justify-center" title="Bakery Counter">
+                    <img src="/assets/images/icons/croissant.png" alt="Bakery counter" class="w-8 h-8" />
                   </div>
-                </td>
+                  <!-- Cake Display -->
+                  <div v-if="item.type?.toLowerCase().includes('cake') || item.name?.toLowerCase().includes('cake')" class="w-8 h-8 rounded flex items-center justify-center" title="Cake Display">
+                    <img src="/assets/images/icons/cake-stand.png" alt="Cake display" class="w-8 h-8" />
+                  </div>
+                  <!-- Glass Case -->
+                  <div class="w-8 h-8 rounded flex items-center justify-center" title="Glass Case">
+                    <img src="/assets/images/icons/display-case.png" alt="Glass case" class="w-8 h-8" />
+                  </div>
+                </div>
+              </td>
 
-                <!-- Storage Methods -->
-                <td class="px-4 py-4">
-                  <div class="text-sm text-gray-600">
-                    <div v-if="item.storage_methods && item.storage_methods.length > 0" class="space-y-1">
-                      <span
-                        v-for="method in item.storage_methods"
-                        :key="method"
-                        class="inline-block px-2 py-1 text-xs bg-purple-100 text-purple-800 rounded mr-1 mb-1"
-                      >
-                        {{ method }}
-                      </span>
-                    </div>
-                    <span v-else class="text-gray-400">No methods specified</span>
+              <!-- Precautions -->
+              <td class="border border-gray-300 px-2 py-4 text-center">
+                <div class="flex justify-center gap-1 flex-wrap">
+                  <!-- Avoid Moisture -->
+                  <div v-if="item.avoid_moisture" class="w-8 h-8 rounded flex items-center justify-center" title="Avoid Moisture">
+                    <img src="/assets/images/icons/water-drop.png" alt="Avoid moisture" class="w-8 h-8" />
                   </div>
-                </td>
+                  <!-- Avoid Sunlight -->
+                  <div v-if="item.avoid_sunlight" class="w-8 h-8 rounded flex items-center justify-center" title="Avoid Sunlight">
+                    <img src="/assets/images/icons/sun.png" alt="Avoid sunlight" class="w-8 h-8" />
+                  </div>
+                  <!-- Temperature Sensitive -->
+                  <div v-if="item.temperature_sensitive" class="w-8 h-8 rounded flex items-center justify-center" title="Temperature Sensitive">
+                    <img src="/assets/images/icons/thermometer-alert.png" alt="Temperature sensitive" class="w-8 h-8" />
+                  </div>
+                  <!-- General Warning -->
+                  <div class="w-8 h-8 rounded flex items-center justify-center" title="Handle with Care">
+                    <img src="/assets/images/icons/alert.png" alt="Handle with care" class="w-8 h-8" />
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-                <!-- Display Methods -->
-                <td class="px-4 py-4">
-                  <div class="text-sm text-gray-600">
-                    <div v-if="item.display_methods && item.display_methods.length > 0" class="space-y-1">
-                      <span
-                        v-for="method in item.display_methods"
-                        :key="method"
-                        class="inline-block px-2 py-1 text-xs bg-orange-100 text-orange-800 rounded mr-1 mb-1"
-                      >
-                        {{ method }}
-                      </span>
-                    </div>
-                    <span v-else class="text-gray-400">No methods specified</span>
-                  </div>
-                </td>
+      <!-- Icon Legend -->
+      <div v-if="!loading && filteredItems.length > 0" class="mt-8 border-t pt-6">
+        <h3 class="text-lg font-bold text-gray-800 mb-4 text-center">ຄຳອະທິບາຍສັນຍາລັກ / Icon Legend</h3>
 
-                <!-- Environment -->
-                <td class="px-4 py-4">
-                  <div class="text-sm text-gray-600 space-y-1">
-                    <div class="flex items-center">
-                      <i class="mdi mdi-water-outline w-4 h-4 mr-1"></i>
-                      <span :class="item.avoid_moisture ? 'text-red-600' : 'text-green-600'">
-                        {{ item.avoid_moisture ? 'Avoid Moisture' : 'Moisture OK' }}
-                      </span>
-                    </div>
-                    <div class="flex items-center">
-                      <i class="mdi mdi-weather-sunny w-4 h-4 mr-1"></i>
-                      <span :class="item.avoid_sunlight ? 'text-red-600' : 'text-green-600'">
-                        {{ item.avoid_sunlight ? 'Avoid Sunlight' : 'Sunlight OK' }}
-                      </span>
-                    </div>
-                    <div class="flex items-center">
-                      <i class="mdi mdi-thermometer w-4 h-4 mr-1"></i>
-                      <span :class="item.temperature_sensitive ? 'text-red-600' : 'text-green-600'">
-                        {{ item.temperature_sensitive ? 'Temp Sensitive' : 'Temp Stable' }}
-                      </span>
-                    </div>
-                  </div>
-                </td>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <!-- Reheating Icons -->
+          <div class="space-y-2">
+            <h4 class="font-semibold text-gray-700">ສາມາດອຸ່ນໃຫ້ລູກຄ້າ / Can Reheat:</h4>
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded flex items-center justify-center">
+                <img src="/assets/images/icons/oven.png" alt="Can reheat" class="w-8 h-8" />
+              </div>
+              <span>ສາມາດອຸ່ນໄດ້ / Can reheat</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded flex items-center justify-center">
+                <img src="/assets/images/icons/no-heat.png" alt="Cannot reheat" class="w-8 h-8" />
+              </div>
+              <span>ບໍ່ສາມາດອຸ່ນ / Cannot reheat</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                <img src="/assets/images/icons/clock.png" alt="Reheat time" class="w-8 h-8" />
+              </div>
+              <span>ເວລາໃນການອຸ່ນ / Reheat time</span>
+            </div>
+          </div>
 
-                <!-- Dates -->
-                <td class="px-4 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-600">
-                    <div class="mb-1">
-                      <span class="font-medium">Created:</span><br>
-                      {{ formatDate(item.createdAt) }}
-                    </div>
-                    <div v-if="item.updatedAt">
-                      <span class="font-medium">Updated:</span><br>
-                      {{ formatDate(item.updatedAt) }}
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-            </table>
+          <!-- Storage Icons -->
+          <div class="space-y-2">
+            <h4 class="font-semibold text-gray-700">ການຈັດເກັບ / Storage:</h4>
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded flex items-center justify-center">
+                <img src="/assets/images/icons/fridge.png" alt="Cold storage" class="w-8 h-8" />
+              </div>
+              <span>ເກັບໃນຕູ້ເຢັນ / Cold storage</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded flex items-center justify-center">
+                <img src="/assets/images/icons/room-temp.png" alt="Room temperature" class="w-8 h-8" />
+              </div>
+              <span>ອຸນຫະພູມປົກກະຕິ / Room temperature</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded flex items-center justify-center">
+                <img src="/assets/images/icons/package.png" alt="Store in box" class="w-8 h-8" />
+              </div>
+              <span>ເກັບເຂົ້າກ່ອງ / Store in box</span>
+            </div>
+          </div>
+
+          <!-- Display Icons -->
+          <div class="space-y-2">
+            <h4 class="font-semibold text-gray-700">ການຈັດວາງ / Display:</h4>
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded flex items-center justify-center">
+                <img src="/assets/images/icons/croissant.png" alt="Bakery counter" class="w-8 h-8" />
+              </div>
+              <span>ຕູ້ເບເກີຣີ / Bakery counter</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded flex items-center justify-center">
+                <img src="/assets/images/icons/cake-stand.png" alt="Cake display" class="w-8 h-8" />
+              </div>
+              <span>ຕູ້ເຄັກ / Cake display</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded flex items-center justify-center">
+                <img src="/assets/images/icons/display-case.png" alt="Glass case" class="w-8 h-8" />
+              </div>
+              <span>ໂຄມແກ້ວ / Glass case</span>
+            </div>
+          </div>
+
+          <!-- Precaution Icons -->
+          <div class="space-y-2">
+            <h4 class="font-semibold text-gray-700">ຂໍ້ຄວນລະວັງ / Precautions:</h4>
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded flex items-center justify-center">
+                <img src="/assets/images/icons/water-drop.png" alt="Avoid moisture" class="w-8 h-8" />
+              </div>
+              <span>ບໍ່ໃຫ້ຖືກນ້ຳ / Avoid moisture</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded flex items-center justify-center">
+                <img src="/assets/images/icons/sun.png" alt="Avoid sunlight" class="w-8 h-8" />
+              </div>
+              <span>ບໍ່ໃຫ້ຖືກແສງແດດ / Avoid sunlight</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded flex items-center justify-center">
+                <img src="/assets/images/icons/thermometer-alert.png" alt="Temperature sensitive" class="w-8 h-8" />
+              </div>
+              <span>ຄວນລະວັງອຸນຫະພູມ / Temperature sensitive</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded flex items-center justify-center">
+                <img src="/assets/images/icons/alert.png" alt="Handle with care" class="w-8 h-8" />
+              </div>
+              <span>ລະວັງ / Handle with care</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Pagination -->
-      <div v-if="!loading && filteredItems.length > 0" class="mt-6">
-        <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-          <!-- Pagination Info -->
-          <div class="text-sm text-gray-600">
-            Showing {{ (currentPage - 1) * itemsPerPage + 1 }}-{{ Math.min(currentPage * itemsPerPage, filteredItems.length) }} of {{ filteredItems.length }} items
-          </div>
+      <!-- Simple Pagination -->
+      <div v-if="!loading && filteredItems.length > 0" class="mt-8 flex justify-center">
+        <div class="flex items-center gap-2">
+          <button
+            @click="prevPage"
+            :disabled="currentPage === 1"
+            class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            ← Previous
+          </button>
 
-          <!-- Pagination Controls -->
-          <div class="flex items-center space-x-2">
-            <!-- First Page -->
-            <button
-              @click="goToFirstPage"
-              :disabled="currentPage === 1"
-              :class="[
-                'px-3 py-2 rounded-lg font-medium transition-colors border',
-                currentPage === 1
-                  ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50 hover:border-red-300 hover:text-red-600'
-              ]"
-            >
-              ⟪
-            </button>
+          <span class="px-3 py-1 text-sm text-gray-600">
+            Page {{ currentPage }} of {{ totalPages }} ({{ filteredItems.length }} items)
+          </span>
 
-            <!-- Previous -->
-            <button
-              @click="prevPage"
-              :disabled="currentPage === 1"
-              :class="[
-                'px-3 py-2 rounded-lg font-medium transition-colors border',
-                currentPage === 1
-                  ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50 hover:border-red-300 hover:text-red-600'
-              ]"
-            >
-              ⟨
-            </button>
-
-            <!-- Page Numbers -->
-            <div class="flex space-x-1 mx-4">
-              <button
-                v-for="page in visiblePages"
-                :key="page"
-                @click="goToPage(page)"
-                :class="[
-                  'min-w-[44px] px-3 py-2 rounded-lg font-medium transition-colors border text-center',
-                  currentPage === page
-                    ? 'bg-red-600 text-white border-red-600 shadow-md'
-                    : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50 hover:border-red-300 hover:text-red-600'
-                ]"
-              >
-                {{ page }}
-              </button>
-            </div>
-
-            <!-- Next -->
-            <button
-              @click="nextPage"
-              :disabled="currentPage === totalPages"
-              :class="[
-                'px-3 py-2 rounded-lg font-medium transition-colors border',
-                currentPage === totalPages
-                  ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50 hover:border-red-300 hover:text-red-600'
-              ]"
-            >
-              ⟩
-            </button>
-
-            <!-- Last Page -->
-            <button
-              @click="goToLastPage"
-              :disabled="currentPage === totalPages"
-              :class="[
-                'px-3 py-2 rounded-lg font-medium transition-colors border',
-                currentPage === totalPages
-                  ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50 hover:border-red-300 hover:text-red-600'
-              ]"
-            >
-              ⟫
-            </button>
-          </div>
-
-          <!-- Items Per Page Selector -->
-          <div class="flex items-center gap-2">
-            <span class="text-sm text-gray-600">Items per page:</span>
-            <select
-              v-model="itemsPerPage"
-              @change="changeItemsPerPage(itemsPerPage)"
-              class="border border-gray-300 rounded px-3 py-1 text-sm focus:ring-2 focus:ring-red-800 focus:border-red-800"
-            >
-              <option v-for="option in itemsPerPageOptions" :key="option" :value="option">
-                {{ option }}
-              </option>
-            </select>
-          </div>
+          <button
+            @click="nextPage"
+            :disabled="currentPage === totalPages"
+            class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Next →
+          </button>
         </div>
       </div>
 
       <!-- Loading State -->
       <div v-if="loading" class="flex justify-center py-12">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-800"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-const { getProductsByBakeryType } = useProducts();
+const { getProductsByCakeAndBakeryTypes } = useProducts();
 
 // State
 const loading = ref(true);
@@ -330,7 +330,6 @@ const selectedType = ref('');
 // Pagination
 const currentPage = ref(1);
 const itemsPerPage = ref(10);
-const itemsPerPageOptions = [10, 20, 50];
 
 // Data
 const bakeryItems = ref([]);
@@ -341,7 +340,8 @@ const fetchData = async () => {
     loading.value = true;
     error.value = null;
 
-    const products = await getProductsByBakeryType('bakery');
+    // Get both cake and bakery type products
+    const products = await getProductsByCakeAndBakeryTypes();
     bakeryItems.value = products || [];
 
   } catch (err) {
@@ -377,7 +377,11 @@ const filteredItems = computed(() => {
 
   // Filter by type
   if (selectedType.value) {
-    items = items.filter(item => item.type === selectedType.value);
+    if (selectedType.value === 'cake') {
+      items = items.filter(item => item.type?.toLowerCase() === 'cake');
+    } else {
+      items = items.filter(item => item.type === selectedType.value);
+    }
   }
 
   return items;
@@ -394,24 +398,6 @@ const paginatedItems = computed(() => {
   return filteredItems.value.slice(start, end);
 });
 
-// Generate visible page numbers
-const visiblePages = computed(() => {
-  const total = totalPages.value;
-  const current = currentPage.value;
-  const delta = 2;
-
-  let start = Math.max(1, current - delta);
-  let end = Math.min(total, current + delta);
-
-  if (current <= delta) {
-    end = Math.min(total, 2 * delta + 1);
-  }
-  if (current + delta >= total) {
-    start = Math.max(1, total - 2 * delta);
-  }
-
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-});
 
 // Methods
 const clearFilter = () => {
@@ -433,34 +419,140 @@ const prevPage = () => {
   }
 };
 
-const goToPage = (page) => {
-  if (page >= 1 && page <= totalPages.value) {
-    currentPage.value = page;
+
+
+// Helper function to determine if item needs cold storage
+const needsColdStorage = (item) => {
+  if (!item) return false;
+
+  // Check if it's a cake or requires cold storage
+  const itemType = item.type?.toLowerCase() || '';
+  const itemName = item.name?.toLowerCase() || '';
+
+  return itemType.includes('cake') ||
+         itemType.includes('cream') ||
+         itemName.includes('cake') ||
+         itemName.includes('cream') ||
+         itemName.includes('mousse') ||
+         item.storage_methods?.some(method =>
+           method.toLowerCase().includes('cold') ||
+           method.toLowerCase().includes('refrigerat') ||
+           method.toLowerCase().includes('fridge')
+         );
+};
+
+// Enhanced function that always returns an image (never null)
+const getProductImageWithFallback = (item) => {
+  if (!item) return getDefaultBakeryImage();
+
+  // First try the main imageUrl
+  if (item.imageUrl && item.imageUrl.trim()) {
+    return item.imageUrl;
   }
+
+  // Try images array if available
+  if (item.images && Array.isArray(item.images) && item.images.length > 0) {
+    const validImage = item.images.find(img => img && img.trim());
+    if (validImage) return validImage;
+  }
+
+  // Generate specific fallback image from local assets based on product type and name
+  return generateFallbackImage(item);
 };
 
-const goToFirstPage = () => {
-  currentPage.value = 1;
+// Get default bakery image for any fallback
+const getDefaultBakeryImage = () => {
+  return '/assets/images/products/default-bakery.jpg';
 };
 
-const goToLastPage = () => {
-  currentPage.value = totalPages.value;
+// Generate fallback image from local assets
+const generateFallbackImage = (item) => {
+  if (!item) return getDefaultBakeryImage();
+
+  const itemType = item.type?.toLowerCase() || '';
+  const itemName = item.name?.toLowerCase() || '';
+
+  // Use local asset images for better performance and consistency
+  const imageMap = {
+    // Croissants
+    'butter croissant': '/assets/images/products/butter-croissant.jpg',
+    'ham cheese croissant': '/assets/images/products/ham-cheese-croissant.jpg',
+    'almond croissant': '/assets/images/products/almond-croissant.jpg',
+    'croissant': '/assets/images/products/croissant-default.jpg',
+
+    // Cakes
+    'chocolate cake': '/assets/images/products/chocolate-cake.jpg',
+    'chocolate': '/assets/images/products/chocolate-cake.jpg',
+    'red velvet': '/assets/images/products/red-velvet-cake.jpg',
+    'cheesecake': '/assets/images/products/cheesecake.jpg',
+    'cheese cake': '/assets/images/products/cheesecake.jpg',
+    'carrot cake': '/assets/images/products/carrot-cake.jpg',
+
+    // Cookies
+    'cookie': '/assets/images/products/cookie.jpg',
+    'matcha cookie': '/assets/images/products/matcha-cookie.jpg',
+    'matcha': '/assets/images/products/matcha-cookie.jpg',
+
+    // Pastries
+    'choux cream': '/assets/images/products/choux-cream.jpg',
+    'choux': '/assets/images/products/choux-cream.jpg',
+    'custard': '/assets/images/products/choux-cream.jpg',
+    'egg tart': '/assets/images/products/tart-default.jpg',
+    'tart': '/assets/images/products/tart-default.jpg',
+    'mousse': '/assets/images/products/chocolate-cake.jpg',
+
+    // Pies
+    'coconut pie': '/assets/images/products/coconut-pie.jpg',
+    'pie': '/assets/images/products/coconut-pie.jpg',
+
+    // Default categories
+    'cake': '/assets/images/products/chocolate-cake.jpg',
+    'pastry': '/assets/images/products/pastry.jpg',
+    'bread': '/assets/images/products/bread.jpg'
+  };
+
+  // Try to match specific product names first
+  for (const [key, url] of Object.entries(imageMap)) {
+    if (itemName.includes(key.toLowerCase())) {
+      return url;
+    }
+  }
+
+  // Try type matching
+  if (itemType.includes('cake') || itemName.includes('cake')) {
+    return imageMap['cake'];
+  } else if (itemType.includes('cookie') || itemName.includes('cookie')) {
+    return imageMap['cookie'];
+  } else if (itemType.includes('bread') || itemName.includes('bread')) {
+    return imageMap['bread'];
+  } else if (itemType.includes('pastry') || itemName.includes('pastry')) {
+    return imageMap['pastry'];
+  } else if (itemType.includes('croissant') || itemName.includes('croissant')) {
+    return imageMap['croissant'];
+  }
+
+  // Default fallback
+  return getDefaultBakeryImage();
 };
 
-const changeItemsPerPage = (newItemsPerPage) => {
-  itemsPerPage.value = newItemsPerPage;
-  currentPage.value = 1;
-};
+// Handle image error by trying fallback
+const handleImageError = (event, item) => {
+  const img = event.target;
 
-const formatDate = (date) => {
-  if (!date) return 'N/A';
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
+  // If the current image fails and it's not already the default, try the default bakery image
+  if (!img.src.includes('default-bakery.jpg')) {
+    img.src = getDefaultBakeryImage();
+  } else {
+    // If even the default fails, hide the image container and show a text placeholder
+    img.style.display = 'none';
+    const container = img.parentElement;
+    if (container && !container.querySelector('.text-placeholder')) {
+      const placeholder = document.createElement('div');
+      placeholder.className = 'text-placeholder w-full h-full bg-gray-100 rounded-lg flex items-center justify-center text-xs text-gray-500';
+      placeholder.textContent = item.name?.substring(0, 8) || 'Bakery';
+      container.appendChild(placeholder);
+    }
+  }
 };
 
 // Watch for search changes and reset pagination
@@ -486,143 +578,157 @@ useHead({
 </script>
 
 <style scoped>
-/* Custom table styles */
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+/* PDF-Style Manual Layout */
+table {
+  border-collapse: collapse;
+  font-family: 'Arial', sans-serif;
 }
 
-/* Table container with proper scrolling */
-.overflow-auto {
-  max-width: 100%;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-  position: relative;
-}
-
-/* Table layout and sizing */
-.table-fixed {
-  table-layout: fixed;
-  width: 100%;
-  min-width: 1400px;
-}
-
-/* Header styles with no wrapping */
+/* Header styling matching PDF */
 th {
-  white-space: nowrap;
-  position: sticky;
-  top: 0;
-  background-color: #f9fafb;
-  z-index: 10;
-  border-bottom: 1px solid #e5e7eb;
+  background-color: #dc2626 !important;
+  color: white !important;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid #6b7280;
+  padding: 8px 4px;
+  font-size: 11px;
+  line-height: 1.2;
 }
 
-/* Column width constraints for fixed table layout */
-th:nth-child(1), td:nth-child(1) { /* Row number */
-  width: 4%;
-}
-
-th:nth-child(2), td:nth-child(2) { /* Image */
-  width: 6%;
-}
-
-th:nth-child(3), td:nth-child(3) { /* Name */
-  width: 10%;
-}
-
-th:nth-child(4), td:nth-child(4) { /* Type */
-  width: 7%;
-}
-
-th:nth-child(5), td:nth-child(5) { /* Price */
-  width: 7%;
-}
-
-th:nth-child(6), td:nth-child(6) { /* Description */
-  width: 15%;
-}
-
-th:nth-child(7), td:nth-child(7) { /* Shelf Life */
-  width: 7%;
-}
-
-th:nth-child(8), td:nth-child(8) { /* Reheat Info */
-  width: 12%;
-}
-
-th:nth-child(9), td:nth-child(9) { /* Storage Methods */
-  width: 10%;
-}
-
-th:nth-child(10), td:nth-child(10) { /* Display Methods */
-  width: 10%;
-}
-
-th:nth-child(11), td:nth-child(11) { /* Environment */
-  width: 8%;
-}
-
-th:nth-child(12), td:nth-child(12) { /* Dates */
-  width: 8%;
-}
-
-/* Ensure content doesn't overflow cells */
+/* Cell styling */
 td {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-wrap: break-word;
+  border: 1px solid #6b7280;
+  padding: 8px 4px;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 12px;
 }
 
-/* Responsive table adjustments */
+/* Row number column */
+td:first-child {
+  font-weight: bold;
+  background-color: #f9fafb;
+}
+
+/* Product name column - left aligned */
+td:nth-child(2) {
+  text-align: left;
+  font-weight: 500;
+}
+
+/* Icon containers */
+.icon-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Responsive table */
 @media (max-width: 1024px) {
-  .table-fixed {
-    font-size: 0.875rem;
-    min-width: 1200px;
+  table {
+    font-size: 10px;
   }
 
-  .px-4 {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+  th, td {
+    padding: 6px 2px;
+  }
+
+  .icon-container {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
   }
 }
 
-/* Scrollbar styling */
-.overflow-auto::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+@media (max-width: 768px) {
+  table {
+    font-size: 9px;
+  }
+
+  th, td {
+    padding: 4px 1px;
+  }
+
+  .icon-container {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+  }
 }
 
-.overflow-auto::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
+/* Print styles */
+@media print {
+  .max-w-7xl {
+    max-width: none;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Ensure header backgrounds print */
+  th {
+    background-color: #dc2626 !important;
+    color: white !important;
+  }
+
+  /* Hide search and pagination when printing */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Page breaks */
+  table {
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  thead {
+    display: table-header-group;
+  }
 }
 
-.overflow-auto::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 4px;
-}
-
-.overflow-auto::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
-}
-
-.overflow-auto::-webkit-scrollbar-corner {
-  background: #f1f1f1;
-}
-
-/* Button hover effects */
+/* Button transitions */
 button {
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
-button:hover {
-  transform: translateY(-1px);
+/* Logo styling */
+h1 {
+  font-family: 'Brush Script MT', 'cursive', 'Arial', sans-serif;
 }
 
-button:disabled {
-  transform: none;
+/* Legend grid responsive */
+.grid {
+  display: grid;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 </style>

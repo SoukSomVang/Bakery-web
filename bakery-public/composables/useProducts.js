@@ -81,6 +81,33 @@ export const useProducts = () => {
     }
   }
 
+  const getProductsByCakeAndBakeryTypes = async () => {
+    try {
+      const { db } = useClientFirebase()
+      checkFirestore(db)
+
+      // Get all products
+      const allProductsSnapshot = await getDocs(collection(db, 'bakeryItems'))
+      const allProducts = allProductsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+
+      // Get bakery types from bakeryTypes collection
+      const bakeryTypesSnapshot = await getDocs(collection(db, 'bakeryTypes'))
+      const bakeryTypes = bakeryTypesSnapshot.docs.map(doc => doc.data().name)
+
+      // Filter products that are either 'cake' type OR match bakery types
+      const filteredProducts = allProducts.filter(product => {
+        const productType = product.type?.toLowerCase()
+        return productType === 'cake' ||
+               bakeryTypes.some(bakeryType => bakeryType.toLowerCase() === productType)
+      })
+
+      return filteredProducts
+    } catch (error) {
+      console.error('PUBLIC: Error getting products by cake and bakery types:', error)
+      throw error
+    }
+  }
+
   const getProductById = async (id) => {
     try {
       const { db } = useClientFirebase()
@@ -183,6 +210,7 @@ export const useProducts = () => {
     getProductsByCategory,
     getProductsByBakeryType,
     getProductsFilteredByBakeryTypes,
+    getProductsByCakeAndBakeryTypes,
     getProductById,
     getFeaturedProducts,
 
