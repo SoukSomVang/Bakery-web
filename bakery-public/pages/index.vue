@@ -57,7 +57,7 @@
         <div class="w-full lg:w-1/2 flex justify-center lg:justify-end">
           <!-- White Card -->
           <div
-            class="bg-white/95 backdrop-blur-sm py-8 md:py-10 px-8 md:px-12 shadow-2xl max-w-sm md:max-w-lg rounded-lg border-l-4 border-red-500 animate-fade-in-right"
+            class="bg-white/95 backdrop-blur-sm py-8 md:py-10 px-8 md:px-12 shadow-2xl max-w-sm md:max-w-lg rounded-lg border-l-4 border-red-800 animate-fade-in-right"
             style="animation-delay: 0.6s"
           >
             <h1

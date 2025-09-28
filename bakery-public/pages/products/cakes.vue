@@ -45,7 +45,7 @@
             v-model="searchQuery"
             type="text"
             placeholder="Search cakes..."
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-800 focus:border-red-800 outline-none"
           />
         </div>
 
@@ -174,7 +174,7 @@
               <select
                 v-model="itemsPerPage"
                 @change="changeItemsPerPage(itemsPerPage)"
-                class="border border-gray-300 rounded px-3 py-1 text-sm focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                class="border border-gray-300 rounded px-3 py-1 text-sm focus:ring-2 focus:ring-red-800 focus:border-red-800"
               >
                 <option v-for="option in itemsPerPageOptions" :key="option" :value="option">
                   {{ option }}

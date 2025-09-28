@@ -92,7 +92,7 @@
       <!-- Filtered Products Display -->
       <div class="bg-white p-6 rounded-lg shadow mb-6">
         <h2 class="text-xl font-semibold mb-4">🔍 Filtered Products (Matching Bakery Types)</h2>
-        <div v-if="filteredProducts.length === 0" class="text-red-500">
+        <div v-if="filteredProducts.length === 0" class="text-red-800">
           ❌ No products match any bakery types!
         </div>
         <div v-else class="space-y-4">

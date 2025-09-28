@@ -1,15 +1,6 @@
 <template>
-  <div>
-    <div class="w-[88%]">
-      <AdminHeader
-        title="Bakery Items - Manual View"
-        subtitle="Detailed table view of all bakery product data"
-        :loading="loading"
-        @refresh="refreshData"
-      />
-    </div>
-
-    <div class="p-6 w-[88%]">
+  <div class="min-h-screen bg-gray-50">
+    <div class="p-6 w-[88%] mx-auto">
       <!-- Search and Filter Controls -->
       <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
         <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
@@ -17,24 +8,13 @@
             v-model="searchQuery"
             type="text"
             placeholder="Search by name, type, or description..."
-            class="form-input w-full sm:max-w-xs"
+            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-800 focus:border-red-800 outline-none w-full sm:max-w-xs"
           />
-          <select v-model="selectedType" class="form-input w-full sm:max-w-xs">
+          <select v-model="selectedType" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-800 focus:border-red-800 outline-none w-full sm:max-w-xs">
             <option value="">All Types</option>
             <option v-for="typeName in bakeryTypeNames" :key="typeName" :value="typeName">{{ typeName }}</option>
           </select>
-          <button @click="clearFilter" class="btn-secondary w-full sm:w-auto">Clear</button>
-        </div>
-
-        <div class="flex space-x-2">
-          <NuxtLink to="/bakery-items" class="btn-secondary">
-            <i class="mdi mdi-view-grid w-4 h-4 mr-2"></i>
-            Grid View
-          </NuxtLink>
-          <NuxtLink to="/bakery-items/create" class="btn-primary">
-            <i class="mdi mdi-plus w-4 h-4 mr-2"></i>
-            Add New Item
-          </NuxtLink>
+          <button @click="clearFilter" class="px-4 py-2 bg-red-800 text-white rounded-lg hover:bg-gray-600 transition-colors w-full sm:w-auto">Clear</button>
         </div>
       </div>
 
@@ -55,7 +35,6 @@
         <i class="mdi mdi-package-variant text-6xl text-gray-400 mx-auto mb-4 block"></i>
         <h3 class="text-lg font-medium text-gray-900 mb-2">No items found</h3>
         <p class="text-gray-500 mb-4">{{ selectedType ? `No ${selectedType.toLowerCase()} items found.` : 'No bakery items found.' }}</p>
-        <NuxtLink to="/bakery-items/create" class="btn-primary">Add Your First Item</NuxtLink>
       </div>
 
       <!-- Table -->
@@ -77,7 +56,6 @@
                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Display Methods</th>
                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Environment</th>
                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Dates</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Actions</th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -109,7 +87,7 @@
 
                 <!-- Type -->
                 <td class="px-4 py-4 whitespace-nowrap">
-                  <span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">
+                  <span class="px-2 py-1 text-xs bg-red-100 text-red-800 rounded-full">
                     {{ item.type || 'N/A' }}
                   </span>
                 </td>
@@ -117,7 +95,7 @@
                 <!-- Price -->
                 <td class="px-4 py-4 whitespace-nowrap">
                   <div class="text-sm font-semibold text-green-600">
-                    ${{ typeof item.price === 'number' ? item.price.toFixed(2) : (item.price || '0.00') }}
+                    {{ typeof item.price === 'number' ? item.price.toLocaleString() : (item.price || '0') }} KIP
                   </div>
                 </td>
 
@@ -225,27 +203,6 @@
                     </div>
                   </div>
                 </td>
-
-                <!-- Actions -->
-                <td class="px-4 py-4 whitespace-nowrap">
-                  <div class="flex space-x-2">
-                    <NuxtLink
-                      :to="`/bakery-items/edit/${item.id}`"
-                      class="text-blue-600 hover:text-blue-800"
-                      title="Edit"
-                    >
-                      <i class="mdi mdi-pencil w-4 h-4"></i>
-                    </NuxtLink>
-                    <button
-                      @click="deleteItem(item)"
-                      class="text-red-600 hover:text-red-800"
-                      title="Delete"
-                      :disabled="loading"
-                    >
-                      <i class="mdi mdi-delete w-4 h-4"></i>
-                    </button>
-                  </div>
-                </td>
               </tr>
             </tbody>
             </table>
@@ -254,186 +211,278 @@
       </div>
 
       <!-- Pagination -->
-      <AdminPagination
-        v-if="!loading && filteredItems.length > 0"
-        :current-page="currentPage"
-        :total-items="filteredItems.length"
-        :items-per-page="itemsPerPage"
-        :items-per-page-options="itemsPerPageOptions"
-        :item-label="selectedType ? `${selectedType.toLowerCase()} items` : 'bakery items'"
-        @go-to-first-page="goToFirstPage"
-        @prev-page="prevPage"
-        @next-page="nextPage"
-        @go-to-last-page="goToLastPage"
-        @go-to-page="goToPage"
-        @change-items-per-page="changeItemsPerPage"
-      />
+      <div v-if="!loading && filteredItems.length > 0" class="mt-6">
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+          <!-- Pagination Info -->
+          <div class="text-sm text-gray-600">
+            Showing {{ (currentPage - 1) * itemsPerPage + 1 }}-{{ Math.min(currentPage * itemsPerPage, filteredItems.length) }} of {{ filteredItems.length }} items
+          </div>
+
+          <!-- Pagination Controls -->
+          <div class="flex items-center space-x-2">
+            <!-- First Page -->
+            <button
+              @click="goToFirstPage"
+              :disabled="currentPage === 1"
+              :class="[
+                'px-3 py-2 rounded-lg font-medium transition-colors border',
+                currentPage === 1
+                  ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                  : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50 hover:border-red-300 hover:text-red-600'
+              ]"
+            >
+              ⟪
+            </button>
+
+            <!-- Previous -->
+            <button
+              @click="prevPage"
+              :disabled="currentPage === 1"
+              :class="[
+                'px-3 py-2 rounded-lg font-medium transition-colors border',
+                currentPage === 1
+                  ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                  : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50 hover:border-red-300 hover:text-red-600'
+              ]"
+            >
+              ⟨
+            </button>
+
+            <!-- Page Numbers -->
+            <div class="flex space-x-1 mx-4">
+              <button
+                v-for="page in visiblePages"
+                :key="page"
+                @click="goToPage(page)"
+                :class="[
+                  'min-w-[44px] px-3 py-2 rounded-lg font-medium transition-colors border text-center',
+                  currentPage === page
+                    ? 'bg-red-600 text-white border-red-600 shadow-md'
+                    : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50 hover:border-red-300 hover:text-red-600'
+                ]"
+              >
+                {{ page }}
+              </button>
+            </div>
+
+            <!-- Next -->
+            <button
+              @click="nextPage"
+              :disabled="currentPage === totalPages"
+              :class="[
+                'px-3 py-2 rounded-lg font-medium transition-colors border',
+                currentPage === totalPages
+                  ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                  : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50 hover:border-red-300 hover:text-red-600'
+              ]"
+            >
+              ⟩
+            </button>
+
+            <!-- Last Page -->
+            <button
+              @click="goToLastPage"
+              :disabled="currentPage === totalPages"
+              :class="[
+                'px-3 py-2 rounded-lg font-medium transition-colors border',
+                currentPage === totalPages
+                  ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                  : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50 hover:border-red-300 hover:text-red-600'
+              ]"
+            >
+              ⟫
+            </button>
+          </div>
+
+          <!-- Items Per Page Selector -->
+          <div class="flex items-center gap-2">
+            <span class="text-sm text-gray-600">Items per page:</span>
+            <select
+              v-model="itemsPerPage"
+              @change="changeItemsPerPage(itemsPerPage)"
+              class="border border-gray-300 rounded px-3 py-1 text-sm focus:ring-2 focus:ring-red-800 focus:border-red-800"
+            >
+              <option v-for="option in itemsPerPageOptions" :key="option" :value="option">
+                {{ option }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
 
       <!-- Loading State -->
       <div v-if="loading" class="flex justify-center py-12">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
-    </div>
-
-    <!-- Delete Confirmation Modal -->
-    <div v-if="showDeleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-        <h3 class="text-lg font-semibold mb-4">Confirm Delete</h3>
-        <p class="text-gray-600 mb-6">
-          Are you sure you want to delete "{{ itemToDelete?.name }}"? This action cannot be undone.
-        </p>
-        <div class="flex justify-end space-x-3">
-          <button @click="showDeleteModal = false" class="btn-secondary">Cancel</button>
-          <button @click="confirmDelete" class="btn-danger" :disabled="loading">
-            {{ loading ? 'Deleting...' : 'Delete' }}
-          </button>
-        </div>
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-const bakeryStore = useBakeryStore()
-const { bakeryItems, loading, error } = storeToRefs(bakeryStore)
-const bakeryTypeNames = computed(() => bakeryStore.bakeryTypeNames)
-const { convertGoogleDriveUrl } = useGoogleDrive()
+const { getProductsByBakeryType } = useProducts();
 
 // State
-const searchQuery = ref('')
-const selectedType = ref('')
-const showDeleteModal = ref(false)
-const itemToDelete = ref(null)
+const loading = ref(true);
+const error = ref(null);
+const searchQuery = ref('');
+const selectedType = ref('');
 
 // Pagination
-const currentPage = ref(1)
-const itemsPerPage = ref(10)
-const itemsPerPageOptions = [10, 20, 50]
+const currentPage = ref(1);
+const itemsPerPage = ref(10);
+const itemsPerPageOptions = [10, 20, 50];
 
-// Computed
+// Data
+const bakeryItems = ref([]);
+
+// Fetch data
+const fetchData = async () => {
+  try {
+    loading.value = true;
+    error.value = null;
+
+    const products = await getProductsByBakeryType('bakery');
+    bakeryItems.value = products || [];
+
+  } catch (err) {
+    console.error('Error fetching bakery items:', err);
+    error.value = `Failed to load products: ${err.message}`;
+    bakeryItems.value = [];
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Computed properties
+const bakeryTypeNames = computed(() => {
+  const types = new Set();
+  bakeryItems.value.forEach(item => {
+    if (item.type) types.add(item.type);
+  });
+  return Array.from(types).sort();
+});
+
 const filteredItems = computed(() => {
-  let items = bakeryItems.value
+  let items = bakeryItems.value;
 
-  // Filter by search query (name, type, description)
+  // Filter by search query
   if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase()
+    const query = searchQuery.value.toLowerCase();
     items = items.filter(item =>
       item.name?.toLowerCase().includes(query) ||
       item.type?.toLowerCase().includes(query) ||
       item.description?.toLowerCase().includes(query)
-    )
+    );
   }
 
   // Filter by type
   if (selectedType.value) {
-    items = items.filter(item => item.type === selectedType.value)
+    items = items.filter(item => item.type === selectedType.value);
   }
 
-  return items
-})
+  return items;
+});
 
 // Pagination computed properties
 const totalPages = computed(() => {
-  return Math.ceil(filteredItems.value.length / itemsPerPage.value)
-})
+  return Math.ceil(filteredItems.value.length / itemsPerPage.value);
+});
 
 const paginatedItems = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value
-  const end = start + itemsPerPage.value
-  return filteredItems.value.slice(start, end)
-})
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return filteredItems.value.slice(start, end);
+});
+
+// Generate visible page numbers
+const visiblePages = computed(() => {
+  const total = totalPages.value;
+  const current = currentPage.value;
+  const delta = 2;
+
+  let start = Math.max(1, current - delta);
+  let end = Math.min(total, current + delta);
+
+  if (current <= delta) {
+    end = Math.min(total, 2 * delta + 1);
+  }
+  if (current + delta >= total) {
+    start = Math.max(1, total - 2 * delta);
+  }
+
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+});
 
 // Methods
 const clearFilter = () => {
-  searchQuery.value = ''
-  selectedType.value = ''
-  currentPage.value = 1
-}
-
-// Watch for search changes and reset pagination
-watch([searchQuery, selectedType], () => {
-  currentPage.value = 1
-})
+  searchQuery.value = '';
+  selectedType.value = '';
+  currentPage.value = 1;
+};
 
 // Pagination methods
 const nextPage = () => {
   if (currentPage.value < totalPages.value) {
-    currentPage.value++
+    currentPage.value++;
   }
-}
+};
 
 const prevPage = () => {
   if (currentPage.value > 1) {
-    currentPage.value--
+    currentPage.value--;
   }
-}
+};
 
 const goToPage = (page) => {
   if (page >= 1 && page <= totalPages.value) {
-    currentPage.value = page
+    currentPage.value = page;
   }
-}
+};
 
 const goToFirstPage = () => {
-  currentPage.value = 1
-}
+  currentPage.value = 1;
+};
 
 const goToLastPage = () => {
-  currentPage.value = totalPages.value
-}
+  currentPage.value = totalPages.value;
+};
 
 const changeItemsPerPage = (newItemsPerPage) => {
-  itemsPerPage.value = newItemsPerPage
-  currentPage.value = 1
-}
-
-const deleteItem = (item) => {
-  itemToDelete.value = item
-  showDeleteModal.value = true
-}
-
-const confirmDelete = async () => {
-  if (itemToDelete.value) {
-    try {
-      await bakeryStore.deleteBakeryItem(itemToDelete.value.id)
-      showDeleteModal.value = false
-      itemToDelete.value = null
-    } catch (err) {
-      console.error('Failed to delete item:', err)
-    }
-  }
-}
+  itemsPerPage.value = newItemsPerPage;
+  currentPage.value = 1;
+};
 
 const formatDate = (date) => {
-  if (!date) return 'N/A'
+  if (!date) return 'N/A';
   return new Date(date).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit'
-  })
-}
+  });
+};
 
-const refreshData = () => {
-  bakeryStore.fetchBakeryItems()
-}
+// Watch for search changes and reset pagination
+watch([searchQuery, selectedType], () => {
+  currentPage.value = 1;
+});
 
 // Load data on mount
 onMounted(() => {
-  refreshData()
-})
+  fetchData();
+});
 
 // SEO
 useHead({
-  title: 'Bakery Items Manual View - Admin',
+  title: 'Product Manual - Bakery House | Complete Product Guide',
   meta: [
     {
       name: 'description',
-      content: 'Detailed table view of all bakery items with comprehensive product information.'
+      content: 'Comprehensive manual with detailed information about all our bakery products including storage, reheating instructions, and specifications.'
     }
   ]
-})
+});
 </script>
 
 <style scoped>
@@ -520,10 +569,6 @@ th:nth-child(12), td:nth-child(12) { /* Dates */
   width: 8%;
 }
 
-th:nth-child(13), td:nth-child(13) { /* Actions */
-  width: 6%;
-}
-
 /* Ensure content doesn't overflow cells */
 td {
   overflow: hidden;
@@ -542,24 +587,6 @@ td {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
   }
-}
-
-/* Ensure proper spacing for tags */
-.space-y-1 > * + * {
-  margin-top: 0.25rem;
-}
-
-/* Button hover effects */
-button {
-  transition: all 0.3s ease;
-}
-
-button:hover {
-  transform: translateY(-1px);
-}
-
-button:disabled {
-  transform: none;
 }
 
 /* Scrollbar styling */
@@ -586,9 +613,16 @@ button:disabled {
   background: #f1f1f1;
 }
 
-/* Table responsive container */
-.table-responsive {
-  position: relative;
-  width: 100%;
+/* Button hover effects */
+button {
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  transform: none;
 }
 </style>

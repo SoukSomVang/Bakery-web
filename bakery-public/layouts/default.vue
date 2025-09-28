@@ -48,6 +48,13 @@
           >
             About Us
           </NuxtLink>
+          <NuxtLink
+            to="/manual"
+            class="nav-link"
+            :class="{ active: $route.path === '/manual' }"
+          >
+            Manual
+          </NuxtLink>
 
           <!-- Products Dropdown Menu -->
           <!-- <div class="relative" ref="productsDropdown">
@@ -234,6 +241,12 @@
           >
             About Us
           </NuxtLink>
+          <NuxtLink
+            to="/manual"
+            class="block py-2 text-gray-700 hover:text-red-800"
+          >
+            Manual
+          </NuxtLink>
           <!-- <div class="py-2">
             <span class="text-gray-700 font-medium">Products</span>
             <div class="ml-4 mt-1 space-y-1">
@@ -290,7 +303,7 @@
             <input
               type="text"
               placeholder="Search for bakery items..."
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-800 focus:border-transparent"
               v-model="searchQuery"
               @keyup.enter="performSearch"
             />
@@ -348,6 +361,11 @@
               <li>
                 <NuxtLink to="/branches" class="text-red-400 hover:text-red-300"
                   >Locations</NuxtLink
+                >
+              </li>
+              <li>
+                <NuxtLink to="/manual" class="text-red-400 hover:text-red-300"
+                  >Manual</NuxtLink
                 >
               </li>
             </ul>
@@ -512,7 +530,7 @@
       <button
         v-show="showScrollTop"
         @click="scrollToTop"
-        class="fixed bottom-6 right-6 z-50 w-12 h-12 bg-red-800 text-white rounded-full shadow-lg hover:bg-red-900 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+        class="fixed bottom-6 right-6 z-50 w-12 h-12 bg-red-800 text-white rounded-full shadow-lg hover:bg-red-900 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-800 focus:ring-offset-2"
         title="Scroll to top"
       >
         <svg

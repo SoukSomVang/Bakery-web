@@ -103,7 +103,7 @@
         <select
           :value="itemsPerPage"
           @change="$emit('changeItemsPerPage', Number($event.target.value))"
-          class="border border-gray-300 rounded px-3 py-1 text-sm focus:ring-2 focus:ring-red-500 focus:border-red-500"
+          class="border border-gray-300 rounded px-3 py-1 text-sm focus:ring-2 focus:ring-red-800 focus:border-red-800"
         >
           <option v-for="option in itemsPerPageOptions" :key="option" :value="option">
             {{ option }}
