@@ -86,7 +86,7 @@
 
               <!-- Shelf Life -->
               <td class="border border-gray-300 px-2 py-4 text-center">
-                <div class="font-bold text-lg">{{ item.shelf_life_days || 7 }}</div>
+                <div class="font-bold text-lg">{{ item.shelf_life_days || item.shelfLife || 7 }}</div>
                 <div class="text-xs text-gray-600">days</div>
               </td>
 
@@ -122,16 +122,24 @@
               <td class="border border-gray-300 px-2 py-4 text-center">
                 <div class="flex justify-center gap-1 flex-wrap">
                   <!-- Cold Storage Icon -->
-                  <div v-if="needsColdStorage(item)" class="w-8 h-8 rounded flex items-center justify-center" title="Cold Storage">
+                  <div v-if="hasStorageMethod(item, 'store_in_refrigerator')" class="w-8 h-8 rounded flex items-center justify-center" title="Cold Storage">
                     <img src="/assets/images/icons/fridge.png" alt="Cold storage" class="w-8 h-8" />
                   </div>
-                  <!-- Room Temperature Icon -->
-                  <div v-else class="w-8 h-8 rounded flex items-center justify-center" title="Room Temperature">
-                    <img src="/assets/images/icons/room-temp.png" alt="Room temperature" class="w-8 h-8" />
+                  <!-- Cold Temperature Icon -->
+                  <div v-if="hasStorageMethod(item, 'store_at_cold_temperature')" class="w-8 h-8 rounded flex items-center justify-center" title="Cool Temperature">
+                    <img src="/assets/images/icons/temperature.png" alt="Cool temperature" class="w-8 h-8" />
                   </div>
                   <!-- Box Storage Icon -->
-                  <div class="w-8 h-8 rounded flex items-center justify-center" title="Store in Box">
-                    <img src="/assets/images/icons/package.png" alt="Store in box" class="w-8 h-8" />
+                  <div v-if="hasStorageMethod(item, 'store_in_box')" class="w-8 h-8 rounded flex items-center justify-center" title="Store in Box">
+                    <img src="/assets/images/icons/lunch-box.png" alt="Store in box" class="w-8 h-8" />
+                  </div>
+                  <!-- Airtight Storage Icon -->
+                  <div v-if="hasStorageMethod(item, 'keep_airtight')" class="w-8 h-8 rounded flex items-center justify-center" title="Keep Airtight">
+                    <img src="/assets/images/icons/air-sensitive.png" alt="Keep airtight" class="w-8 h-8" />
+                  </div>
+                  <!-- Cake Display Case Storage -->
+                  <div v-if="hasStorageMethod(item, 'store_in_cake_display_case')" class="w-8 h-8 rounded flex items-center justify-center" title="Store in Cake Display Case">
+                    <img src="/assets/images/icons/cake-case.jpg" alt="Store in cake display case" class="w-8 h-8" />
                   </div>
                 </div>
               </td>
@@ -139,17 +147,17 @@
               <!-- Display Method -->
               <td class="border border-gray-300 px-2 py-4 text-center">
                 <div class="flex justify-center gap-1 flex-wrap">
-                  <!-- Bakery Counter -->
-                  <div class="w-8 h-8 rounded flex items-center justify-center" title="Bakery Counter">
-                    <img src="/assets/images/icons/croissant.png" alt="Bakery counter" class="w-8 h-8" />
+                  <!-- Bakery Display Case -->
+                  <div v-if="hasDisplayMethod(item, 'arrange_in_bakery_display_case')" class="w-8 h-8 rounded flex items-center justify-center" title="Bakery Display Case">
+                    <img src="/assets/images/icons/bakery-case.jpg" alt="Bakery display case" class="w-8 h-8" />
                   </div>
-                  <!-- Cake Display -->
-                  <div v-if="item.type?.toLowerCase().includes('cake') || item.name?.toLowerCase().includes('cake')" class="w-8 h-8 rounded flex items-center justify-center" title="Cake Display">
-                    <img src="/assets/images/icons/cake-stand.png" alt="Cake display" class="w-8 h-8" />
+                  <!-- Cake Display Case -->
+                  <div v-if="hasDisplayMethod(item, 'arrange_in_cake_display_case')" class="w-8 h-8 rounded flex items-center justify-center" title="Cake Display Case">
+                    <img src="/assets/images/icons/cake-case.jpg" alt="Cake display case" class="w-8 h-8" />
                   </div>
-                  <!-- Glass Case -->
-                  <div class="w-8 h-8 rounded flex items-center justify-center" title="Glass Case">
-                    <img src="/assets/images/icons/display-case.png" alt="Glass case" class="w-8 h-8" />
+                  <!-- Glass Dome -->
+                  <div v-if="hasDisplayMethod(item, 'arrange_in_glass_dome')" class="w-8 h-8 rounded flex items-center justify-center" title="Glass Dome">
+                    <img src="/assets/images/icons/cover.png" alt="Glass dome" class="w-8 h-8" />
                   </div>
                 </div>
               </td>
@@ -157,9 +165,13 @@
               <!-- Precautions -->
               <td class="border border-gray-300 px-2 py-4 text-center">
                 <div class="flex justify-center gap-1 flex-wrap">
+                  <!-- General Warning -->
+                  <div class="w-8 h-8 rounded flex items-center justify-center" title="Handle with Care">
+                    <img src="/assets/images/icons/warning.png" alt="Handle with care" class="w-8 h-8" />
+                  </div>
                   <!-- Avoid Moisture -->
                   <div v-if="item.avoid_moisture" class="w-8 h-8 rounded flex items-center justify-center" title="Avoid Moisture">
-                    <img src="/assets/images/icons/water-drop.png" alt="Avoid moisture" class="w-8 h-8" />
+                    <img src="/assets/images/icons/drop.png" alt="Avoid moisture" class="w-8 h-8" />
                   </div>
                   <!-- Avoid Sunlight -->
                   <div v-if="item.avoid_sunlight" class="w-8 h-8 rounded flex items-center justify-center" title="Avoid Sunlight">
@@ -167,11 +179,7 @@
                   </div>
                   <!-- Temperature Sensitive -->
                   <div v-if="item.temperature_sensitive" class="w-8 h-8 rounded flex items-center justify-center" title="Temperature Sensitive">
-                    <img src="/assets/images/icons/thermometer-alert.png" alt="Temperature sensitive" class="w-8 h-8" />
-                  </div>
-                  <!-- General Warning -->
-                  <div class="w-8 h-8 rounded flex items-center justify-center" title="Handle with Care">
-                    <img src="/assets/images/icons/alert.png" alt="Handle with care" class="w-8 h-8" />
+                    <img src="/assets/images/icons/humidity-sensor.png" alt="Temperature sensitive" class="w-8 h-8" />
                   </div>
                 </div>
               </td>
@@ -213,15 +221,15 @@
             <h4 class="font-semibold text-gray-700">ການຈັດເກັບ / Storage:</h4>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/fridge.png" alt="Cold storage" class="w-8 h-8" />
+                <img src="/assets/images/icons/fridge.png" alt="Store in refrigerator" class="w-8 h-8" />
               </div>
-              <span>ເກັບໃນຕູ້ເຢັນ / Cold storage</span>
+              <span>ເກັບໃນຕູ້ເຢັນ / Store in refrigerator</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/temperature.png" alt="Room temperature" class="w-8 h-8" />
+                <img src="/assets/images/icons/temperature.png" alt="Store at cold temperature" class="w-8 h-8" />
               </div>
-              <span>ອຸນຫະພູມເຢັນ / Cool temperature</span>
+              <span>ເກັບໃນອຸນຫະພູມເຢັນ / Store at cold temperature</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
@@ -231,15 +239,15 @@
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/cake-case.jpg" alt="Store in box" class="w-8 h-8" />
+                <img src="/assets/images/icons/air-sensitive.png" alt="Keep airtight" class="w-8 h-8" />
               </div>
-              <span>ເກັບເຂົ້າຕູ້ເຄັກ / Store in cake case</span>
+              <span>ປິດໃຫ້ສະເໝີ / Keep airtight</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/air-sensitive.png" alt="Store in box" class="w-8 h-8" />
+                <img src="/assets/images/icons/cake-case.jpg" alt="Store in cake display case" class="w-8 h-8" />
               </div>
-              <span>ບໍ່ໃຫ້ລົມເຂົ້າ / Do not let air in</span>
+              <span>ເກັບເຂົ້າຕູ້ເຄັກ / Store in cake display case</span>
             </div>
           </div>
 
@@ -248,21 +256,21 @@
             <h4 class="font-semibold text-gray-700">ການຈັດວາງ / Display:</h4>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/bakery-case.jpg" alt="Bakery counter" class="w-8 h-8" />
+                <img src="/assets/images/icons/bakery-case.jpg" alt="Arrange in bakery display case" class="w-8 h-8" />
               </div>
-              <span>ຕູ້ເບເກີຣີ / Bakery display case</span>
+              <span>ວາງໃນຕູ້ເບເກີຣີ / Arrange in bakery display case</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/cake-case.jpg" alt="Cake display" class="w-8 h-8" />
+                <img src="/assets/images/icons/cake-case.jpg" alt="Arrange in cake display case" class="w-8 h-8" />
               </div>
-              <span>ຕູ້ເຄັກ / Cake display case</span>
+              <span>ວາງໃນຕູ້ເຄັກ / Arrange in cake display case</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/cover.png" alt="Glass case" class="w-8 h-8" />
+                <img src="/assets/images/icons/cover.png" alt="Arrange in glass dome" class="w-8 h-8" />
               </div>
-              <span>ໂຄມແກ້ວ / Glass case</span>
+              <span>ວາງໃນໂຄມແກ້ວ / Arrange in glass dome</span>
             </div>
           </div>
 
@@ -331,7 +339,16 @@
 </template>
 
 <script setup>
-const { getProductsByCakeAndBakeryTypes } = useProducts();
+// Use client-only wrapper for Firebase composable
+let getProductsByCakeAndBakeryTypes;
+
+if (import.meta.client) {
+  const { getProductsByCakeAndBakeryTypes: fetchProducts } = useProducts();
+  getProductsByCakeAndBakeryTypes = fetchProducts;
+} else {
+  // Server-side fallback
+  getProductsByCakeAndBakeryTypes = async () => [];
+}
 
 // State
 const loading = ref(true);
@@ -348,6 +365,12 @@ const bakeryItems = ref([]);
 
 // Fetch data
 const fetchData = async () => {
+  // Only fetch data on client side
+  if (!import.meta.client) {
+    loading.value = false;
+    return;
+  }
+
   try {
     loading.value = true;
     error.value = null;
@@ -433,11 +456,55 @@ const prevPage = () => {
 
 
 
-// Helper function to determine if item needs cold storage
+// Helper function to get default bakery image
+const getDefaultBakeryImage = () => {
+  return '/assets/images/default-bakery.jpg';
+};
+
+// Helper function to generate fallback image based on product type
+const generateFallbackImage = (item) => {
+  if (!item) return getDefaultBakeryImage();
+
+  const itemType = item.type?.toLowerCase() || '';
+  const itemName = item.name?.toLowerCase() || '';
+
+  // Try to match with specific bakery item types
+  if (itemType.includes('cake') || itemName.includes('cake')) {
+    return '/assets/images/fallback-cake.jpg';
+  } else if (itemType.includes('bread') || itemName.includes('bread')) {
+    return '/assets/images/fallback-bread.jpg';
+  } else if (itemType.includes('pastry') || itemName.includes('pastry')) {
+    return '/assets/images/fallback-pastry.jpg';
+  } else if (itemType.includes('cookie') || itemName.includes('cookie')) {
+    return '/assets/images/fallback-cookie.jpg';
+  }
+
+  // Default fallback
+  return getDefaultBakeryImage();
+};
+
+// Helper function to check if item has specific storage method
+const hasStorageMethod = (item, method) => {
+  if (!item || !item.storage_methods || !Array.isArray(item.storage_methods)) return false;
+  return item.storage_methods.includes(method);
+};
+
+// Helper function to check if item has specific display method
+const hasDisplayMethod = (item, method) => {
+  if (!item || !item.display_methods || !Array.isArray(item.display_methods)) return false;
+  return item.display_methods.includes(method);
+};
+
+// Helper function to determine if item needs cold storage (legacy support)
 const needsColdStorage = (item) => {
   if (!item) return false;
 
-  // Check if it's a cake or requires cold storage
+  // Check using the new storage_methods array first
+  if (hasStorageMethod(item, 'store_in_refrigerator') || hasStorageMethod(item, 'store_at_cold_temperature')) {
+    return true;
+  }
+
+  // Fallback to old logic for backward compatibility
   const itemType = item.type?.toLowerCase() || '';
   const itemName = item.name?.toLowerCase() || '';
 
@@ -445,12 +512,7 @@ const needsColdStorage = (item) => {
          itemType.includes('cream') ||
          itemName.includes('cake') ||
          itemName.includes('cream') ||
-         itemName.includes('mousse') ||
-         item.storage_methods?.some(method =>
-           method.toLowerCase().includes('cold') ||
-           method.toLowerCase().includes('refrigerat') ||
-           method.toLowerCase().includes('fridge')
-         );
+         itemName.includes('mousse');
 };
 
 // Enhanced function that always returns an image (never null)
@@ -470,81 +532,6 @@ const getProductImageWithFallback = (item) => {
 
   // Generate specific fallback image from local assets based on product type and name
   return generateFallbackImage(item);
-};
-
-// Get default bakery image for any fallback
-const getDefaultBakeryImage = () => {
-  return '/assets/images/products/default-bakery.jpg';
-};
-
-// Generate fallback image from local assets
-const generateFallbackImage = (item) => {
-  if (!item) return getDefaultBakeryImage();
-
-  const itemType = item.type?.toLowerCase() || '';
-  const itemName = item.name?.toLowerCase() || '';
-
-  // Use local asset images for better performance and consistency
-  const imageMap = {
-    // Croissants
-    'butter croissant': '/assets/images/products/butter-croissant.jpg',
-    'ham cheese croissant': '/assets/images/products/ham-cheese-croissant.jpg',
-    'almond croissant': '/assets/images/products/almond-croissant.jpg',
-    'croissant': '/assets/images/products/croissant-default.jpg',
-
-    // Cakes
-    'chocolate cake': '/assets/images/products/chocolate-cake.jpg',
-    'chocolate': '/assets/images/products/chocolate-cake.jpg',
-    'red velvet': '/assets/images/products/red-velvet-cake.jpg',
-    'cheesecake': '/assets/images/products/cheesecake.jpg',
-    'cheese cake': '/assets/images/products/cheesecake.jpg',
-    'carrot cake': '/assets/images/products/carrot-cake.jpg',
-
-    // Cookies
-    'cookie': '/assets/images/products/cookie.jpg',
-    'matcha cookie': '/assets/images/products/matcha-cookie.jpg',
-    'matcha': '/assets/images/products/matcha-cookie.jpg',
-
-    // Pastries
-    'choux cream': '/assets/images/products/choux-cream.jpg',
-    'choux': '/assets/images/products/choux-cream.jpg',
-    'custard': '/assets/images/products/choux-cream.jpg',
-    'egg tart': '/assets/images/products/tart-default.jpg',
-    'tart': '/assets/images/products/tart-default.jpg',
-    'mousse': '/assets/images/products/chocolate-cake.jpg',
-
-    // Pies
-    'coconut pie': '/assets/images/products/coconut-pie.jpg',
-    'pie': '/assets/images/products/coconut-pie.jpg',
-
-    // Default categories
-    'cake': '/assets/images/products/chocolate-cake.jpg',
-    'pastry': '/assets/images/products/pastry.jpg',
-    'bread': '/assets/images/products/bread.jpg'
-  };
-
-  // Try to match specific product names first
-  for (const [key, url] of Object.entries(imageMap)) {
-    if (itemName.includes(key.toLowerCase())) {
-      return url;
-    }
-  }
-
-  // Try type matching
-  if (itemType.includes('cake') || itemName.includes('cake')) {
-    return imageMap['cake'];
-  } else if (itemType.includes('cookie') || itemName.includes('cookie')) {
-    return imageMap['cookie'];
-  } else if (itemType.includes('bread') || itemName.includes('bread')) {
-    return imageMap['bread'];
-  } else if (itemType.includes('pastry') || itemName.includes('pastry')) {
-    return imageMap['pastry'];
-  } else if (itemType.includes('croissant') || itemName.includes('croissant')) {
-    return imageMap['croissant'];
-  }
-
-  // Default fallback
-  return getDefaultBakeryImage();
 };
 
 // Handle image error by trying fallback
@@ -572,9 +559,11 @@ watch([searchQuery, selectedType], () => {
   currentPage.value = 1;
 });
 
-// Load data on mount
+// Load data on mount (client-side only)
 onMounted(() => {
-  fetchData();
+  if (import.meta.client) {
+    fetchData();
+  }
 });
 
 // SEO

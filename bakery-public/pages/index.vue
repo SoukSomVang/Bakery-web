@@ -311,7 +311,16 @@ import { useFirebase } from '~/composables/useFirebase'
 
 const router = useRouter();
 const { getBranches } = useFirebase()
-const { getProductsByBakeryType } = useProducts()
+// Use client-only wrapper for Firebase composable
+let getProductsByBakeryType;
+
+if (import.meta.client) {
+  const { getProductsByBakeryType: fetchProducts } = useProducts();
+  getProductsByBakeryType = fetchProducts;
+} else {
+  // Server-side fallback
+  getProductsByBakeryType = async () => [];
+}
 
 // Branch locations data
 const branches = ref([])
@@ -369,9 +378,11 @@ onMounted(async () => {
     // Load branch locations
     branches.value = await getBranches()
 
-    // Load bakery products
-    bakeryProducts.value = await getProductsByBakeryType('bakery')
-    console.log('✅ HOME: Bakery products loaded:', bakeryProducts.value.length)
+    // Load bakery products (client-side only)
+    if (import.meta.client) {
+      bakeryProducts.value = await getProductsByBakeryType('bakery')
+      console.log('✅ HOME: Bakery products loaded:', bakeryProducts.value.length)
+    }
   } catch (error) {
     console.error('Failed to load data:', error)
   } finally {

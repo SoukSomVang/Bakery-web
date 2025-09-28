@@ -205,7 +205,16 @@
 </template>
 
 <script setup>
-const { getProductsByBakeryType } = useProducts();
+// Use client-only wrapper for Firebase composable
+let getProductsByBakeryType;
+
+if (import.meta.client) {
+  const { getProductsByBakeryType: fetchProducts } = useProducts();
+  getProductsByBakeryType = fetchProducts;
+} else {
+  // Server-side fallback
+  getProductsByBakeryType = async () => [];
+}
 
 // Loading states
 const loading = ref(true);
@@ -224,6 +233,12 @@ const allProducts = ref([]);
 
 // Fetch bakery products
 const fetchData = async () => {
+  // Only fetch data on client side
+  if (!import.meta.client) {
+    loading.value = false;
+    return;
+  }
+
   try {
     console.log('🚀 PUBLIC: Fetching bakery products...');
     loading.value = true;
@@ -275,9 +290,11 @@ const fetchDataWithRetry = async () => {
   }
 };
 
-// Fetch data on component mount
+// Fetch data on component mount (client-side only)
 onMounted(() => {
-  fetchDataWithRetry();
+  if (import.meta.client) {
+    fetchDataWithRetry();
+  }
 });
 
 // Computed properties for filtering

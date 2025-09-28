@@ -29,7 +29,16 @@
 </template>
 
 <script setup>
-const { getProductsFilteredByBakeryTypes } = useProducts()
+// Use client-only wrapper for Firebase composable
+let getProductsFilteredByBakeryTypes;
+
+if (import.meta.client) {
+  const { getProductsFilteredByBakeryTypes: getFilteredFunc } = useProducts();
+  getProductsFilteredByBakeryTypes = getFilteredFunc;
+} else {
+  // Server-side fallback
+  getProductsFilteredByBakeryTypes = async () => [];
+}
 
 const loading = ref(false)
 const error = ref(null)
@@ -39,6 +48,11 @@ const allProducts = ref([])
 const bakeryTypes = ref([])
 
 const testConnection = async () => {
+  // Only test connection on client side
+  if (!import.meta.client) {
+    return;
+  }
+
   try {
     loading.value = true
     error.value = null
@@ -74,6 +88,8 @@ const testConnection = async () => {
 
 // Auto-test on mount
 onMounted(() => {
-  testConnection()
+  if (import.meta.client) {
+    testConnection()
+  }
 })
 </script>
