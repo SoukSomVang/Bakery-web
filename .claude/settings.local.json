@@ -39,7 +39,11 @@
       "Bash(firebase init:*)",
       "Bash(dir:*)",
       "WebFetch(domain:localhost)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(firebase login:*)",
+      "Bash(npm run build:*)",
+      "Bash(firebase use:*)",
+      "Bash(chmod:*)"
     ],
     "deny": [],
     "ask": []

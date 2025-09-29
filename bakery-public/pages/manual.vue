@@ -241,7 +241,7 @@
               <div class="w-8 h-8 rounded flex items-center justify-center">
                 <img src="/assets/images/icons/air-sensitive.png" alt="Keep airtight" class="w-8 h-8" />
               </div>
-              <span>ປິດໃຫ້ສະເໝີ / Keep airtight</span>
+              <span>ບໍ່ໃຫ້ອາກາດເຂົ້າ / Keep airtight</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
