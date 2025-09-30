@@ -46,7 +46,10 @@
       "Bash(chmod:*)",
       "Bash(npm run generate:*)",
       "Bash(firebase hosting:sites:list:*)",
-      "Bash(firebase hosting:sites:create:*)"
+      "Bash(firebase hosting:sites:create:*)",
+      "WebFetch(domain:bakery-public-site.web.app)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)"
     ],
     "deny": [],
     "ask": []

@@ -3,8 +3,8 @@
     <h1 class="text-3xl font-bold text-blue-600">Admin Dashboard</h1>
     <p class="mt-4 text-gray-700">Welcome to the bakery admin panel!</p>
 
-    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="bg-white p-6 rounded-lg shadow border">
+    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- <div class="bg-white p-6 rounded-lg shadow border">
         <div class="flex items-center">
           <div class="p-2 bg-blue-100 rounded-full">
             <i class="mdi mdi-store w-6 h-6 text-blue-600"></i>
@@ -21,7 +21,7 @@
           class="text-sm text-blue-600 hover:underline mt-2 inline-block"
           >Manage</NuxtLink
         >
-      </div>
+      </div> -->
 
       <div class="bg-white p-6 rounded-lg shadow border">
         <div class="flex items-center">
@@ -84,13 +84,13 @@
     <div class="mt-8">
       <h2 class="text-xl font-semibold text-gray-800 mb-4">Quick Actions</h2>
       <div class="flex flex-wrap gap-4">
-        <NuxtLink
+        <!-- <NuxtLink
           to="/bakeries/create"
           class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors flex items-center gap-2"
         >
           <i class="mdi mdi-plus"></i>
           <p>Add Bakery</p>
-        </NuxtLink>
+        </NuxtLink> -->
         <NuxtLink
           to="/bakery-items/create"
           class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors flex items-center gap-2"

@@ -1,6 +1,9 @@
 <template>
   <div class="bg-gray-800 text-white w-64 min-h-screen p-4">
-    <div class="mb-8">
+    <div class="mb-8 flex flex-col items-center">
+      <NuxtLink to="/" class="mb-4">
+        <img :src="Logo" alt="Bakery House" class="w-24 h-24 object-contain" />
+      </NuxtLink>
       <h2 class="text-2xl font-bold">Bakery Admin</h2>
     </div>
     
@@ -37,6 +40,10 @@
     </nav>
   </div>
 </template>
+
+<script setup>
+import Logo from "@/assets/images/logo/png-black-red-logo.png";
+</script>
 
 <style scoped>
 .nav-link {

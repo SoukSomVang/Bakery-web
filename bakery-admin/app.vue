@@ -25,14 +25,14 @@
           Bakery Items
         </NuxtLink>
 
-        <NuxtLink
+        <!-- <NuxtLink
           to="/storage"
           class="nav-link"
           :class="{ active: $route.path.startsWith('/storage') }"
         >
           <i class="mdi mdi-database w-5 h-5"></i>
           Storage Data
-        </NuxtLink>
+        </NuxtLink> -->
 
         <NuxtLink
           to="/branches"
@@ -43,14 +43,14 @@
           Branches
         </NuxtLink>
 
-        <NuxtLink
+        <!-- <NuxtLink
           to="/bakeries"
           class="nav-link"
           :class="{ active: $route.path.startsWith('/bakeries') }"
         >
           <i class="mdi mdi-store w-5 h-5"></i>
           Bakeries
-        </NuxtLink>
+        </NuxtLink> -->
 
         <NuxtLink
           to="/bakery-types"
