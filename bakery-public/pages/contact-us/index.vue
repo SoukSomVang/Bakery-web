@@ -24,8 +24,7 @@
                 </div>
                 <div>
                   <h3 class="text-lg font-semibold text-gray-800 mb-2">Phone</h3>
-                  <p class="text-gray-600">+1 555-555-5556</p>
-                  <p class="text-sm text-gray-500 mt-1">Mon-Fri 6:00 AM - 8:00 PM</p>
+                  <p class="text-gray-600">+856 20 522 212 14</p>
                 </div>
               </div>
 
@@ -39,8 +38,7 @@
                 </div>
                 <div>
                   <h3 class="text-lg font-semibold text-gray-800 mb-2">Email</h3>
-                  <p class="text-gray-600">info@bakeryhouse.com</p>
-                  <p class="text-sm text-gray-500 mt-1">We'll respond within 24 hours</p>
+                  <p class="text-gray-600">bakeryhouse@gmail.com</p>
                 </div>
               </div>
 
@@ -52,15 +50,15 @@
                   </svg>
                 </div>
                 <div>
-                  <h3 class="text-lg font-semibold text-gray-800 mb-2">Head Office</h3>
-                  <p class="text-gray-600">250 Executive Park Blvd, Suite 3400</p>
-                  <p class="text-gray-600">San Francisco, CA 94134</p>
-                  <p class="text-gray-600">United States</p>
+                  <h3 class="text-lg font-semibold text-gray-800 mb-2">Bakery house</h3>
+                  <p class="text-gray-600">Nongnieng Road, Ban Nongnieng</p>
+                  <p class="text-gray-600">Saysettha District, Vientiane Capital</p>
+                  <p class="text-gray-600">Laos</p>
                 </div>
               </div>
 
               <!-- Social Media -->
-              <div class="flex items-start space-x-4 p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+              <!-- <div class="flex items-start space-x-4 p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-lg transition-shadow">
                 <div class="bg-red-100 p-3 rounded-full">
                   <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-3.22l-3.02 3.02a1 1 0 01-1.56-.8V15H5a2 2 0 01-2-2V5zm6 7a1 1 0 100-2 1 1 0 000 2zm-3 0a1 1 0 100-2 1 1 0 000 2zm6 0a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
@@ -86,7 +84,7 @@
                     </a>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
 
@@ -95,7 +93,7 @@
             <!-- Company Image -->
             <div class="relative">
               <img 
-                src="https://media.phillyvoice.com/media/images/Screen_Shot_2021-07-20_at_1.14.40_PM.width-600.png" 
+                :src="BackgrounImage" 
                 alt="Bakery House Interior" 
                 class="w-full h-64 md:h-80 object-cover rounded-lg shadow-lg"
               >
@@ -120,13 +118,13 @@
                   </div>
                   <div>
                     <h4 class="font-semibold text-gray-800">Address</h4>
-                    <p class="text-gray-600">250 Executive Park Blvd, Suite 3400</p>
-                    <p class="text-gray-600">San Francisco, CA 94134, United States</p>
+                    <p class="text-gray-600">Nongnieng Road, Ban Nongnieng</p>
+                    <p class="text-gray-600">Saysettha District, Vientiane Capital</p>
                   </div>
                 </div>
 
                 <!-- Business Hours -->
-                <div class="flex items-start space-x-3">
+                <!-- <div class="flex items-start space-x-3">
                   <div class="bg-red-100 p-2 rounded-full mt-1">
                     <svg class="w-4 h-4 text-red-600" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
@@ -140,7 +138,7 @@
                       <p>Sunday: 7:00 AM - 7:00 PM</p>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
 
               <!-- Get Directions Button -->
@@ -161,6 +159,7 @@
 </template>
 
 <script setup>
+import BackgrounImage from "@/assets/images/background.jpeg"
 // Meta tags for SEO
 useHead({
   title: 'Contact Us - Bakery House | Get In Touch',

@@ -43,7 +43,10 @@
       "Bash(firebase login:*)",
       "Bash(npm run build:*)",
       "Bash(firebase use:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(npm run generate:*)",
+      "Bash(firebase hosting:sites:list:*)",
+      "Bash(firebase hosting:sites:create:*)"
     ],
     "deny": [],
     "ask": []

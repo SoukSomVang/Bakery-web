@@ -67,16 +67,7 @@
           <div>
             <h2 class="text-4xl font-bold text-gray-800 mb-6">Our Story</h2>
             <p class="text-gray-600 mb-6 leading-relaxed">
-              Bakery House began as a dream to bring authentic, artisanal baking
-              to our community. Founded with a commitment to quality and
-              tradition, we've been serving freshly baked goods that bring
-              families together and create lasting memories.
-            </p>
-            <p class="text-gray-600 mb-6 leading-relaxed">
-              Every morning, our skilled bakers arrive before dawn to prepare
-              our signature croissants, artisan breads, and delectable pastries.
-              We believe in using only the finest ingredients and time-honored
-              techniques to ensure every bite is a moment of pure joy.
+              Bakery House ຖືກສ້າງຕັ້ງຂຶ້ນມາບົນພື້ນຖານຄວາມໝຸ່ງໝັ້ນ ແລະ ວິໃສທັດທີ່ຢາກໃຫ້ປະເທດລາວໄດ້ມີແບຣນເຂົ້າໝົມປັງທີ່ເປັນຂອງຄົນລາວເອງ. ດ້ວຍຄວາມຕັ້ງໃຈທີ່ຈະເຂົ້າມາມີສ່ວນຮ່ວມການແຂ່ງຂັນ ແລະ ມີສ່ວນຮ່ວມໃນຕະຫຼາດເຂົ້າໝົມປັງທັງພາຍໃນແລະ ພາຍນອກປະເທດລາວ, ນອກຈາກນີ້ທາງບໍລິສັດເຮົາກໍໄດ້ມີມາດຕະຖານໂຮງງານຜະລິດທີ່ໄດ້ຮັບການອານຸມັດຈາກ ອຢ ຫຼື (ກົມອາຫານ ແລະ ການຢາ) ທີ່ຈະສ້າງຄວາມເຊື່ອໝັ້ນໃຫ້ແກ່ຜູ້ບໍລິໂພກທຸກປະເພດ, ທຸກໄວຍິງໄປກວ່ານັ້ນທາງບໍລິສັດ Bakery House ຍັງຮ່ວມມືກັບອົງກອນ GMP ເພື່ອທີ່ຈະຍົກລະດັບໂຮງງານຜະລິດເຂົ້າໝົມປັງຂອງບໍລິສັດ Bakery House ຂອງພວກເຮົາກ້າວໄປສູ່ລະດັບສາກົນ.
             </p>
             <div class="flex items-center space-x-4">
               <div
@@ -157,29 +148,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Call to Action Section -->
-    <section class="py-16 bg-gradient-to-r from-red-900 to-red-700 text-white">
-      <div class="container mx-auto px-6 text-center">
-        <h2 class="text-4xl font-bold mb-6">Visit Us Today</h2>
-        <p class="text-xl mb-8 max-w-2xl mx-auto">
-          Experience the difference that passion and quality make. Come taste
-          what makes Bakery House special.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <button
-            class="bg-white text-red-800 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-          >
-            View Our Products
-          </button>
-          <button
-            class="border-2 border-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-red-800 transition-colors"
-          >
-            Contact Us
-          </button>
-        </div>
-      </div>
-    </section>
   </div>
 </template>
 
