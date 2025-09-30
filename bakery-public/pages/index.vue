@@ -1,79 +1,50 @@
 <template>
   <div class="min-h-screen bg-white">
     <!-- Hero Section -->
-    <section
-      class="relative bg-cover bg-center h-[80vh] md:h-[90vh]"
-      :style="{
-        backgroundImage: `url('https://images.unsplash.com/photo-1568254183919-78a4f43a2877?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDIzfHx8ZW58MHx8fHx8')`,
-      }"
-    >
-      <!-- Overlay matching your image -->
+    <!-- Hero Section -->
+    <section class="relative h-[80vh] md:h-[90vh] flex overflow-hidden">
+      <!-- Left Half - Background Image -->
       <div
-        class="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-red-900/40"
-      ></div>
-
-      <!-- Content -->
-      <div
-        class="relative z-10 h-full flex flex-col lg:flex-row justify-between items-center px-4 lg:px-8"
+        class="w-1/2 bg-cover bg-center relative"
+        :style="{
+          backgroundImage: `url(${backgroundImg})`,
+        }"
       >
-        <div class="w-full lg:w-1/2 mb-8 lg:mb-0">
-          <div class="flex justify-center lg:justify-start">
-            <div class="text-center lg:text-left">
-              <!-- Bakery Text -->
-              <div class="mb-4">
-                <span
-                  class="text-6xl lg:text-8xl xl:text-9xl font-bold italic text-white tracking-wider block animate-fade-in-up"
-                  style="
-                    font-family: 'Brush Script MT', cursive;
-                    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
-                    animation-delay: 0.2s;
-                  "
-                >
-                  Bakery
-                </span>
-              </div>
+        <!-- Dark overlay for better contrast -->
+        <div class="absolute inset-0 bg-black/30"></div>
+      </div>
 
-              <!-- House Text -->
-              <div class="relative">
-                <!-- Small house icon -->
-                <div class="absolute -top-6 right-0 lg:left-0 text-red-300">
-                  
-                </div>
+      <!-- Right Half - Solid Red -->
+      <div class="w-1/2 bg-red-900"></div>
 
-                <span
-                  class="text-4xl lg:text-6xl xl:text-7xl font-bold italic text-red-400 tracking-wider block animate-fade-in-up"
-                  style="
-                    font-family: 'Brush Script MT', cursive;
-                    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
-                    animation-delay: 0.4s;
-                  "
-                >
-                  House
-                </span>
-              </div>
-            </div>
+      <!-- White Card Overlay - Positioned to overlap both sides -->
+      <div
+        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 px-4"
+      >
+        <div
+          class="bg-white/95 backdrop-blur-sm py-10 px-12 shadow-2xl rounded-lg animate-fade-in-up max-w-2xl"
+        >
+          <!-- Logo -->
+          <div class="flex justify-center mb-6">
+            <img
+              src="../assets/images/logo/png-black-red-logo.png"
+              alt="Bakery House Logo"
+              class="w-40 h-40 object-contain"
+            />
           </div>
-        </div>
-        <div class="w-full lg:w-1/2 flex justify-center lg:justify-end">
-          <!-- White Card -->
-          <div
-            class="bg-white/95 backdrop-blur-sm py-8 md:py-10 px-8 md:px-12 shadow-2xl max-w-sm md:max-w-lg rounded-lg border-l-4 border-red-800 animate-fade-in-right"
-            style="animation-delay: 0.6s"
+
+          <h1
+            class="text-black text-2xl md:text-3xl lg:text-4xl font-bold italic mb-8 leading-tight text-center"
           >
-            <h1
-              class="text-black text-xl md:text-2xl lg:text-3xl font-semibold mb-6 md:mb-8 leading-relaxed"
-            >
-              Bakery house Holding Company Limited
-            </h1>
-            <p class="text-gray-600 text-sm md:text-base mb-6 leading-relaxed">
-              Crafting exceptional baked goods with premium ingredients and
-              traditional techniques since our founding.
-            </p>
+            Bakery house Holding Company Limited
+          </h1>
+
+          <div class="flex justify-center">
             <button
-              class="bg-red-900 hover:bg-red-950 text-white px-8 md:px-12 py-4 md:py-5 rounded-lg font-semibold transition-all duration-300 w-full md:w-auto shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              class="bg-red-900 hover:bg-red-950 text-white px-12 py-4 rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-lg"
               @click="handleGotoAboutUs"
             >
-              Discover Our Story
+              Discovered us
             </button>
           </div>
         </div>
@@ -162,11 +133,11 @@
               </p>
             </div>
           </div>
-          <div class="w-full h-full">
+          <div class="w-full h-full flex items-center justify-center">
             <img
-              src="https://www.chaidim.com/cdn/shop/articles/e340139307b347984dd98d8b1019c1dc_1200x798.jpg?v=1718442365"
+              :src="propImage"
               alt="Bakery production process"
-              class="w-full h-full object-cover rounded-lg shadow-xl"
+              class="w-[90%] h-[70%] object-cover rounded-lg shadow-xl"
             />
           </div>
         </div>
@@ -177,12 +148,12 @@
     <section
       class="py-16 bg-cover bg-center h-[80vh]"
       :style="{
-        backgroundImage: `url('https://images.unsplash.com/photo-1555507036-ab1f4038808a?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Y3JvaXNzYW50c3xlbnwwfHwwfHx8MA%3D%3D')`,
+        backgroundImage: `url('${productSectionImage}')`,
       }"
     >
-      <div class="container px-20">
+      <div class="container px-20 flex items-center justify-center">
         <h2
-          class="text-start text-7xl font-semibold text-center mb-12 text-white underline cursor-pointer"
+          class="text-center w-full text-5xl md:text-7xl font-semibold text-red-800 mb-12 underline cursor-pointer"
           @click="$router.push('/products')"
         >
           ALL BAKERY
@@ -191,7 +162,7 @@
     </section>
 
     <!-- Product Showcase -->
-    <section class="py-16 bg-white">
+    <!-- <section class="py-16 bg-white">
       <div class="container mx-auto px-4">
         <div class="grid lg:grid-cols-2 gap-12 items-center">
           <div class="order-2 lg:order-1">
@@ -240,27 +211,29 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- Bakery Locations Section -->
     <section class="py-16 bg-gray-50">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
           <h2 class="text-4xl font-bold text-gray-800 mb-4">
-            Our Bakery Locations
+            Branches
           </h2>
-          <p class="text-gray-600 max-w-2xl mx-auto">
-            Visit any of our locations to experience fresh, high-quality baked goods
-          </p>
         </div>
-        
+
         <!-- Loading State -->
         <div v-if="branchesLoading" class="text-center">
-          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600 mx-auto"></div>
+          <div
+            class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600 mx-auto"
+          ></div>
         </div>
 
         <!-- Branches List -->
-        <div v-else-if="branches.length > 0" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div
+          v-else-if="branches.length > 0"
+          class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+        >
           <div
             v-for="branch in branches.slice(0, 6)"
             :key="branch.id"
@@ -268,7 +241,7 @@
           >
             <h3
               @click="handleLocationClick(branch)"
-              class="text-lg font-medium text-gray-700 underline cursor-pointer hover:text-red-700 transition-colors"
+              class="text-lg font-medium text-red-800 underline cursor-pointer hover:text-red-700 transition-colors"
             >
               {{ branch.name }}
             </h3>
@@ -283,16 +256,27 @@
     </section>
 
     <!-- Location Dialog -->
-    <div v-if="showLocationDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div
+      v-if="showLocationDialog"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+    >
       <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
         <div class="text-center">
-          <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+          <svg
+            class="w-16 h-16 text-gray-400 mx-auto mb-4"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            />
           </svg>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">Location Not Available</h3>
-          <p class="text-gray-600 mb-6">
-            Branch does not have location data
-          </p>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">
+            Location Not Available
+          </h3>
+          <p class="text-gray-600 mb-6">Branch does not have location data</p>
           <button
             @click="closeDialog"
             class="bg-red-900 hover:bg-red-950 text-white px-6 py-2 rounded-md font-semibold transition-colors"
@@ -307,10 +291,13 @@
 
 <script setup>
 import { useRouter } from "vue-router";
-import { useFirebase } from '~/composables/useFirebase'
+import { useFirebase } from "~/composables/useFirebase";
+import backgroundImg from "@/assets/images/background.jpeg";
+import propImage from "@/assets/images/prop-image2.jpg"
+import productSectionImage from "@/assets/images/prop-image.jpeg"
 
 const router = useRouter();
-const { getBranches } = useFirebase()
+const { getBranches } = useFirebase();
 // Use client-only wrapper for Firebase composable
 let getProductsByBakeryType;
 
@@ -323,10 +310,10 @@ if (import.meta.client) {
 }
 
 // Branch locations data
-const branches = ref([])
-const branchesLoading = ref(true)
-const showLocationDialog = ref(false)
-const selectedBranch = ref(null)
+const branches = ref([]);
+const branchesLoading = ref(true);
+const showLocationDialog = ref(false);
+const selectedBranch = ref(null);
 
 // Product data from Firestore
 const bakeryProducts = ref([]);
@@ -358,38 +345,41 @@ const additionalProducts = ref([
 const handleLocationClick = (branch) => {
   if (branch.locationUrl && branch.locationUrl.trim()) {
     // Open location URL in new tab
-    window.open(branch.locationUrl, '_blank')
+    window.open(branch.locationUrl, "_blank");
   } else {
     // Show dialog for missing location
-    selectedBranch.value = branch
-    showLocationDialog.value = true
+    selectedBranch.value = branch;
+    showLocationDialog.value = true;
   }
-}
+};
 
 // Close dialog
 const closeDialog = () => {
-  showLocationDialog.value = false
-  selectedBranch.value = null
-}
+  showLocationDialog.value = false;
+  selectedBranch.value = null;
+};
 
 // Load branch locations and products
 onMounted(async () => {
   try {
     // Load branch locations
-    branches.value = await getBranches()
+    branches.value = await getBranches();
 
     // Load bakery products (client-side only)
     if (import.meta.client) {
-      bakeryProducts.value = await getProductsByBakeryType('bakery')
-      console.log('✅ HOME: Bakery products loaded:', bakeryProducts.value.length)
+      bakeryProducts.value = await getProductsByBakeryType("bakery");
+      console.log(
+        "✅ HOME: Bakery products loaded:",
+        bakeryProducts.value.length
+      );
     }
   } catch (error) {
-    console.error('Failed to load data:', error)
+    console.error("Failed to load data:", error);
   } finally {
-    branchesLoading.value = false
-    productsLoading.value = false
+    branchesLoading.value = false;
+    productsLoading.value = false;
   }
-})
+});
 
 function handleGotoAboutUs() {
   router.push("/about-us");
@@ -397,13 +387,15 @@ function handleGotoAboutUs() {
 
 // Meta tags for SEO
 useSeoMeta({
-  title: 'Bakery House - Fresh Baked Goods Daily',
-  ogTitle: 'Bakery House - Fresh Baked Goods Daily',
-  description: 'Experience the finest bakery products made with the best ingredients. From croissants to cakes, we serve fresh baked goods daily.',
-  ogDescription: 'Experience the finest bakery products made with the best ingredients. From croissants to cakes, we serve fresh baked goods daily.',
-  ogImage: '/api/placeholder/1200/630',
-  twitterCard: 'summary_large_image',
-})
+  title: "Bakery House - Fresh Baked Goods Daily",
+  ogTitle: "Bakery House - Fresh Baked Goods Daily",
+  description:
+    "Experience the finest bakery products made with the best ingredients. From croissants to cakes, we serve fresh baked goods daily.",
+  ogDescription:
+    "Experience the finest bakery products made with the best ingredients. From croissants to cakes, we serve fresh baked goods daily.",
+  ogImage: "/api/placeholder/1200/630",
+  twitterCard: "summary_large_image",
+});
 </script>
 
 <style scoped>

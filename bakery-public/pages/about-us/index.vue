@@ -4,7 +4,7 @@
     <section
       class="relative bg-cover bg-center max-h-[90vh]"
       :style="{
-        backgroundImage: `url('https://images.unsplash.com/photo-1568254183919-78a4f43a2877?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDIzfHx8ZW58MHx8fHx8')`,
+        backgroundImage: `url('${backgroundImage}')`,
       }"
     >
       <!-- Overlay matching your style -->
@@ -52,44 +52,7 @@
             <!-- Right Content - Stylized Logo -->
             <div class="flex justify-center lg:justify-end">
               <div class="text-right animate-fade-in-right" style="animation-delay: 0.8s">
-                <!-- Bakery Text -->
-                <div class="mb-4">
-                  <span
-                    class="text-7xl lg:text-8xl xl:text-9xl font-bold italic text-white tracking-wider"
-                    style="
-                      font-family: 'Brush Script MT', cursive;
-                      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-                    "
-                  >
-                    Bakery
-                  </span>
-                </div>
-
-                <!-- House Text -->
-                <div class="relative">
-                  <!-- Small house icon -->
-                  <div class="absolute -top-6 right-0 text-red-300">
-                    <svg
-                      class="w-8 h-8"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
-                      />
-                    </svg>
-                  </div>
-
-                  <span
-                    class="text-5xl lg:text-6xl xl:text-7xl font-bold italic text-red-400 tracking-wider"
-                    style="
-                      font-family: 'Brush Script MT', cursive;
-                      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-                    "
-                  >
-                    House
-                  </span>
-                </div>
+                <img :src="Logo" alt="logo" class="w-80 h-80">
               </div>
             </div>
           </div>
@@ -125,12 +88,12 @@
           </div>
           <div class="grid grid-cols-2 gap-4">
             <img
-              src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=300&fit=crop"
+              :src="CeoImage"
               alt="Baker at work"
               class="rounded-lg shadow-lg"
             />
             <img
-              src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=300&h=300&fit=crop"
+              :src="CookingImage"
               alt="Fresh bread"
               class="rounded-lg shadow-lg mt-8"
             />
@@ -221,7 +184,11 @@
 </template>
 
 <script setup>
-import { useFirebase } from '~/composables/useFirebase'
+import { useFirebase } from '~/composables/useFirebase';
+import backgroundImage from "@/assets/images/background.jpeg";
+import Logo from "@/assets/images/logo/white-logo.png";
+import CeoImage from "@/assets/images/ceo-image.jpeg";
+import CookingImage from "@/assets/images/about-us.jpeg";
 
 const { getBranches } = useFirebase()
 

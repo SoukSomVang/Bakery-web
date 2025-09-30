@@ -4,7 +4,7 @@
     <section
       class="relative bg-cover bg-center h-[60vh]"
       :style="{
-        backgroundImage: `url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3')`,
+        backgroundImage: `url('${cakeImage}')`,
       }"
     >
       <div class="absolute inset-0 bg-black/50"></div>
@@ -197,6 +197,7 @@
 
 <script setup>
 // Use client-only wrapper for Firebase composable
+import cakeImage from "@/assets/images/cake-section.jpeg"
 let getProductsByBakeryType;
 
 if (import.meta.client) {
