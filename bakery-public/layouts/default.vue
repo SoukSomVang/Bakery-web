@@ -327,7 +327,7 @@
             <ul class="space-y-2">
               <li>
                 <NuxtLink to="/products" class="text-red-400 hover:text-red-300"
-                  >All Products</NuxtLink
+                  >All Bakeries</NuxtLink
                 >
               </li>
               <li>

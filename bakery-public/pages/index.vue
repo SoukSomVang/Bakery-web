@@ -3,26 +3,23 @@
     <!-- Hero Section -->
     <!-- Hero Section -->
     <section class="relative h-[80vh] md:h-[90vh] flex overflow-hidden">
-      <!-- Left Half - Background Image -->
+      <!-- Left Side - Background Image (2/3) -->
       <div
-        class="w-1/2 bg-cover bg-center relative"
-        :style="{
-          backgroundImage: `url(${backgroundImg})`,
-        }"
+        class="w-2/3 bg-cover bg-center relative"
+        :style="{ backgroundImage: `url(${backgroundImg})` }"
       >
-        <!-- Dark overlay for better contrast -->
         <div class="absolute inset-0 bg-black/30"></div>
       </div>
 
-      <!-- Right Half - Solid Red -->
-      <div class="w-1/2 bg-red-900"></div>
+      <!-- Right Side - Solid Red (1/3) -->
+      <div class="w-1/3 bg-red-900"></div>
 
-      <!-- White Card Overlay - Positioned to overlap both sides -->
+      <!-- White Card Overlay - Centered on dividing line -->
       <div
-        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 px-4"
+        class="absolute top-1/2 left-2/3 transform -translate-x-1/2 -translate-y-1/2 z-10 px-4"
       >
         <div
-          class="bg-white/95 backdrop-blur-sm py-10 px-12 shadow-2xl rounded-lg animate-fade-in-up max-w-2xl"
+          class="bg-white/50 backdrop-blur-sm py-12 px-16 shadow-2xl rounded-lg animate-fade-in-up w-[800px] max-w-3xl"
         >
           <!-- Logo -->
           <div class="flex justify-center mb-6">
@@ -146,18 +143,18 @@
 
     <!-- Products Section -->
     <section
-      class="py-16 bg-cover bg-center h-[80vh]"
+      class="py-16 bg-cover bg-[center_bottom_43%] h-[90vh]"
       :style="{
         backgroundImage: `url('${productSectionImage}')`,
       }"
     >
-      <div class="container px-20 flex items-center justify-center">
-        <h2
-          class="text-center w-full text-5xl md:text-7xl font-semibold text-red-800 mb-12 underline cursor-pointer"
+      <div class="w-full px-20 pe-40 flex items-center justify-end">
+        <button
+          class="text-right text-3xl text-white font-semibold bg-red-800 mb-12 px-12 py-4 rounded-full cursor-pointer"
           @click="$router.push('/products')"
         >
           ALL BAKERY
-        </h2>
+        </button>
       </div>
     </section>
 
@@ -217,9 +214,7 @@
     <section class="py-16 bg-gray-50">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold text-gray-800 mb-4">
-            Branches
-          </h2>
+          <h2 class="text-4xl font-bold text-gray-800 mb-4">Branches</h2>
         </div>
 
         <!-- Loading State -->
@@ -234,6 +229,11 @@
           v-else-if="branches.length > 0"
           class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
         >
+          <div
+            class="md:col-span-2 lg:col-span-4 flex justify-center mb-8 text-xl"
+          >
+            Every Treekoff branch where we distribute Bakery:
+          </div>
           <div
             v-for="branch in branches.slice(0, 6)"
             :key="branch.id"
@@ -293,8 +293,8 @@
 import { useRouter } from "vue-router";
 import { useFirebase } from "~/composables/useFirebase";
 import backgroundImg from "@/assets/images/background.jpeg";
-import propImage from "@/assets/images/prop-image2.jpg"
-import productSectionImage from "@/assets/images/prop-image.jpeg"
+import propImage from "@/assets/images/prop-image2.jpg";
+import productSectionImage from "@/assets/images/prop-image.jpeg";
 
 const router = useRouter();
 const { getBranches } = useFirebase();
