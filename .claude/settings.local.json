@@ -49,7 +49,9 @@
       "Bash(firebase hosting:sites:create:*)",
       "WebFetch(domain:bakery-public-site.web.app)",
       "Bash(mkdir:*)",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "Bash(firebase target:apply:*)",
+      "Bash(firebase hosting:sites:delete:*)"
     ],
     "deny": [],
     "ask": []

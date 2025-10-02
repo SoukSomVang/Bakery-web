@@ -6,10 +6,13 @@
     "bakery-house-f7e32": {
       "hosting": {
         "bakery-public": [
-          "bakery-public-site"
+          "bakeryhouse-shop"
         ],
         "bakery-admin": [
-          "bakery-admin-panel"
+          "bakery-admin-dashboard"
+        ],
+        "test": [
+          "bakeryhouse-test"
         ]
       }
     }
