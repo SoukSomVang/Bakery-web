@@ -5,14 +5,14 @@
   "targets": {
     "bakery-house-f7e32": {
       "hosting": {
-        "bakery-public": [
-          "bakeryhouse-shop"
-        ],
-        "bakery-admin": [
-          "bakery-admin-dashboard"
-        ],
         "test": [
           "bakeryhouse-test"
+        ],
+        "bakery-public": [
+          "bakeryhouse-shop-55849"
+        ],
+        "bakery-admin": [
+          "bakery-admin-dashboard-ea9d5"
         ]
       }
     }
