@@ -95,7 +95,7 @@
               <img 
                 :src="BackgrounImage" 
                 alt="Bakery House Interior" 
-                class="w-full h-64 md:h-80 object-cover rounded-lg shadow-lg"
+                class="w-full h-96 object-cover rounded-lg shadow-lg"
               >
               <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-lg"></div>
               <div class="absolute bottom-4 left-4 text-white">
@@ -143,12 +143,14 @@
 
               <!-- Get Directions Button -->
               <div class="pt-4">
-                <button class="w-full bg-red-900 hover:bg-red-950 text-white px-6 py-3 rounded-md font-semibold transition-colors flex items-center justify-center space-x-2">
-                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
-                  </svg>
-                  <span>Get Directions</span>
-                </button>
+                <a :href="LOCATION" target="_blank">
+                  <button class="w-full bg-red-900 hover:bg-red-950 text-white px-6 py-3 rounded-md font-semibold transition-colors flex items-center justify-center space-x-2">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Get Directions</span>
+                  </button>
+                </a>
               </div>
             </div>
           </div>
@@ -159,7 +161,9 @@
 </template>
 
 <script setup>
-import BackgrounImage from "@/assets/images/background.jpeg"
+import BackgrounImage from "@/assets/images/contact-place.jpeg";
+
+const LOCATION = "https://maps.app.goo.gl/wHpTRKX8xvqQYYpd6"
 // Meta tags for SEO
 useHead({
   title: 'Contact Us - Bakery House | Get In Touch',

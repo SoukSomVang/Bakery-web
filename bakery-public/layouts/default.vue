@@ -252,7 +252,6 @@
         </div>
       </div>
 
-
       <!-- Search Overlay -->
       <div
         v-show="isSearchOpen"
@@ -385,10 +384,7 @@
                 >
               </li>
               <li>
-                <a
-                  class="text-gray-300 hover:text-white"
-                  >+856 20 552 212 14</a
-                >
+                <a class="text-gray-300 hover:text-white">+856 20 552 212 14</a>
               </li>
               <li>
                 <NuxtLink
@@ -398,6 +394,25 @@
                 >
               </li>
             </ul>
+            <div class="mt-4">
+              <h4 class="text-sm font-semibold mb-2">Follow us</h4>
+              <div class="flex space-x-3">
+                <!-- WhatsApp -->
+                <a href="#" class="text-gray-400">
+                  <img :src="WhatsappIcon" alt="whatsapp-icon" class="w-5 h-5">
+                </a>
+
+                <!-- TikTok -->
+                <a href="#" class="text-gray-400">
+                  <img :src="TikTokIcon" alt="tiktok-icon" class="w-5 h-5">
+                </a>
+
+                <!-- Facebook -->
+                <a href="#" class="text-gray-400">
+                  <img :src="FacebookIcon" alt="facebook-icon" class="w-5 h-5">
+                </a>
+              </div>
+            </div>
           </div>
 
           <!-- Company Info -->
@@ -406,7 +421,7 @@
             <address class="text-gray-300 not-italic">
               Bakery House<br />
               Nongnieng Road, Ban Nongnieng<br />
-              Saysettha District, Vientiane Capital, Laos <br>
+              Saysettha District, Vientiane Capital, Laos <br />
               Service Since 10/10/2024
             </address>
           </div>
@@ -463,6 +478,9 @@
 
 <script setup>
 import Logo from "@/assets/images/logo/png-black-red-logo.png";
+import WhatsappIcon from "@/assets/images/icons/whatsapp.png";
+import TikTokIcon from "@/assets/images/icons/tik-tok.png";
+import FacebookIcon from "@/assets/images/icons/facebook.png";
 
 // Reactive state for navigation
 const isProductsDropdownOpen = ref(false);
