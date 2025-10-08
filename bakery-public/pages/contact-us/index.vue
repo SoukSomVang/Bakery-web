@@ -58,7 +58,7 @@
               </div>
 
               <!-- Social Media -->
-              <!-- <div class="flex items-start space-x-4 p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+              <div class="flex items-start space-x-4 p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-lg transition-shadow">
                 <div class="bg-red-100 p-3 rounded-full">
                   <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-3.22l-3.02 3.02a1 1 0 01-1.56-.8V15H5a2 2 0 01-2-2V5zm6 7a1 1 0 100-2 1 1 0 000 2zm-3 0a1 1 0 100-2 1 1 0 000 2zm6 0a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
@@ -67,24 +67,18 @@
                 <div>
                   <h3 class="text-lg font-semibold text-gray-800 mb-2">Follow Us</h3>
                   <div class="flex space-x-4">
-                    <a href="#" class="text-red-600 hover:text-red-800 transition-colors">
-                      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M20 10c0-5.523-4.477-10-10-10S0 4.477 0 10c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V10h2.54V7.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V10h2.773l-.443 2.89h-2.33v6.988C16.343 19.128 20 14.991 20 10z" clip-rule="evenodd"/>
-                      </svg>
+                    <a href="https://wa.me/8562055221214" class="text-red-600 hover:text-red-800 transition-colors" target="_blank">
+                      <img :src="WhatsappIcon" alt="FaceBook icon" class="w-5 h-5">
                     </a>
-                    <a href="#" class="text-red-600 hover:text-red-800 transition-colors">
-                      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M12.017 0H7.982C3.579 0 0 3.579 0 7.982v4.035C0 16.421 3.579 20 7.982 20h4.035C16.421 20 20 16.421 20 12.018V7.982C20 3.579 16.421 0 12.017 0zM18.187 12.018c0 3.408-2.771 6.179-6.179 6.179H7.982c-3.408 0-6.179-2.771-6.179-6.179V7.982c0-3.408 2.771-6.179 6.179-6.179h4.026c3.408 0 6.179 2.771 6.179 6.179v4.036zM10 4.862c-2.832 0-5.138 2.306-5.138 5.138S7.168 15.138 10 15.138s5.138-2.306 5.138-5.138S12.832 4.862 10 4.862zm0 8.464c-1.836 0-3.326-1.49-3.326-3.326S8.164 6.674 10 6.674s3.326 1.49 3.326 3.326S11.836 13.326 10 13.326z" clip-rule="evenodd"/>
-                      </svg>
+                    <a href="https://www.tiktok.com/@bakeryhouse78?_t=ZS-90NpDLS35HD&_r=1" class="text-red-600 hover:text-red-800 transition-colors" target="_blank">
+                      <img :src="TikTokIcon" alt="FaceBook icon" class="w-5 h-5">
                     </a>
-                    <a href="#" class="text-red-600 hover:text-red-800 transition-colors">
-                      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.30A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84"/>
-                      </svg>
+                    <a href="#" class="text-red-600 hover:text-red-800 transition-colors" target="_blank">
+                      <img :src="FacebookIcon" alt="FaceBook icon" class="w-5 h-5">
                     </a>
                   </div>
                 </div>
-              </div> -->
+              </div>
             </div>
           </div>
 
@@ -162,6 +156,9 @@
 
 <script setup>
 import BackgrounImage from "@/assets/images/contact-place.jpeg";
+import WhatsappIcon from "@/assets/images/icons/whatsapp_red_color.png";
+import TikTokIcon from "@/assets/images/icons/tik-tok-red-color.png";
+import FacebookIcon from "@/assets/images/icons/facebook-app-red-color.png";
 
 const LOCATION = "https://maps.app.goo.gl/wHpTRKX8xvqQYYpd6"
 // Meta tags for SEO

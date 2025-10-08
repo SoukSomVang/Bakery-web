@@ -8,10 +8,17 @@
         "**/.*",
         "**/node_modules/**"
       ],
-      "rewrites": [
+      "cleanUrls": true,
+      "trailingSlash": false,
+      "headers": [
         {
-          "source": "**",
-          "destination": "/index.html"
+          "source": "**/*.@(jpg|jpeg|gif|png|svg|webp|js|css|woff|woff2|ttf|eot)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "max-age=31536000"
+            }
+          ]
         }
       ]
     },
@@ -23,10 +30,17 @@
         "**/.*",
         "**/node_modules/**"
       ],
-      "rewrites": [
+      "cleanUrls": true,
+      "trailingSlash": false,
+      "headers": [
         {
-          "source": "**",
-          "destination": "/index.html"
+          "source": "**/*.@(jpg|jpeg|gif|png|svg|webp|js|css|woff|woff2|ttf|eot)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "max-age=31536000"
+            }
+          ]
         }
       ]
     }

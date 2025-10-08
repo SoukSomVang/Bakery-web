@@ -9,110 +9,210 @@
         </div>
 
         <!-- Search Controls (minimal design) -->
-        <div class="flex justify-center mb-4">
-          <div class="flex gap-4 items-center">
-            <input
-              v-model="searchQuery"
-              type="text"
-              placeholder="ຄົ້ນຫາສິນຄ້າ / Search products..."
-              class="px-4 py-2 border border-gray-300 rounded text-sm w-64 focus:ring-2 focus:ring-red-800 focus:border-red-800"
-            />
-            <select v-model="selectedType" class="px-4 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-red-800 focus:border-red-800">
-              <option value="">All Types</option>
-              <option v-for="typeName in bakeryTypeNames" :key="typeName" :value="typeName">{{ typeName }}</option>
-            </select>
-            <button @click="clearFilter" class="px-4 py-2 bg-red-800 text-white rounded text-sm hover:bg-red-700">
-              Clear
-            </button>
-          </div>
+        <div
+          class="flex flex-col md:flex-row justify-center items-center gap-3 mb-4"
+        >
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="ຄົ້ນຫາສິນຄ້າ / Search products..."
+            class="px-4 py-2 border border-gray-300 rounded text-sm w-full md:w-64 focus:ring-2 focus:ring-red-800 focus:border-red-800"
+          />
+          <select
+            v-model="selectedType"
+            class="px-4 py-2 border border-gray-300 rounded text-sm w-full md:w-auto focus:ring-2 focus:ring-red-800 focus:border-red-800"
+          >
+            <option value="">All Types</option>
+            <option
+              v-for="typeName in bakeryTypeNames"
+              :key="typeName"
+              :value="typeName"
+            >
+              {{ typeName }}
+            </option>
+          </select>
+          <button
+            @click="clearFilter"
+            class="w-full md:w-auto px-4 py-2 bg-red-800 text-white rounded text-sm hover:bg-red-700"
+          >
+            Clear
+          </button>
         </div>
       </div>
     </div>
 
     <div class="max-w-7xl mx-auto px-6 py-6">
       <!-- Error Message -->
-      <div v-if="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6 text-center">
+      <div
+        v-if="error"
+        class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6 text-center"
+      >
         {{ error }}
       </div>
 
       <!-- No Items Message -->
-      <div v-if="!loading && filteredItems.length === 0" class="text-center py-12">
+      <div
+        v-if="!loading && filteredItems.length === 0"
+        class="text-center py-12"
+      >
         <div class="text-gray-500 text-lg">No items found</div>
       </div>
 
       <!-- PDF-Style Table -->
-      <div v-else-if="!loading && filteredItems.length > 0" class="bg-white border-2 border-gray-300">
-        <table class="w-full text-sm border-collapse">
+      <div
+        v-else-if="!loading && filteredItems.length > 0"
+        class="bg-white border-2 border-gray-300 overflow-x-auto"
+      >
+        <table class="min-w-full text-sm border-collapse">
           <!-- Table Header -->
           <thead>
             <tr class="bg-red-800 text-white">
-              <th class="border border-gray-300 px-2 py-3 text-center text-xs font-bold">ລຳດັບ<br>NO.</th>
-              <th class="border border-gray-300 px-2 py-3 text-center text-xs font-bold">ລາຍການ<br>ITEMS</th>
-              <th class="border border-gray-300 px-2 py-3 text-center text-xs font-bold">ຮູບສິນຄ້າ<br>IMAGE</th>
-              <th class="border border-gray-300 px-2 py-3 text-center text-xs font-bold">ອາຍຸການເກັບ<br>SHELF LIFE</th>
-              <th class="border border-gray-300 px-2 py-3 text-center text-xs font-bold">ສາມາດອຸ່ນໃຫ້ລູກຄ້າ<br>REHEAT FOR CUSTOMER</th>
-              <th class="border border-gray-300 px-2 py-3 text-center text-xs font-bold">ເວລາໃນການອຸ່ນ<br>REHEAT TIME</th>
-              <th class="border border-gray-300 px-2 py-3 text-center text-xs font-bold">ການຈັດເກັບເວລາປິດຮ້ານ<br>STORAGE AFTER CLOSING</th>
-              <th class="border border-gray-300 px-2 py-3 text-center text-xs font-bold">ການຈັດວາງຂາຍ<br>DISPLAY METHOD</th>
-              <th class="border border-gray-300 px-2 py-3 text-center text-xs font-bold">ຂໍ້ຄວນລະວັງ<br>PRECAUTIONS</th>
+              <th
+                class="border border-gray-300 px-2 py-3 text-center text-xs font-bold text-nowrap"
+              >
+                <p class="px-4">ລຳດັບ<br />NO.</p>
+              </th>
+              <th
+                class="border border-gray-300 px-2 py-3 text-center text-xs font-bold text-nowrap"
+              >
+                <p class="px-4">ລາຍການ<br />ITEMS</p>
+              </th>
+              <th
+                class="border border-gray-300 px-2 py-3 text-center text-xs font-bold text-nowrap"
+              >
+                <p class="px-4">ຮູບສິນຄ້າ<br />IMAGE</p>
+              </th>
+              <th
+                class="border border-gray-300 px-2 py-3 text-center text-xs font-bold text-nowrap"
+              >
+                <p class="px-4">ອາຍຸການເກັບ<br />SHELF LIFE</p>
+              </th>
+              <th
+                class="border border-gray-300 px-2 py-3 text-center text-xs font-bold text-nowrap"
+              >
+                <p class="px-4">ສາມາດອຸ່ນໃຫ້ລູກຄ້າ<br />REHEAT FOR CUSTOMER</p>
+              </th>
+              <th
+                class="border border-gray-300 px-2 py-3 text-center text-xs font-bold text-nowrap"
+              >
+                <p class="px-4">ເວລາໃນການອຸ່ນ<br />REHEAT TIME</p>
+              </th>
+              <th
+                class="border border-gray-300 px-2 py-3 text-center text-xs font-bold text-nowrap"
+              >
+                <p class="px-4">
+                  ການຈັດເກັບເວລາປິດຮ້ານ<br />STORAGE AFTER CLOSING
+                </p>
+              </th>
+              <th
+                class="border border-gray-300 px-2 py-3 text-center text-xs font-bold text-nowrap"
+              >
+                <p class="px-4">ການຈັດວາງຂາຍ<br />DISPLAY METHOD</p>
+              </th>
+              <th
+                class="border border-gray-300 px-2 py-3 text-center text-xs font-bold text-nowrap"
+              >
+                <p class="px-4">ຂໍ້ຄວນລະວັງ<br />PRECAUTIONS</p>
+              </th>
             </tr>
           </thead>
 
           <!-- Table Body -->
           <tbody>
-            <tr v-for="(item, index) in paginatedItems" :key="item.id" class="border-b border-gray-300 hover:bg-gray-50">
+            <tr
+              v-for="(item, index) in paginatedItems"
+              :key="item.id"
+              class="border-b border-gray-300 hover:bg-gray-50"
+            >
               <!-- Row Number -->
-              <td class="border border-gray-300 px-2 py-4 text-center font-bold">
+              <td
+                class="border border-gray-300 px-2 py-4 text-center font-bold"
+              >
                 {{ (currentPage - 1) * itemsPerPage + index + 1 }}
               </td>
 
               <!-- Item Name -->
               <td class="border border-gray-300 px-3 py-4">
-                <div class="font-medium text-gray-900">{{ item.name }}</div>
+                <div class="font-medium text-gray-900 px-2">
+                  {{ item.name }}
+                </div>
               </td>
 
               <!-- Image -->
-              <td class="border border-gray-300 px-2 py-4 text-center">
-                <div class="w-16 h-16 mx-auto">
+              <td class="border border-gray-300 px-3 py-4 text-center">
+                <div
+                  class="w-16 h-16 px-2"
+                  style="width: 4rem !important; height: 4rem !important"
+                >
                   <img
                     :src="getProductImageWithFallback(item)"
                     :alt="item.name"
-                    class="w-full h-full object-cover rounded-lg shadow-sm"
+                    class="object-cover rounded-lg shadow-sm"
                     @error="handleImageError($event, item)"
                     loading="lazy"
+                    style="width: 4rem !important; height: 4rem !important"
                   />
                 </div>
               </td>
 
               <!-- Shelf Life -->
               <td class="border border-gray-300 px-2 py-4 text-center">
-                <div class="font-bold text-lg">{{ item.shelf_life_days || item.shelfLife || 7 }}</div>
-                <div class="text-xs text-gray-600">days</div>
+                <div class="font-bold text-lg px-2">
+                  {{ item.shelf_life_days || item.shelfLife || 7 }}
+                </div>
+                <div class="text-xs text-gray-600 px-2">days</div>
               </td>
 
               <!-- Can Reheat -->
               <td class="border border-gray-300 px-2 py-4 text-center">
-                <div class="flex justify-center mb-2">
-                  <div v-if="item.can_reheat" class="w-12 h-12 rounded flex items-center justify-center">
-                    <img src="/assets/images/icons/oven.png" alt="Can reheat" class="w-8 h-8" />
+                <div class="flex justify-center mb-2 px-2">
+                  <div
+                    v-if="item.can_reheat"
+                    class="w-12 h-12 rounded flex items-center justify-center"
+                  >
+                    <img
+                      src="/assets/images/icons/oven.png"
+                      alt="Can reheat"
+                      class="w-8 h-8"
+                    />
                   </div>
-                  <div v-else class="w-12 h-12 rounded flex items-center justify-center">
-                    <img src="/assets/images/icons/no-heat.png" alt="Cannot reheat" class="w-8 h-8" />
+                  <div
+                    v-else
+                    class="w-12 h-12 rounded flex items-center justify-center"
+                  >
+                    <img
+                      src="/assets/images/icons/no-heat.png"
+                      alt="Cannot reheat"
+                      class="w-8 h-8"
+                    />
                   </div>
                 </div>
-                <div v-if="item.can_reheat && item.reheat_temperature" class="text-xs">
+                <div
+                  v-if="item.can_reheat && item.reheat_temperature"
+                  class="text-xs"
+                >
                   {{ item.reheat_temperature }}°C
                 </div>
               </td>
 
               <!-- Reheat Time -->
               <td class="border border-gray-300 px-2 py-4 text-center">
-                <div v-if="item.can_reheat" class="flex items-center justify-center gap-1">
-                  <div class="w-12 h-12 rounded-full flex items-center justify-center">
-                    <img src="/assets/images/icons/clock.png" alt="Reheat time" class="w-8 h-8" />
+                <div
+                  v-if="item.can_reheat"
+                  class="flex items-center justify-center gap-1"
+                >
+                  <div
+                    class="w-12 h-12 rounded-full flex items-center justify-center"
+                  >
+                    <img
+                      src="/assets/images/icons/clock.png"
+                      alt="Reheat time"
+                      class="w-8 h-8"
+                    />
                   </div>
                   <div class="text-xs">
-                    {{ item.reheat_time_min || 5 }} - {{ item.reheat_time_max || 7 }} min
+                    {{ item.reheat_time_min || 5 }} -
+                    {{ item.reheat_time_max || 7 }} min
                   </div>
                 </div>
                 <div v-else class="text-gray-400">-</div>
@@ -120,66 +220,165 @@
 
               <!-- Storage Method -->
               <td class="border border-gray-300 px-2 py-4 text-center">
-                <div class="flex justify-center gap-1 flex-wrap">
+                <div class="flex justify-center gap-1 flex-nowrap px-2">
                   <!-- Cold Storage Icon -->
-                  <div v-if="hasStorageMethod(item, 'store_in_refrigerator')" class="w-8 h-8 rounded flex items-center justify-center" title="Cold Storage">
-                    <img src="/assets/images/icons/fridge.png" alt="Cold storage" class="w-8 h-8" />
+                  <div
+                    v-if="hasStorageMethod(item, 'store_in_refrigerator')"
+                    class="w-8 h-8 rounded flex items-center justify-center"
+                    title="Cold Storage"
+                  >
+                    <img
+                      src="/assets/images/icons/fridge.png"
+                      alt="Cold storage"
+                      class="w-8 h-8"
+                    />
                   </div>
                   <!-- Cold Temperature Icon -->
-                  <div v-if="hasStorageMethod(item, 'store_at_cold_temperature')" class="w-8 h-8 rounded flex items-center justify-center" title="Cool Temperature">
-                    <img src="/assets/images/icons/temperature.png" alt="Cool temperature" class="w-8 h-8" />
+                  <div
+                    v-if="hasStorageMethod(item, 'store_at_cold_temperature')"
+                    class="w-8 h-8 rounded flex items-center justify-center"
+                    title="Cool Temperature"
+                  >
+                    <img
+                      src="/assets/images/icons/temperature.png"
+                      alt="Cool temperature"
+                      class="w-8 h-8"
+                    />
                   </div>
                   <!-- Box Storage Icon -->
-                  <div v-if="hasStorageMethod(item, 'store_in_box')" class="w-8 h-8 rounded flex items-center justify-center" title="Store in Box">
-                    <img src="/assets/images/icons/lunch-box.png" alt="Store in box" class="w-8 h-8" />
+                  <div
+                    v-if="hasStorageMethod(item, 'store_in_box')"
+                    class="w-8 h-8 rounded flex items-center justify-center"
+                    title="Store in Box"
+                  >
+                    <img
+                      src="/assets/images/icons/lunch-box.png"
+                      alt="Store in box"
+                      class="w-8 h-8"
+                    />
                   </div>
                   <!-- Airtight Storage Icon -->
-                  <div v-if="hasStorageMethod(item, 'keep_airtight')" class="w-8 h-8 rounded flex items-center justify-center" title="Keep Airtight">
-                    <img src="/assets/images/icons/air-sensitive.png" alt="Keep airtight" class="w-8 h-8" />
+                  <div
+                    v-if="hasStorageMethod(item, 'keep_airtight')"
+                    class="w-8 h-8 rounded flex items-center justify-center"
+                    title="Keep Airtight"
+                  >
+                    <img
+                      src="/assets/images/icons/air-sensitive.png"
+                      alt="Keep airtight"
+                      class="w-8 h-8"
+                    />
                   </div>
                   <!-- Cake Display Case Storage -->
-                  <div v-if="hasStorageMethod(item, 'store_in_cake_display_case')" class="w-8 h-8 rounded flex items-center justify-center" title="Store in Cake Display Case">
-                    <img src="/assets/images/icons/cake-case.jpg" alt="Store in cake display case" class="w-8 h-8" />
+                  <div
+                    v-if="hasStorageMethod(item, 'store_in_cake_display_case')"
+                    class="w-8 h-8 rounded flex items-center justify-center"
+                    title="Store in Cake Display Case"
+                  >
+                    <img
+                      src="/assets/images/icons/cake-case.jpg"
+                      alt="Store in cake display case"
+                      class="w-8 h-8"
+                    />
                   </div>
                 </div>
               </td>
 
               <!-- Display Method -->
               <td class="border border-gray-300 px-2 py-4 text-center">
-                <div class="flex justify-center gap-1 flex-wrap">
+                <div class="flex justify-center gap-1 flex-nowrap px-2">
                   <!-- Bakery Display Case -->
-                  <div v-if="hasDisplayMethod(item, 'arrange_in_bakery_display_case')" class="w-8 h-8 rounded flex items-center justify-center" title="Bakery Display Case">
-                    <img src="/assets/images/icons/bakery-case.jpg" alt="Bakery display case" class="w-8 h-8" />
+                  <div
+                    v-if="
+                      hasDisplayMethod(item, 'arrange_in_bakery_display_case')
+                    "
+                    class="w-8 h-8 rounded flex items-center justify-center"
+                    title="Bakery Display Case"
+                  >
+                    <img
+                      src="/assets/images/icons/bakery-case.jpg"
+                      alt="Bakery display case"
+                      class="w-8 h-8"
+                    />
                   </div>
                   <!-- Cake Display Case -->
-                  <div v-if="hasDisplayMethod(item, 'arrange_in_cake_display_case')" class="w-8 h-8 rounded flex items-center justify-center" title="Cake Display Case">
-                    <img src="/assets/images/icons/cake-case.jpg" alt="Cake display case" class="w-8 h-8" />
+                  <div
+                    v-if="
+                      hasDisplayMethod(item, 'arrange_in_cake_display_case')
+                    "
+                    class="w-8 h-8 rounded flex items-center justify-center"
+                    title="Cake Display Case"
+                  >
+                    <img
+                      src="/assets/images/icons/cake-case.jpg"
+                      alt="Cake display case"
+                      class="w-8 h-8"
+                    />
                   </div>
                   <!-- Glass Dome -->
-                  <div v-if="hasDisplayMethod(item, 'arrange_in_glass_dome')" class="w-8 h-8 rounded flex items-center justify-center" title="Glass Dome">
-                    <img src="/assets/images/icons/cover.png" alt="Glass dome" class="w-8 h-8" />
+                  <div
+                    v-if="hasDisplayMethod(item, 'arrange_in_glass_dome')"
+                    class="w-8 h-8 rounded flex items-center justify-center"
+                    title="Glass Dome"
+                  >
+                    <img
+                      src="/assets/images/icons/cover.png"
+                      alt="Glass dome"
+                      class="w-8 h-8"
+                    />
                   </div>
                 </div>
               </td>
 
               <!-- Precautions -->
               <td class="border border-gray-300 px-2 py-4 text-center">
-                <div class="flex justify-center gap-1 flex-wrap">
+                <div class="flex justify-center gap-1 flex-nowrap px-2">
                   <!-- General Warning -->
-                  <div class="w-8 h-8 rounded flex items-center justify-center" title="Handle with Care">
-                    <img src="/assets/images/icons/warning.png" alt="Handle with care" class="w-8 h-8" />
+                  <div
+                    class="w-8 h-8 rounded flex items-center justify-center"
+                    title="Handle with Care"
+                  >
+                    <img
+                      src="/assets/images/icons/warning.png"
+                      alt="Handle with care"
+                      class="w-8 h-8"
+                    />
                   </div>
                   <!-- Avoid Moisture -->
-                  <div v-if="item.avoid_moisture" class="w-8 h-8 rounded flex items-center justify-center" title="Avoid Moisture">
-                    <img src="/assets/images/icons/drop.png" alt="Avoid moisture" class="w-8 h-8" />
+                  <div
+                    v-if="item.avoid_moisture"
+                    class="w-8 h-8 rounded flex items-center justify-center"
+                    title="Avoid Moisture"
+                  >
+                    <img
+                      src="/assets/images/icons/drop.png"
+                      alt="Avoid moisture"
+                      class="w-8 h-8"
+                    />
                   </div>
                   <!-- Avoid Sunlight -->
-                  <div v-if="item.avoid_sunlight" class="w-8 h-8 rounded flex items-center justify-center" title="Avoid Sunlight">
-                    <img src="/assets/images/icons/sun.png" alt="Avoid sunlight" class="w-8 h-8" />
+                  <div
+                    v-if="item.avoid_sunlight"
+                    class="w-8 h-8 rounded flex items-center justify-center"
+                    title="Avoid Sunlight"
+                  >
+                    <img
+                      src="/assets/images/icons/sun.png"
+                      alt="Avoid sunlight"
+                      class="w-8 h-8"
+                    />
                   </div>
                   <!-- Temperature Sensitive -->
-                  <div v-if="item.temperature_sensitive" class="w-8 h-8 rounded flex items-center justify-center" title="Temperature Sensitive">
-                    <img src="/assets/images/icons/humidity-sensor.png" alt="Temperature sensitive" class="w-8 h-8" />
+                  <div
+                    v-if="item.temperature_sensitive"
+                    class="w-8 h-8 rounded flex items-center justify-center"
+                    title="Temperature Sensitive"
+                  >
+                    <img
+                      src="/assets/images/icons/humidity-sensor.png"
+                      alt="Temperature sensitive"
+                      class="w-8 h-8"
+                    />
                   </div>
                 </div>
               </td>
@@ -189,28 +388,49 @@
       </div>
 
       <!-- Icon Legend -->
-      <div v-if="!loading && filteredItems.length > 0" class="mt-8 border-t pt-6">
-        <h3 class="text-lg font-bold text-gray-800 mb-4 text-center">ຄຳອະທິບາຍສັນຍາລັກ / Icon Legend</h3>
+      <div
+        v-if="!loading && filteredItems.length > 0"
+        class="mt-8 border-t pt-6"
+      >
+        <h3 class="text-lg font-bold text-gray-800 mb-4 text-center">
+          ຄຳອະທິບາຍສັນຍາລັກ / Icon Legend
+        </h3>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
           <!-- Reheating Icons -->
           <div class="space-y-2">
-            <h4 class="font-semibold text-gray-700">ສາມາດອຸ່ນໃຫ້ລູກຄ້າ / Can Reheat:</h4>
+            <h4 class="font-semibold text-gray-700">
+              ສາມາດອຸ່ນໃຫ້ລູກຄ້າ / Can Reheat:
+            </h4>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/oven.png" alt="Can reheat" class="w-8 h-8" />
+                <img
+                  src="/assets/images/icons/oven.png"
+                  alt="Can reheat"
+                  class="w-8 h-8"
+                />
               </div>
               <span>ສາມາດອຸ່ນໄດ້ / Can reheat</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/no-heat.png" alt="Cannot reheat" class="w-8 h-8" />
+                <img
+                  src="/assets/images/icons/no-heat.png"
+                  alt="Cannot reheat"
+                  class="w-8 h-8"
+                />
               </div>
               <span>ບໍ່ສາມາດອຸ່ນ / Cannot reheat</span>
             </div>
             <div class="flex items-center gap-2">
-              <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                <img src="/assets/images/icons/clock.png" alt="Reheat time" class="w-8 h-8" />
+              <div
+                class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center"
+              >
+                <img
+                  src="/assets/images/icons/clock.png"
+                  alt="Reheat time"
+                  class="w-8 h-8"
+                />
               </div>
               <span>ເວລາໃນການອຸ່ນ / Reheat time</span>
             </div>
@@ -221,31 +441,51 @@
             <h4 class="font-semibold text-gray-700">ການຈັດເກັບ / Storage:</h4>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/fridge.png" alt="Store in refrigerator" class="w-8 h-8" />
+                <img
+                  src="/assets/images/icons/fridge.png"
+                  alt="Store in refrigerator"
+                  class="w-8 h-8"
+                />
               </div>
               <span>ເກັບໃນຕູ້ເຢັນ / Store in refrigerator</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/temperature.png" alt="Store at cold temperature" class="w-8 h-8" />
+                <img
+                  src="/assets/images/icons/temperature.png"
+                  alt="Store at cold temperature"
+                  class="w-8 h-8"
+                />
               </div>
               <span>ເກັບໃນອຸນຫະພູມເຢັນ / Store at cold temperature</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/lunch-box.png" alt="Store in box" class="w-8 h-8" />
+                <img
+                  src="/assets/images/icons/lunch-box.png"
+                  alt="Store in box"
+                  class="w-8 h-8"
+                />
               </div>
               <span>ເກັບເຂົ້າກ່ອງ / Store in box</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/air-sensitive.png" alt="Keep airtight" class="w-8 h-8" />
+                <img
+                  src="/assets/images/icons/air-sensitive.png"
+                  alt="Keep airtight"
+                  class="w-8 h-8"
+                />
               </div>
               <span>ບໍ່ໃຫ້ອາກາດເຂົ້າ / Keep airtight</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/cake-case.jpg" alt="Store in cake display case" class="w-8 h-8" />
+                <img
+                  src="/assets/images/icons/cake-case.jpg"
+                  alt="Store in cake display case"
+                  class="w-8 h-8"
+                />
               </div>
               <span>ເກັບເຂົ້າຕູ້ເຄັກ / Store in cake display case</span>
             </div>
@@ -256,19 +496,31 @@
             <h4 class="font-semibold text-gray-700">ການຈັດວາງ / Display:</h4>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/bakery-case.jpg" alt="Arrange in bakery display case" class="w-8 h-8" />
+                <img
+                  src="/assets/images/icons/bakery-case.jpg"
+                  alt="Arrange in bakery display case"
+                  class="w-8 h-8"
+                />
               </div>
               <span>ວາງໃນຕູ້ເບເກີຣີ / Arrange in bakery display case</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/cake-case.jpg" alt="Arrange in cake display case" class="w-8 h-8" />
+                <img
+                  src="/assets/images/icons/cake-case.jpg"
+                  alt="Arrange in cake display case"
+                  class="w-8 h-8"
+                />
               </div>
               <span>ວາງໃນຕູ້ເຄັກ / Arrange in cake display case</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/cover.png" alt="Arrange in glass dome" class="w-8 h-8" />
+                <img
+                  src="/assets/images/icons/cover.png"
+                  alt="Arrange in glass dome"
+                  class="w-8 h-8"
+                />
               </div>
               <span>ວາງໃນໂຄມແກ້ວ / Arrange in glass dome</span>
             </div>
@@ -276,28 +528,46 @@
 
           <!-- Precaution Icons -->
           <div class="space-y-2">
-            <h4 class="font-semibold text-gray-700">ຂໍ້ຄວນລະວັງ / Precautions:</h4>
+            <h4 class="font-semibold text-gray-700">
+              ຂໍ້ຄວນລະວັງ / Precautions:
+            </h4>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/drop.png" alt="Avoid moisture" class="w-8 h-8" />
+                <img
+                  src="/assets/images/icons/drop.png"
+                  alt="Avoid moisture"
+                  class="w-8 h-8"
+                />
               </div>
               <span>ບໍ່ໃຫ້ຖືກນ້ຳ / Avoid moisture</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/sun.png" alt="Avoid sunlight" class="w-8 h-8" />
+                <img
+                  src="/assets/images/icons/sun.png"
+                  alt="Avoid sunlight"
+                  class="w-8 h-8"
+                />
               </div>
               <span>ບໍ່ໃຫ້ຖືກແສງແດດ / Avoid sunlight</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/humidity-sensor.png" alt="Temperature sensitive" class="w-8 h-8" />
+                <img
+                  src="/assets/images/icons/humidity-sensor.png"
+                  alt="Temperature sensitive"
+                  class="w-8 h-8"
+                />
               </div>
               <span>ຄວນລະວັງອຸນຫະພູມ / Temperature sensitive</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
-                <img src="/assets/images/icons/warning.png" alt="Handle with care" class="w-8 h-8" />
+                <img
+                  src="/assets/images/icons/warning.png"
+                  alt="Handle with care"
+                  class="w-8 h-8"
+                />
               </div>
               <span>ລະວັງ / Handle with care</span>
             </div>
@@ -306,7 +576,10 @@
       </div>
 
       <!-- Simple Pagination -->
-      <div v-if="!loading && filteredItems.length > 0" class="mt-8 flex justify-center">
+      <div
+        v-if="!loading && filteredItems.length > 0"
+        class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-3 text-sm"
+      >
         <div class="flex items-center gap-2">
           <button
             @click="prevPage"
@@ -317,7 +590,10 @@
           </button>
 
           <span class="px-3 py-1 text-sm text-gray-600">
-            Page {{ currentPage }} of {{ totalPages }} ({{ filteredItems.length }} items)
+            Page {{ currentPage }} of {{ totalPages }} ({{
+              filteredItems.length
+            }}
+            items)
           </span>
 
           <button
@@ -332,29 +608,36 @@
 
       <!-- Loading State -->
       <div v-if="loading" class="flex justify-center py-12">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-800"></div>
+        <div
+          class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-800"
+        ></div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-// Use client-only wrapper for Firebase composable
-let getProductsByCakeAndBakeryTypes;
+// Client-only Firebase initialization
+const getProductsByCakeAndBakeryTypes = async () => {
+  // Only fetch on client side
+  if (!import.meta.client) {
+    return [];
+  }
 
-if (import.meta.client) {
-  const { getProductsByCakeAndBakeryTypes: fetchProducts } = useProducts();
-  getProductsByCakeAndBakeryTypes = fetchProducts;
-} else {
-  // Server-side fallback
-  getProductsByCakeAndBakeryTypes = async () => [];
-}
+  try {
+    const { getProductsByCakeAndBakeryTypes: fetchProducts } = useProducts();
+    return await fetchProducts();
+  } catch (error) {
+    console.error('Error loading products function:', error);
+    return [];
+  }
+};
 
 // State
 const loading = ref(true);
 const error = ref(null);
-const searchQuery = ref('');
-const selectedType = ref('');
+const searchQuery = ref("");
+const selectedType = ref("");
 
 // Pagination
 const currentPage = ref(1);
@@ -365,12 +648,6 @@ const bakeryItems = ref([]);
 
 // Fetch data
 const fetchData = async () => {
-  // Only fetch data on client side
-  if (!import.meta.client) {
-    loading.value = false;
-    return;
-  }
-
   try {
     loading.value = true;
     error.value = null;
@@ -378,9 +655,8 @@ const fetchData = async () => {
     // Get both cake and bakery type products
     const products = await getProductsByCakeAndBakeryTypes();
     bakeryItems.value = products || [];
-
   } catch (err) {
-    console.error('Error fetching bakery items:', err);
+    console.error("Error fetching bakery items:", err);
     error.value = `Failed to load products: ${err.message}`;
     bakeryItems.value = [];
   } finally {
@@ -391,7 +667,7 @@ const fetchData = async () => {
 // Computed properties
 const bakeryTypeNames = computed(() => {
   const types = new Set();
-  bakeryItems.value.forEach(item => {
+  bakeryItems.value.forEach((item) => {
     if (item.type) types.add(item.type);
   });
   return Array.from(types).sort();
@@ -403,19 +679,20 @@ const filteredItems = computed(() => {
   // Filter by search query
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase();
-    items = items.filter(item =>
-      item.name?.toLowerCase().includes(query) ||
-      item.type?.toLowerCase().includes(query) ||
-      item.description?.toLowerCase().includes(query)
+    items = items.filter(
+      (item) =>
+        item.name?.toLowerCase().includes(query) ||
+        item.type?.toLowerCase().includes(query) ||
+        item.description?.toLowerCase().includes(query)
     );
   }
 
   // Filter by type
   if (selectedType.value) {
-    if (selectedType.value === 'cake') {
-      items = items.filter(item => item.type?.toLowerCase() === 'cake');
+    if (selectedType.value === "cake") {
+      items = items.filter((item) => item.type?.toLowerCase() === "cake");
     } else {
-      items = items.filter(item => item.type === selectedType.value);
+      items = items.filter((item) => item.type === selectedType.value);
     }
   }
 
@@ -433,11 +710,10 @@ const paginatedItems = computed(() => {
   return filteredItems.value.slice(start, end);
 });
 
-
 // Methods
 const clearFilter = () => {
-  searchQuery.value = '';
-  selectedType.value = '';
+  searchQuery.value = "";
+  selectedType.value = "";
   currentPage.value = 1;
 };
 
@@ -454,29 +730,27 @@ const prevPage = () => {
   }
 };
 
-
-
 // Helper function to get default bakery image
 const getDefaultBakeryImage = () => {
-  return '/assets/images/default-bakery.jpg';
+  return "/assets/images/default-bakery.jpg";
 };
 
 // Helper function to generate fallback image based on product type
 const generateFallbackImage = (item) => {
   if (!item) return getDefaultBakeryImage();
 
-  const itemType = item.type?.toLowerCase() || '';
-  const itemName = item.name?.toLowerCase() || '';
+  const itemType = item.type?.toLowerCase() || "";
+  const itemName = item.name?.toLowerCase() || "";
 
   // Try to match with specific bakery item types
-  if (itemType.includes('cake') || itemName.includes('cake')) {
-    return '/assets/images/fallback-cake.jpg';
-  } else if (itemType.includes('bread') || itemName.includes('bread')) {
-    return '/assets/images/fallback-bread.jpg';
-  } else if (itemType.includes('pastry') || itemName.includes('pastry')) {
-    return '/assets/images/fallback-pastry.jpg';
-  } else if (itemType.includes('cookie') || itemName.includes('cookie')) {
-    return '/assets/images/fallback-cookie.jpg';
+  if (itemType.includes("cake") || itemName.includes("cake")) {
+    return "/assets/images/fallback-cake.jpg";
+  } else if (itemType.includes("bread") || itemName.includes("bread")) {
+    return "/assets/images/fallback-bread.jpg";
+  } else if (itemType.includes("pastry") || itemName.includes("pastry")) {
+    return "/assets/images/fallback-pastry.jpg";
+  } else if (itemType.includes("cookie") || itemName.includes("cookie")) {
+    return "/assets/images/fallback-cookie.jpg";
   }
 
   // Default fallback
@@ -485,34 +759,16 @@ const generateFallbackImage = (item) => {
 
 // Helper function to check if item has specific storage method
 const hasStorageMethod = (item, method) => {
-  if (!item || !item.storage_methods || !Array.isArray(item.storage_methods)) return false;
+  if (!item || !item.storage_methods || !Array.isArray(item.storage_methods))
+    return false;
   return item.storage_methods.includes(method);
 };
 
 // Helper function to check if item has specific display method
 const hasDisplayMethod = (item, method) => {
-  if (!item || !item.display_methods || !Array.isArray(item.display_methods)) return false;
+  if (!item || !item.display_methods || !Array.isArray(item.display_methods))
+    return false;
   return item.display_methods.includes(method);
-};
-
-// Helper function to determine if item needs cold storage (legacy support)
-const needsColdStorage = (item) => {
-  if (!item) return false;
-
-  // Check using the new storage_methods array first
-  if (hasStorageMethod(item, 'store_in_refrigerator') || hasStorageMethod(item, 'store_at_cold_temperature')) {
-    return true;
-  }
-
-  // Fallback to old logic for backward compatibility
-  const itemType = item.type?.toLowerCase() || '';
-  const itemName = item.name?.toLowerCase() || '';
-
-  return itemType.includes('cake') ||
-         itemType.includes('cream') ||
-         itemName.includes('cake') ||
-         itemName.includes('cream') ||
-         itemName.includes('mousse');
 };
 
 // Enhanced function that always returns an image (never null)
@@ -526,7 +782,7 @@ const getProductImageWithFallback = (item) => {
 
   // Try images array if available
   if (item.images && Array.isArray(item.images) && item.images.length > 0) {
-    const validImage = item.images.find(img => img && img.trim());
+    const validImage = item.images.find((img) => img && img.trim());
     if (validImage) return validImage;
   }
 
@@ -539,16 +795,17 @@ const handleImageError = (event, item) => {
   const img = event.target;
 
   // If the current image fails and it's not already the default, try the default bakery image
-  if (!img.src.includes('default-bakery.jpg')) {
+  if (!img.src.includes("default-bakery.jpg")) {
     img.src = getDefaultBakeryImage();
   } else {
     // If even the default fails, hide the image container and show a text placeholder
-    img.style.display = 'none';
+    img.style.display = "none";
     const container = img.parentElement;
-    if (container && !container.querySelector('.text-placeholder')) {
-      const placeholder = document.createElement('div');
-      placeholder.className = 'text-placeholder w-full h-full bg-gray-100 rounded-lg flex items-center justify-center text-xs text-gray-500';
-      placeholder.textContent = item.name?.substring(0, 8) || 'Bakery';
+    if (container && !container.querySelector(".text-placeholder")) {
+      const placeholder = document.createElement("div");
+      placeholder.className =
+        "text-placeholder w-full h-full bg-gray-100 rounded-lg flex items-center justify-center text-xs text-gray-500";
+      placeholder.textContent = item.name?.substring(0, 8) || "Bakery";
       container.appendChild(placeholder);
     }
   }
@@ -568,13 +825,14 @@ onMounted(() => {
 
 // SEO
 useHead({
-  title: 'Product Manual - BakeryHouse | Complete Product Guide',
+  title: "Product Manual - BakeryHouse | Complete Product Guide",
   meta: [
     {
-      name: 'description',
-      content: 'Comprehensive manual with detailed information about all our bakery products including storage, reheating instructions, and specifications.'
-    }
-  ]
+      name: "description",
+      content:
+        "Comprehensive manual with detailed information about all our bakery products including storage, reheating instructions, and specifications.",
+    },
+  ],
 });
 </script>
 
@@ -582,7 +840,7 @@ useHead({
 /* PDF-Style Manual Layout */
 table {
   border-collapse: collapse;
-  font-family: 'Arial', sans-serif;
+  font-family: "Noto Sans Lao", "Arial", sans-serif;
 }
 
 /* Header styling matching PDF */
@@ -636,7 +894,8 @@ td:nth-child(2) {
     font-size: 10px;
   }
 
-  th, td {
+  th,
+  td {
     padding: 6px 2px;
   }
 
@@ -652,7 +911,8 @@ td:nth-child(2) {
     font-size: 9px;
   }
 
-  th, td {
+  th,
+  td {
     padding: 4px 1px;
   }
 
@@ -707,7 +967,7 @@ button {
 
 /* Logo styling */
 h1 {
-  font-family: 'Brush Script MT', 'cursive', 'Arial', sans-serif;
+  font-family: "Brush Script MT", "cursive", "Arial", sans-serif;
 }
 
 /* Legend grid responsive */

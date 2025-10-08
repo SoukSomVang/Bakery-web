@@ -52,7 +52,13 @@
       "Bash(cp:*)",
       "Bash(firebase target:apply:*)",
       "Bash(firebase hosting:sites:delete:*)",
-      "Bash(firebase target:clear:*)"
+      "Bash(firebase target:clear:*)",
+      "WebFetch(domain:fonts.google.com)",
+      "WebFetch(domain:bakeryhouse-shop-55849.web.app)",
+      "Bash(firebase hosting:channel:list:*)",
+      "WebFetch(domain:bakery-house-f7e32.web.app)",
+      "Bash(firebase hosting:clone:*)",
+      "Bash(firebase hosting:channel:deploy:*)"
     ],
     "deny": [],
     "ask": []

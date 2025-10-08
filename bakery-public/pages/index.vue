@@ -2,46 +2,50 @@
   <div class="min-h-screen bg-white">
     <!-- Hero Section -->
     <!-- Hero Section -->
-    <section class="relative h-[80vh] md:h-[90vh] flex overflow-hidden">
-      <!-- Left Side - Background Image (2/3) -->
+    <section
+      class="relative flex flex-col md:flex-row h-auto md:h-[90vh] overflow-hidden"
+    >
+      <!-- Left Side - Background Image (2/3 on desktop, full width on mobile) -->
       <div
-        class="w-2/3 bg-cover bg-center relative"
+        class="w-full md:w-2/3 bg-cover bg-center relative h-[50vh] md:h-auto"
         :style="{ backgroundImage: `url(${backgroundImg})` }"
       >
         <div class="absolute inset-0 bg-black/30"></div>
       </div>
 
-      <!-- Right Side - Solid Red (1/3) -->
-      <div class="w-1/3 bg-red-900"></div>
+      <!-- Right Side - Solid Red (1/3 on desktop, hidden on mobile) -->
+      <div class="hidden md:block w-1/3 bg-red-900"></div>
 
-      <!-- White Card Overlay - Centered on dividing line -->
+      <!-- White Card Overlay -->
       <div
-        class="absolute top-1/2 left-2/3 transform -translate-x-1/2 -translate-y-1/2 z-10 px-4"
+        class="absolute top-1/2 left-1/2 md:left-2/3 transform -translate-x-1/2 -translate-y-1/2 z-10 px-4 w-full flex justify-center"
       >
         <div
-          class="bg-white/50 backdrop-blur-sm py-12 px-16 shadow-2xl rounded-lg animate-fade-in-up w-[800px] max-w-3xl"
+          class="bg-white/70 backdrop-blur-sm py-8 md:py-12 px-6 md:px-16 shadow-2xl rounded-lg animate-fade-in-up w-[90%] sm:w-[600px] md:w-[800px] max-w-3xl"
         >
           <!-- Logo -->
           <div class="flex justify-center mb-6">
             <img
               src="../assets/images/logo/png-black-red-logo.png"
               alt="Bakery House Logo"
-              class="w-40 h-40 object-contain"
+              class="w-28 h-28 md:w-40 md:h-40 object-contain"
             />
           </div>
 
+          <!-- Heading -->
           <h1
-            class="text-black text-2xl md:text-3xl lg:text-4xl font-bold italic mb-8 leading-tight text-center"
+            class="text-black text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold italic mb-8 leading-tight text-center"
           >
             BakeryHouse Holding Company Limited
           </h1>
 
+          <!-- Button -->
           <div class="flex justify-center">
             <button
-              class="bg-red-900 hover:bg-red-950 text-white px-12 py-4 rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-lg"
+              class="bg-red-900 hover:bg-red-950 text-white px-8 sm:px-10 md:px-12 py-3 md:py-4 rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-base md:text-lg"
               @click="handleGotoAboutUs"
             >
-              Discovered us
+              Discover us
             </button>
           </div>
         </div>
@@ -143,14 +147,14 @@
 
     <!-- Products Section -->
     <section
-      class="py-16 bg-cover bg-[center_bottom_43%] h-[90vh]"
-      :style="{
-        backgroundImage: `url('${productSectionImage}')`,
-      }"
+      class="py-16 bg-cover bg-[center_bottom_43%] h-[70vh] sm:h-[80vh] md:h-[90vh]"
+      :style="{ backgroundImage: `url('${productSectionImage}')` }"
     >
-      <div class="w-full px-20 pe-40 flex items-center justify-end">
+      <div
+        class="w-full px-6 sm:px-12 md:px-20 lg:pe-40 flex items-center justify-center md:justify-end"
+      >
         <button
-          class="text-right text-3xl text-white font-semibold bg-red-800 mb-12 px-12 py-4 rounded-full cursor-pointer"
+          class="text-2xl sm:text-3xl text-white font-semibold bg-red-800 mb-8 md:mb-12 px-8 sm:px-10 md:px-12 py-3 sm:py-4 rounded-full cursor-pointer transition-all duration-300 hover:bg-red-900"
           @click="$router.push('/products')"
         >
           ALL BAKERY

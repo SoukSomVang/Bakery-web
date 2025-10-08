@@ -19,7 +19,7 @@ module.exports = {
         }
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Noto Sans Lao', 'Inter', 'sans-serif'],
       }
     },
   },

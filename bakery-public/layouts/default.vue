@@ -398,17 +398,17 @@
               <h4 class="text-sm font-semibold mb-2">Follow us</h4>
               <div class="flex space-x-3">
                 <!-- WhatsApp -->
-                <a href="#" class="text-gray-400">
+                <a href="https://wa.me/8562055221214" class="text-gray-400" target="_blank">
                   <img :src="WhatsappIcon" alt="whatsapp-icon" class="w-5 h-5">
                 </a>
 
                 <!-- TikTok -->
-                <a href="#" class="text-gray-400">
+                <a href="https://www.tiktok.com/@bakeryhouse78?_t=ZS-90NpDLS35HD&_r=1" class="text-gray-400" target="_blank">
                   <img :src="TikTokIcon" alt="tiktok-icon" class="w-5 h-5">
                 </a>
 
                 <!-- Facebook -->
-                <a href="#" class="text-gray-400">
+                <a href="#" class="text-gray-400" target="_blank">
                   <img :src="FacebookIcon" alt="facebook-icon" class="w-5 h-5">
                 </a>
               </div>

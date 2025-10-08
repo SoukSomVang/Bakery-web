@@ -1,0 +1,13 @@
+/* Noto Sans Lao Font - Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* Apply Noto Sans Lao as default for Lao text */
+body {
+  font-family: 'Noto Sans Lao', sans-serif;
+}
+
+/* Ensure Lao characters use Noto Sans Lao */
+:lang(lo),
+[lang="lo"] {
+  font-family: 'Noto Sans Lao', sans-serif;
+}

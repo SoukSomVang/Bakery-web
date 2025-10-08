@@ -61,9 +61,9 @@
               <div class="p-4">
                 <h3 class="text-lg font-bold text-gray-800 mb-2">{{ cake.name }}</h3>
                 <p v-if="cake.description" class="text-gray-600 text-sm mb-2">{{ cake.description }}</p>
-                <div class="text-red-600 font-semibold">
+                <!-- <div class="text-red-600 font-semibold">
                   {{ typeof cake.price === 'number' ? cake.price.toLocaleString() : cake.price }} KIP
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
