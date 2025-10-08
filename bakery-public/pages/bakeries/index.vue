@@ -8,7 +8,7 @@
           Our Bakery Locations
         </h1>
         <p class="text-xl text-red-100 max-w-2xl mx-auto">
-          Find the perfect Bakery House location near you. Each bakery offers 
+          Find the perfect BakeryHouse location near you. Each bakery offers 
           fresh, high-quality baked goods crafted with care.
         </p>
       </div>
@@ -410,10 +410,10 @@ const openDirections = (bakery) => {
 
 // Meta tags
 useSeoMeta({
-  title: 'Our Bakery Locations - Bakery House',
-  description: 'Find a Bakery House location near you. Fresh baked goods and exceptional service at all our locations.',
-  ogTitle: 'Our Bakery Locations - Bakery House',
-  ogDescription: 'Find a Bakery House location near you. Fresh baked goods and exceptional service at all our locations.'
+  title: 'Our Bakery Locations - BakeryHouse',
+  description: 'Find a BakeryHouse location near you. Fresh baked goods and exceptional service at all our locations.',
+  ogTitle: 'Our Bakery Locations - BakeryHouse',
+  ogDescription: 'Find a BakeryHouse location near you. Fresh baked goods and exceptional service at all our locations.'
 })
 </script>
 

@@ -445,15 +445,15 @@ const orderingSteps = ref([
 
 // SEO
 useHead({
-  title: 'Catering Services - Bakery House | Events & Corporate',
+  title: 'Catering Services - BakeryHouse | Events & Corporate',
   meta: [
     {
       name: 'description',
-      content: 'Professional catering services for corporate events, weddings, and private parties. Fresh baked goods, custom menus, and full-service event support from Bakery House.'
+      content: 'Professional catering services for corporate events, weddings, and private parties. Fresh baked goods, custom menus, and full-service event support from BakeryHouse.'
     },
     {
       property: 'og:title',
-      content: 'Bakery House Catering - Fresh Baked Goods for Your Event'
+      content: 'BakeryHouse Catering - Fresh Baked Goods for Your Event'
     },
     {
       property: 'og:description',

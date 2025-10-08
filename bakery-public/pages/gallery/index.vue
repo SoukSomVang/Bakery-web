@@ -363,7 +363,7 @@ onMounted(() => {
 
 // SEO
 useHead({
-  title: 'Gallery - Bakery House | Our Delicious Creations',
+  title: 'Gallery - BakeryHouse | Our Delicious Creations',
   meta: [
     {
       name: 'description',
@@ -371,7 +371,7 @@ useHead({
     },
     {
       property: 'og:title',
-      content: 'Bakery House Gallery - Fresh Baked Goods & Behind the Scenes'
+      content: 'BakeryHouse Gallery - Fresh Baked Goods & Behind the Scenes'
     },
     {
       property: 'og:description',

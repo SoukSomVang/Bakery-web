@@ -50,7 +50,7 @@
                   </svg>
                 </div>
                 <div>
-                  <h3 class="text-lg font-semibold text-gray-800 mb-2">Bakery house</h3>
+                  <h3 class="text-lg font-semibold text-gray-800 mb-2">BakeryHouse</h3>
                   <p class="text-gray-600">Nongnieng Road, Ban Nongnieng</p>
                   <p class="text-gray-600">Saysettha District, Vientiane Capital</p>
                   <p class="text-gray-600">Laos</p>
@@ -99,7 +99,7 @@
               >
               <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-lg"></div>
               <div class="absolute bottom-4 left-4 text-white">
-                <h3 class="text-xl font-semibold">Bakery House</h3>
+                <h3 class="text-xl font-semibold">BakeryHouse</h3>
                 <p class="text-sm opacity-90">Your neighborhood bakery</p>
               </div>
             </div>
@@ -166,19 +166,19 @@ import BackgrounImage from "@/assets/images/contact-place.jpeg";
 const LOCATION = "https://maps.app.goo.gl/wHpTRKX8xvqQYYpd6"
 // Meta tags for SEO
 useHead({
-  title: 'Contact Us - Bakery House | Get In Touch',
+  title: 'Contact Us - BakeryHouse | Get In Touch',
   meta: [
     {
       name: 'description',
-      content: 'Contact Bakery House for custom orders, inquiries, or feedback. Visit our locations or send us a message - we\'d love to hear from you!'
+      content: 'Contact BakeryHouse for custom orders, inquiries, or feedback. Visit our locations or send us a message - we\'d love to hear from you!'
     },
     {
       property: 'og:title',
-      content: 'Contact Bakery House - Fresh Baked Goods & Custom Orders'
+      content: 'Contact BakeryHouse - Fresh Baked Goods & Custom Orders'
     },
     {
       property: 'og:description',
-      content: 'Get in touch with Bakery House for the freshest baked goods, custom orders, and catering services. Multiple locations to serve you better.'
+      content: 'Get in touch with BakeryHouse for the freshest baked goods, custom orders, and catering services. Multiple locations to serve you better.'
     }
   ]
 })

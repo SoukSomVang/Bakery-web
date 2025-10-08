@@ -310,7 +310,7 @@ const pastries = ref([
 
 // SEO
 useHead({
-  title: 'Fresh Pastries - Bakery House | Croissants & More',
+  title: 'Fresh Pastries - BakeryHouse | Croissants & More',
   meta: [
     {
       name: 'description',
@@ -318,7 +318,7 @@ useHead({
     },
     {
       property: 'og:title',
-      content: 'Fresh Pastries - Bakery House | French Croissants & Pastries'
+      content: 'Fresh Pastries - BakeryHouse | French Croissants & Pastries'
     },
     {
       property: 'og:description',

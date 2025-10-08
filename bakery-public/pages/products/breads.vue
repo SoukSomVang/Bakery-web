@@ -420,7 +420,7 @@ onMounted(() => {
 
 // SEO
 useHead({
-  title: 'Fresh Breads - Bakery House | Artisan Breads Daily',
+  title: 'Fresh Breads - BakeryHouse | Artisan Breads Daily',
   meta: [
     {
       name: 'description',
@@ -428,7 +428,7 @@ useHead({
     },
     {
       property: 'og:title',
-      content: 'Fresh Artisan Breads - Bakery House'
+      content: 'Fresh Artisan Breads - BakeryHouse'
     },
     {
       property: 'og:description',

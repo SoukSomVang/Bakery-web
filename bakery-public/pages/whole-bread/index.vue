@@ -273,11 +273,11 @@ onMounted(async () => {
 
 // SEO
 useHead({
-  title: 'Whole Wheat Multigrain Bread - Bakery House | Nutritious & Delicious',
+  title: 'Whole Wheat Multigrain Bread - BakeryHouse | Nutritious & Delicious',
   meta: [
     {
       name: 'description',
-      content: 'Discover our signature whole wheat multigrain bread - packed with nutrition, made with premium ingredients, and baked fresh daily at Bakery House.'
+      content: 'Discover our signature whole wheat multigrain bread - packed with nutrition, made with premium ingredients, and baked fresh daily at BakeryHouse.'
     },
     {
       property: 'og:title',

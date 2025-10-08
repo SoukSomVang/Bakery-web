@@ -418,7 +418,7 @@ const getProductImage = (product) => {
 
 // SEO
 useHead({
-  title: 'Our Products - Bakery House | Fresh Baked Goods',
+  title: 'Our Products - BakeryHouse | Fresh Baked Goods',
   meta: [
     {
       name: 'description',
@@ -426,7 +426,7 @@ useHead({
     },
     {
       property: 'og:title',
-      content: 'Bakery House Products - Fresh Breads, Cakes, Pastries & More'
+      content: 'BakeryHouse Products - Fresh Breads, Cakes, Pastries & More'
     },
     {
       property: 'og:description',

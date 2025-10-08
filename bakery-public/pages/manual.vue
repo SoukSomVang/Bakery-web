@@ -568,7 +568,7 @@ onMounted(() => {
 
 // SEO
 useHead({
-  title: 'Product Manual - Bakery House | Complete Product Guide',
+  title: 'Product Manual - BakeryHouse | Complete Product Guide',
   meta: [
     {
       name: 'description',

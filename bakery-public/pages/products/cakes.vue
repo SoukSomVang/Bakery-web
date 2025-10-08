@@ -348,7 +348,7 @@ onMounted(() => {
 
 // SEO
 useHead({
-  title: 'Cakes - Bakery House | Fresh Baked Cakes',
+  title: 'Cakes - BakeryHouse | Fresh Baked Cakes',
   meta: [
     {
       name: 'description',
@@ -356,7 +356,7 @@ useHead({
     },
     {
       property: 'og:title',
-      content: 'Fresh Baked Cakes - Bakery House'
+      content: 'Fresh Baked Cakes - BakeryHouse'
     },
     {
       property: 'og:description',

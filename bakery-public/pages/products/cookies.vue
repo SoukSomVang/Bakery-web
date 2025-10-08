@@ -396,7 +396,7 @@ const getCategoryColor = (category) => {
 
 // SEO
 useHead({
-  title: 'Sweet Cookies - Bakery House | Handcrafted Daily',
+  title: 'Sweet Cookies - BakeryHouse | Handcrafted Daily',
   meta: [
     {
       name: 'description',
@@ -404,7 +404,7 @@ useHead({
     },
     {
       property: 'og:title',
-      content: 'Handcrafted Cookies - Bakery House | Fresh Daily'
+      content: 'Handcrafted Cookies - BakeryHouse | Fresh Daily'
     },
     {
       property: 'og:description',

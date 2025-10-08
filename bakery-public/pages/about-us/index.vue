@@ -36,7 +36,7 @@
                 style="animation-delay: 0.6s"
               >
                 <h3 class="text-3xl lg:text-4xl font-bold text-gray-200">
-                  Bakery house
+                  BakeryHouse
                 </h3>
               </div>
 
@@ -67,7 +67,7 @@
           <div>
             <h2 class="text-4xl font-bold text-gray-800 mb-6">Our Story</h2>
             <p class="text-gray-600 mb-6 leading-relaxed">
-              Bakery House ຖືກສ້າງຕັ້ງຂຶ້ນມາບົນພື້ນຖານຄວາມໝຸ່ງໝັ້ນ ແລະ ວິໃສທັດທີ່ຢາກໃຫ້ປະເທດລາວໄດ້ມີແບຣນເຂົ້າໝົມປັງທີ່ເປັນຂອງຄົນລາວເອງ. ດ້ວຍຄວາມຕັ້ງໃຈທີ່ຈະເຂົ້າມາມີສ່ວນຮ່ວມການແຂ່ງຂັນ ແລະ ມີສ່ວນຮ່ວມໃນຕະຫຼາດເຂົ້າໝົມປັງທັງພາຍໃນແລະ ພາຍນອກປະເທດລາວ, ນອກຈາກນີ້ທາງບໍລິສັດເຮົາກໍໄດ້ມີມາດຕະຖານໂຮງງານຜະລິດທີ່ໄດ້ຮັບການອານຸມັດຈາກ ອຢ ຫຼື (ກົມອາຫານ ແລະ ການຢາ) ທີ່ຈະສ້າງຄວາມເຊື່ອໝັ້ນໃຫ້ແກ່ຜູ້ບໍລິໂພກທຸກປະເພດ, ທຸກໄວຍິງໄປກວ່ານັ້ນທາງບໍລິສັດ Bakery House ຍັງຮ່ວມມືກັບອົງກອນ GMP ເພື່ອທີ່ຈະຍົກລະດັບໂຮງງານຜະລິດເຂົ້າໝົມປັງຂອງບໍລິສັດ Bakery House ຂອງພວກເຮົາກ້າວໄປສູ່ລະດັບສາກົນ.
+              BakeryHouse ຖືກສ້າງຕັ້ງຂຶ້ນມາບົນພື້ນຖານຄວາມໝຸ່ງໝັ້ນ ແລະ ວິໃສທັດທີ່ຢາກໃຫ້ປະເທດລາວໄດ້ມີແບຣນເຂົ້າໝົມປັງທີ່ເປັນຂອງຄົນລາວເອງ. ດ້ວຍຄວາມຕັ້ງໃຈທີ່ຈະເຂົ້າມາມີສ່ວນຮ່ວມການແຂ່ງຂັນ ແລະ ມີສ່ວນຮ່ວມໃນຕະຫຼາດເຂົ້າໝົມປັງທັງພາຍໃນແລະ ພາຍນອກປະເທດລາວ, ນອກຈາກນີ້ທາງບໍລິສັດເຮົາກໍໄດ້ມີມາດຕະຖານໂຮງງານຜະລິດທີ່ໄດ້ຮັບການອານຸມັດຈາກ ອຢ ຫຼື (ກົມອາຫານ ແລະ ການຢາ) ທີ່ຈະສ້າງຄວາມເຊື່ອໝັ້ນໃຫ້ແກ່ຜູ້ບໍລິໂພກທຸກປະເພດ, ທຸກໄວຍິງໄປກວ່ານັ້ນທາງບໍລິສັດ BakeryHouse ຍັງຮ່ວມມືກັບອົງກອນ GMP ເພື່ອທີ່ຈະຍົກລະດັບໂຮງງານຜະລິດເຂົ້າໝົມປັງຂອງບໍລິສັດ BakeryHouse ຂອງພວກເຮົາກ້າວໄປສູ່ລະດັບສາກົນ.
             </p>
             <div class="flex items-center space-x-4">
               <div
@@ -197,16 +197,16 @@ onMounted(async () => {
 
 // Meta tags for SEO
 useHead({
-  title: "About Us - Bakery House | Artisan Baking Since 2024",
+  title: "About Us - BakeryHouse | Artisan Baking Since 2024",
   meta: [
     {
       name: "description",
       content:
-        "Learn about Bakery House - our story, values, team, and locations. Crafting exceptional baked goods with passion and tradition since 2024.",
+        "Learn about BakeryHouse - our story, values, team, and locations. Crafting exceptional baked goods with passion and tradition since 2024.",
     },
     {
       property: "og:title",
-      content: "About Bakery House - Artisan Baking & Fresh Pastries",
+      content: "About BakeryHouse - Artisan Baking & Fresh Pastries",
     },
     {
       property: "og:description",

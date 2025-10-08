@@ -131,7 +131,7 @@
         <div class="text-center mb-12">
           <h2 class="text-4xl font-bold text-gray-800 mb-6">Find Us on the Map</h2>
           <p class="text-gray-600 max-w-2xl mx-auto">
-            Locate our branches easily with our interactive map. Each location offers the same quality and freshness you expect from Bakery House.
+            Locate our branches easily with our interactive map. Each location offers the same quality and freshness you expect from BakeryHouse.
           </p>
         </div>
 
@@ -201,15 +201,15 @@ onMounted(() => {
 
 // SEO
 useHead({
-  title: 'Our Locations - Bakery House | Find Us Near You',
+  title: 'Our Locations - BakeryHouse | Find Us Near You',
   meta: [
     {
       name: 'description',
-      content: 'Find Bakery House locations across the city. Visit our branches for fresh baked goods, custom orders, and specialty items. Store hours, directions, and contact info.'
+      content: 'Find BakeryHouse locations across the city. Visit our branches for fresh baked goods, custom orders, and specialty items. Store hours, directions, and contact info.'
     },
     {
       property: 'og:title',
-      content: 'Bakery House Locations - Fresh Baked Goods Near You'
+      content: 'BakeryHouse Locations - Fresh Baked Goods Near You'
     },
     {
       property: 'og:description',

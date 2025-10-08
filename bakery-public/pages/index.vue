@@ -33,7 +33,7 @@
           <h1
             class="text-black text-2xl md:text-3xl lg:text-4xl font-bold italic mb-8 leading-tight text-center"
           >
-            Bakery house Holding Company Limited
+            BakeryHouse Holding Company Limited
           </h1>
 
           <div class="flex justify-center">
@@ -53,7 +53,7 @@
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
           <h2 class="text-4xl font-bold text-gray-800 mb-4">
-            Why Choose Bakery House
+            Why Choose BakeryHouse
           </h2>
           <p class="text-lg text-gray-600 max-w-2xl mx-auto">
             Our commitment to excellence is reflected in every aspect of our
@@ -387,8 +387,8 @@ function handleGotoAboutUs() {
 
 // Meta tags for SEO
 useSeoMeta({
-  title: "Bakery House - Fresh Baked Goods Daily",
-  ogTitle: "Bakery House - Fresh Baked Goods Daily",
+  title: "BakeryHouse - Fresh Baked Goods Daily",
+  ogTitle: "BakeryHouse - Fresh Baked Goods Daily",
   description:
     "Experience the finest bakery products made with the best ingredients. From croissants to cakes, we serve fresh baked goods daily.",
   ogDescription:
