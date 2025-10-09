@@ -214,94 +214,87 @@
       </div>
     </section> -->
 
-    <!-- Bakery Locations Section -->
+    <!-- Brands Section -->
     <section class="py-16 bg-gray-50">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold text-gray-800 mb-4">Branches</h2>
+          <h2 class="text-4xl font-bold text-gray-800 mb-4">Our Customers</h2>
+          <!-- <p class="text-lg text-gray-600">
+            Bringing quality products to your table
+          </p> -->
         </div>
 
-        <!-- Loading State -->
-        <div v-if="branchesLoading" class="text-center">
-          <div
-            class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600 mx-auto"
-          ></div>
-        </div>
-
-        <!-- Branches List -->
-        <div
-          v-else-if="branches.length > 0"
-          class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
-        >
-          <div
-            class="md:col-span-2 lg:col-span-4 flex justify-center mb-8 text-xl"
+        <!-- Brand Cards -->
+        <div class="grid sm:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <!-- Kafepa Card -->
+          <a
+            :href="brands[0].link"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2"
           >
-            Every Treekoff branch where we distribute Bakery:
-          </div>
-          <div
-            v-for="branch in branches.slice(0, 6)"
-            :key="branch.id"
-            class="text-center"
-          >
-            <h3
-              @click="handleLocationClick(branch)"
-              class="text-lg font-medium text-red-800 underline cursor-pointer hover:text-red-700 transition-colors"
-            >
-              {{ branch.name }}
-            </h3>
-          </div>
-        </div>
+            <div class="w-full h-64 bg-gray-50">
+              <img
+                :src="brands[0].image"
+                :alt="brands[0].name"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="p-6 text-center bg-gradient-to-br from-white to-gray-50">
+              <h3 class="text-2xl font-bold text-gray-800 group-hover:text-red-800 transition-colors mb-2">
+                {{ brands[0].name }}
+              </h3>
+              <div class="flex items-center justify-center text-red-600 group-hover:text-red-700 transition-colors">
+                <span class="text-sm font-medium">Visit {{ brands[0].name }}</span>
+                <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </div>
+            </div>
+          </a>
 
-        <!-- Empty State -->
-        <div v-else class="text-center py-8">
-          <p class="text-gray-500">No branches available at the moment.</p>
+          <!-- Treekoff Card -->
+          <a
+            :href="brands[1].link"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2"
+          >
+            <div class="w-full h-64 bg-gray-50">
+              <img
+                :src="brands[1].image"
+                :alt="brands[1].name"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="p-6 text-center bg-gradient-to-br from-white to-gray-50">
+              <h3 class="text-2xl font-bold text-gray-800 group-hover:text-red-800 transition-colors mb-2">
+                {{ brands[1].name }}
+              </h3>
+              <div class="flex items-center justify-center text-red-600 group-hover:text-red-700 transition-colors">
+                <span class="text-sm font-medium">Visit {{ brands[1].name }}</span>
+                <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </div>
+            </div>
+          </a>
         </div>
       </div>
     </section>
-
-    <!-- Location Dialog -->
-    <div
-      v-if="showLocationDialog"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-    >
-      <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-        <div class="text-center">
-          <svg
-            class="w-16 h-16 text-gray-400 mx-auto mb-4"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-              clip-rule="evenodd"
-            />
-          </svg>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">
-            Location Not Available
-          </h3>
-          <p class="text-gray-600 mb-6">Branch does not have location data</p>
-          <button
-            @click="closeDialog"
-            class="bg-red-900 hover:bg-red-950 text-white px-6 py-2 rounded-md font-semibold transition-colors"
-          >
-            OK
-          </button>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script setup>
 import { useRouter } from "vue-router";
-import { useFirebase } from "~/composables/useFirebase";
 import backgroundImg from "@/assets/images/background.jpeg";
 import propImage from "@/assets/images/prop-image2.jpg";
 import productSectionImage from "@/assets/images/prop-image.jpeg";
+import KafepaLogo from "@/assets/images/logo/kafepa_logo.jpg";
+import TreekoffLogo from "@/assets/images/logo/treekoff_logo.png";
 
 const router = useRouter();
-const { getBranches } = useFirebase();
+
 // Use client-only wrapper for Firebase composable
 let getProductsByBakeryType;
 
@@ -313,11 +306,19 @@ if (import.meta.client) {
   getProductsByBakeryType = async () => [];
 }
 
-// Branch locations data
-const branches = ref([]);
-const branchesLoading = ref(true);
-const showLocationDialog = ref(false);
-const selectedBranch = ref(null);
+// Brand data
+const brands = ref([
+  {
+    name: "Kafepa'",
+    link: "https://www.facebook.com/share/17eGRPxhBW/?mibextid=wwXIfr",
+    image: KafepaLogo
+  },
+  {
+    name: "Treekoff",
+    link: "https://treekoff.coffee/",
+    image: TreekoffLogo
+  }
+]);
 
 // Product data from Firestore
 const bakeryProducts = ref([]);
@@ -345,30 +346,9 @@ const additionalProducts = ref([
   { id: 24, name: "Eggs tart", image: "" },
 ]);
 
-// Handle location button click
-const handleLocationClick = (branch) => {
-  if (branch.locationUrl && branch.locationUrl.trim()) {
-    // Open location URL in new tab
-    window.open(branch.locationUrl, "_blank");
-  } else {
-    // Show dialog for missing location
-    selectedBranch.value = branch;
-    showLocationDialog.value = true;
-  }
-};
-
-// Close dialog
-const closeDialog = () => {
-  showLocationDialog.value = false;
-  selectedBranch.value = null;
-};
-
-// Load branch locations and products
+// Load products
 onMounted(async () => {
   try {
-    // Load branch locations
-    branches.value = await getBranches();
-
     // Load bakery products (client-side only)
     if (import.meta.client) {
       bakeryProducts.value = await getProductsByBakeryType("bakery");
@@ -380,7 +360,6 @@ onMounted(async () => {
   } catch (error) {
     console.error("Failed to load data:", error);
   } finally {
-    branchesLoading.value = false;
     productsLoading.value = false;
   }
 });
