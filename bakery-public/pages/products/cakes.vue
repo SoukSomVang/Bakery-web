@@ -52,16 +52,16 @@
         <!-- Cakes Grid -->
         <div v-if="!loading && !error && filteredCakes.length > 0" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <div v-for="cake in paginatedCakes" :key="cake.id">
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow hover:shadow-xl">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow hover:shadow-xl h-full flex flex-col">
               <img
                 :src="cake.imageUrl || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=200&fit=crop'"
                 :alt="cake.name"
-                class="w-full h-48 object-cover"
+                class="w-full h-48 object-cover flex-shrink-0"
               />
-              <div class="p-4">
+              <div class="p-4 flex flex-col flex-grow">
                 <h3 class="text-lg font-bold text-gray-800 mb-2">{{ cake.name }}</h3>
-                <p v-if="cake.description" class="text-gray-600 text-sm mb-2">{{ cake.description }}</p>
-                <!-- <div class="text-red-600 font-semibold">
+                <p v-if="cake.description" class="text-gray-600 text-sm mb-2 line-clamp-3">{{ cake.description }}</p>
+                <!-- <div class="text-red-600 font-semibold mt-auto">
                   {{ typeof cake.price === 'number' ? cake.price.toLocaleString() : cake.price }} KIP
                 </div> -->
               </div>

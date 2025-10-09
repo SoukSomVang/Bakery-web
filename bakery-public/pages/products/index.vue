@@ -56,16 +56,16 @@
         <!-- Products Grid -->
         <div v-if="!loading && !error && filteredProducts.length > 0" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <div v-for="product in paginatedProducts" :key="product.id">
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow hover:shadow-xl">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow hover:shadow-xl h-full flex flex-col">
               <img
                 :src="getProductImage(product)"
                 :alt="product.name"
-                class="w-full h-48 object-cover"
+                class="w-full h-48 object-cover flex-shrink-0"
               />
-              <div class="p-4">
+              <div class="p-4 flex flex-col flex-grow">
                 <h3 class="text-lg font-bold text-gray-800 mb-2">{{ product.name }}</h3>
-                <p v-if="product.description" class="text-gray-600 text-sm mb-2">{{ product.description }}</p>
-                <!-- <div class="text-red-600 font-semibold">
+                <p v-if="product.description" class="text-gray-600 text-sm mb-2 line-clamp-3">{{ product.description }}</p>
+                <!-- <div class="text-red-600 font-semibold mt-auto">
                   {{ typeof product.price === 'number' ? product.price.toLocaleString() : product.price }} KIP
                 </div> -->
               </div>

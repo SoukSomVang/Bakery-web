@@ -87,9 +87,9 @@
           <div
             v-for="cookie in cookies"
             :key="cookie.id"
-            class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+            class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col"
           >
-            <div class="relative">
+            <div class="relative flex-shrink-0">
               <img
                 :src="cookie.image"
                 :alt="cookie.name"
@@ -105,7 +105,7 @@
                 Limited
               </div>
             </div>
-            <div class="p-4">
+            <div class="p-4 flex flex-col flex-grow">
               <div class="flex justify-between items-start mb-2">
                 <h3 class="text-lg font-bold text-gray-800">{{ cookie.name }}</h3>
                 <span :class="[
@@ -115,7 +115,7 @@
                   {{ cookie.category }}
                 </span>
               </div>
-              <p class="text-gray-600 mb-3 text-sm">{{ cookie.description }}</p>
+              <p class="text-gray-600 mb-3 text-sm line-clamp-2">{{ cookie.description }}</p>
               <div class="mb-3">
                 <div class="flex flex-wrap gap-1">
                   <span
@@ -127,7 +127,7 @@
                   </span>
                 </div>
               </div>
-              <div class="flex justify-between items-center mb-3">
+              <div class="flex justify-between items-center mb-3 mt-auto">
                 <div>
                   <span class="text-lg font-bold text-red-600">${{ cookie.price }}</span>
                   <span class="text-xs text-gray-500 ml-1">{{ cookie.unit }}</span>

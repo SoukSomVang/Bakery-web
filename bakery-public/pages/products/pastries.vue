@@ -83,9 +83,9 @@
           <div
             v-for="pastry in pastries"
             :key="pastry.id"
-            class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+            class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow h-full flex flex-col"
           >
-            <div class="relative">
+            <div class="relative flex-shrink-0">
               <img
                 :src="pastry.image"
                 :alt="pastry.name"
@@ -98,14 +98,14 @@
                 New
               </div>
             </div>
-            <div class="p-6">
+            <div class="p-6 flex flex-col flex-grow">
               <div class="flex justify-between items-start mb-2">
                 <h3 class="text-xl font-bold text-gray-800">{{ pastry.name }}</h3>
                 <span class="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
                   {{ pastry.category }}
                 </span>
               </div>
-              <p class="text-gray-600 mb-3 text-sm">{{ pastry.description }}</p>
+              <p class="text-gray-600 mb-3 text-sm line-clamp-2">{{ pastry.description }}</p>
               <div class="mb-4">
                 <div class="flex flex-wrap gap-1">
                   <span
@@ -117,7 +117,7 @@
                   </span>
                 </div>
               </div>
-              <div class="flex justify-between items-center">
+              <div class="flex justify-between items-center mt-auto">
                 <span class="text-2xl font-bold text-red-600">${{ pastry.price }}</span>
                 <button class="bg-red-900 hover:bg-red-950 text-white px-4 py-2 rounded-md font-semibold transition-colors text-sm">
                   Add to Order
