@@ -1,0 +1,80 @@
+{
+  "common": {
+    "search": "Search",
+    "clear": "Clear",
+    "loading": "Loading...",
+    "noResults": "No results found",
+    "showingResults": "Showing {start}-{end} of {total} items",
+    "itemsPerPage": "Items per page",
+    "page": "Page",
+    "of": "of"
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "aboutUs": "About Us",
+    "contactUs": "Contact Us",
+    "manual": "Product Manual",
+    "gallery": "Gallery",
+    "branches": "Branches"
+  },
+  "manual": {
+    "title": "Product Manual & Guidelines",
+    "searchPlaceholder": "Search products...",
+    "allTypes": "All Types",
+    "noItems": "No items found",
+    "iconLegend": "Icon Legend",
+    "table": {
+      "no": "NO.",
+      "items": "ITEMS",
+      "image": "IMAGE",
+      "shelfLife": "SHELF LIFE",
+      "canReheat": "REHEAT FOR CUSTOMER",
+      "reheatTime": "REHEAT TIME",
+      "storageAfterClosing": "STORAGE AFTER CLOSING",
+      "displayMethod": "DISPLAY METHOD",
+      "precautions": "PRECAUTIONS"
+    },
+    "legends": {
+      "reheating": "Can Reheat",
+      "canReheat": "Can reheat",
+      "cannotReheat": "Cannot reheat",
+      "reheatTime": "Reheat time",
+      "storage": "Storage",
+      "storeInRefrigerator": "Store in refrigerator",
+      "storeAtColdTemp": "Store at cold temperature",
+      "storeInBox": "Store in box",
+      "keepAirtight": "Keep airtight",
+      "storeInCakeCase": "Store in cake display case",
+      "display": "Display",
+      "bakeryDisplayCase": "Arrange in bakery display case",
+      "cakeDisplayCase": "Arrange in cake display case",
+      "glassDome": "Arrange in glass dome",
+      "precautions": "Precautions",
+      "avoidMoisture": "Avoid moisture",
+      "avoidSunlight": "Avoid sunlight",
+      "tempSensitive": "Temperature sensitive",
+      "handleWithCare": "Handle with care"
+    },
+    "units": {
+      "days": "days",
+      "min": "min",
+      "celsius": "°C"
+    }
+  },
+  "products": {
+    "cakes": "Cakes",
+    "breads": "Breads",
+    "pastries": "Pastries",
+    "cookies": "Cookies",
+    "bakery": "Bakery",
+    "allProducts": "All Products",
+    "freshBaked": "Fresh baked daily with the finest ingredients",
+    "searchPlaceholder": "Search products...",
+    "perPage": "Items per page"
+  },
+  "footer": {
+    "copyright": "© 2024 Bakery House. All rights reserved.",
+    "followUs": "Follow Us"
+  }
+}

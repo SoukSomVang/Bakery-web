@@ -1,0 +1,80 @@
+{
+  "common": {
+    "search": "ຄົ້ນຫາ",
+    "clear": "ລ້າງ",
+    "loading": "ກຳລັງໂຫລດ...",
+    "noResults": "ບໍ່ພົບຜົນການຄົ້ນຫາ",
+    "showingResults": "ສະແດງ {start}-{end} ຈາກທັງໝົດ {total} ລາຍການ",
+    "itemsPerPage": "ລາຍການຕໍ່ໜ້າ",
+    "page": "ໜ້າ",
+    "of": "ຈາກ"
+  },
+  "nav": {
+    "home": "ໜ້າຫຼັກ",
+    "products": "ສິນຄ້າ",
+    "aboutUs": "ກ່ຽວກັບເຮົາ",
+    "contactUs": "ຕິດຕໍ່ເຮົາ",
+    "manual": "ຄູ່ມືສິນຄ້າ",
+    "gallery": "ຮູບພາບ",
+    "branches": "ສາຂາ"
+  },
+  "manual": {
+    "title": "ຄູ່ມືສິນຄ້າ ແລະ ຄຳແນະນຳ",
+    "searchPlaceholder": "ຄົ້ນຫາສິນຄ້າ...",
+    "allTypes": "ທຸກປະເພດ",
+    "noItems": "ບໍ່ພົບລາຍການ",
+    "iconLegend": "ຄຳອະທິບາຍສັນຍາລັກ",
+    "table": {
+      "no": "ລຳດັບ",
+      "items": "ລາຍການ",
+      "image": "ຮູບສິນຄ້າ",
+      "shelfLife": "ອາຍຸການເກັບ",
+      "canReheat": "ສາມາດອຸ່ນໃຫ້ລູກຄ້າ",
+      "reheatTime": "ເວລາໃນການອຸ່ນ",
+      "storageAfterClosing": "ການຈັດເກັບເວລາປິດຮ້ານ",
+      "displayMethod": "ການຈັດວາງຂາຍ",
+      "precautions": "ຂໍ້ຄວນລະວັງ"
+    },
+    "legends": {
+      "reheating": "ສາມາດອຸ່ນໃຫ້ລູກຄ້າ",
+      "canReheat": "ສາມາດອຸ່ນໄດ້",
+      "cannotReheat": "ບໍ່ສາມາດອຸ່ນ",
+      "reheatTime": "ເວລາໃນການອຸ່ນ",
+      "storage": "ການຈັດເກັບ",
+      "storeInRefrigerator": "ເກັບໃນຕູ້ເຢັນ",
+      "storeAtColdTemp": "ເກັບໃນອຸນຫະພູມເຢັນ",
+      "storeInBox": "ເກັບເຂົ້າກ່ອງ",
+      "keepAirtight": "ບໍ່ໃຫ້ອາກາດເຂົ້າ",
+      "storeInCakeCase": "ເກັບເຂົ້າຕູ້ເຄັກ",
+      "display": "ການຈັດວາງ",
+      "bakeryDisplayCase": "ວາງໃນຕູ້ເບເກີຣີ",
+      "cakeDisplayCase": "ວາງໃນຕູ້ເຄັກ",
+      "glassDome": "ວາງໃນໂຄມແກ້ວ",
+      "precautions": "ຂໍ້ຄວນລະວັງ",
+      "avoidMoisture": "ບໍ່ໃຫ້ຖືກນ້ຳ",
+      "avoidSunlight": "ບໍ່ໃຫ້ຖືກແສງແດດ",
+      "tempSensitive": "ຄວນລະວັງອຸນຫະພູມ",
+      "handleWithCare": "ລະວັງ"
+    },
+    "units": {
+      "days": "ມື້",
+      "min": "ນາທີ",
+      "celsius": "°C"
+    }
+  },
+  "products": {
+    "cakes": "ເຄັກ",
+    "breads": "ເຂົ້າຈີ່",
+    "pastries": "ເພສະຕຣີ",
+    "cookies": "ຄຸກກີ້",
+    "bakery": "ເບເກີຣີ",
+    "allProducts": "ສິນຄ້າທັງໝົດ",
+    "freshBaked": "ອົບສົດໃໝ່ທຸກມື້ດ້ວຍວັດຖຸດິບຄຸນນະພາບດີທີ່ສຸດ",
+    "searchPlaceholder": "ຄົ້ນຫາສິນຄ້າ...",
+    "perPage": "ລາຍການຕໍ່ໜ້າ"
+  },
+  "footer": {
+    "copyright": "© 2024 Bakery House. ສະຫງວນລິຂະສິດ.",
+    "followUs": "ຕິດຕາມເຮົາ"
+  }
+}

@@ -16,11 +16,11 @@
             v-model="searchQuery"
             type="text"
             placeholder="ຄົ້ນຫາສິນຄ້າ / Search products..."
-            class="px-4 py-2 border border-gray-300 rounded text-sm w-full md:w-64 focus:ring-2 focus:ring-red-800 focus:border-red-800"
+            class="px-4 py-2 border border-gray-300 rounded text-sm w-full h-[38px] md:w-64 focus:ring-2 focus:ring-red-800 focus:border-red-800"
           />
           <select
             v-model="selectedType"
-            class="px-4 py-2 border border-gray-300 rounded text-sm w-full md:w-auto focus:ring-2 focus:ring-red-800 focus:border-red-800"
+            class="px-4 py-2 border border-gray-300 rounded text-sm w-full h-[38px] md:w-auto focus:ring-2 focus:ring-red-800 focus:border-red-800"
           >
             <option value="">All Types</option>
             <option
@@ -28,12 +28,12 @@
               :key="typeName"
               :value="typeName"
             >
-              {{ typeName }}
+              {{ capitalizeFirst(typeName) }}
             </option>
           </select>
           <button
             @click="clearFilter"
-            class="w-full md:w-auto px-4 py-2 bg-red-800 text-white rounded text-sm hover:bg-red-700"
+            class="w-full md:w-auto px-4 py-2 bg-red-800 text-white h-[38px] rounded text-sm hover:bg-red-700"
           >
             Clear
           </button>
@@ -716,6 +716,11 @@ const getProductsByCakeAndBakeryTypes = async () => {
     return [];
   }
 };
+
+function capitalizeFirst(str) {
+  if (!str) return "";
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 // State
 const loading = ref(true);
