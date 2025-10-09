@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Deployment Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .site-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid #e9ecef;
+        }
+        .site-card h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        .url {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+        .url a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .url a:hover {
+            text-decoration: underline;
+        }
+        .test-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        .test-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        .status.loading {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .instructions {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 8px;
+        }
+        .instructions h3 {
+            color: #1976D2;
+            margin-bottom: 10px;
+        }
+        .instructions ol {
+            margin-left: 20px;
+        }
+        .instructions li {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧁 Firebase Deployment Verification</h1>
+
+        <div class="site-card">
+            <h2>🌐 Public Website (Customer Site)</h2>
+            <div class="url">
+                <strong>URL:</strong> <a href="https://bakeryhouse-shop-55849.web.app" target="_blank" id="public-link">https://bakeryhouse-shop-55849.web.app</a>
+            </div>
+            <button class="test-btn" onclick="testSite('public')">Test This Site</button>
+            <div id="public-status"></div>
+        </div>
+
+        <div class="site-card">
+            <h2>🔧 Admin Dashboard</h2>
+            <div class="url">
+                <strong>URL:</strong> <a href="https://bakery-admin-dashboard-ea9d5.web.app" target="_blank" id="admin-link">https://bakery-admin-dashboard-ea9d5.web.app</a>
+            </div>
+            <button class="test-btn" onclick="testSite('admin')">Test This Site</button>
+            <div id="admin-status"></div>
+        </div>
+
+        <div class="site-card">
+            <h2>🏠 Default Firebase Site</h2>
+            <div class="url">
+                <strong>URL:</strong> <a href="https://bakery-house-f7e32.web.app" target="_blank" id="default-link">https://bakery-house-f7e32.web.app</a>
+            </div>
+            <button class="test-btn" onclick="testSite('default')">Test This Site</button>
+            <div id="default-status"></div>
+        </div>
+
+        <div class="instructions">
+            <h3>📋 Troubleshooting Steps:</h3>
+            <ol>
+                <li><strong>Clear Browser Cache:</strong> Press Ctrl+Shift+Delete (Windows) or Cmd+Shift+Delete (Mac) and clear cached images and files</li>
+                <li><strong>Try Incognito Mode:</strong> Open the links in a private/incognito window</li>
+                <li><strong>Wait for CDN Propagation:</strong> Firebase Hosting can take 5-15 minutes to propagate globally</li>
+                <li><strong>Try Different Network:</strong> Test from your mobile phone using cellular data</li>
+                <li><strong>Hard Refresh:</strong> Press Ctrl+F5 (Windows) or Cmd+Shift+R (Mac) on the website</li>
+                <li><strong>Check Browser Console:</strong> Press F12 and look for any error messages in the Console tab</li>
+            </ol>
+        </div>
+
+        <div class="instructions" style="background: #f0f9ff; border-left-color: #0284c7; margin-top: 20px;">
+            <h3>✅ Deployment Information:</h3>
+            <p style="line-height: 1.8;">
+                <strong>Deployment Time:</strong> October 9, 2025 00:44 AM<br>
+                <strong>Public Files:</strong> 121 files deployed<br>
+                <strong>Admin Files:</strong> 62 files deployed<br>
+                <strong>Status:</strong> ✅ Successfully Deployed<br>
+                <strong>Build Type:</strong> Static Site Generation (SSG)
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function testSite(type) {
+            const urls = {
+                'public': 'https://bakeryhouse-shop-55849.web.app',
+                'admin': 'https://bakery-admin-dashboard-ea9d5.web.app',
+                'default': 'https://bakery-house-f7e32.web.app'
+            };
+
+            const statusDiv = document.getElementById(type + '-status');
+            statusDiv.className = 'status loading';
+            statusDiv.textContent = '⏳ Testing connection...';
+
+            // Try to fetch the site
+            fetch(urls[type], { mode: 'no-cors' })
+                .then(() => {
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ Site is reachable! Click the link above to open it.';
+                })
+                .catch((error) => {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = '⚠️ Connection test inconclusive. Try opening the link manually above. If it doesn\'t work, wait 10-15 minutes for DNS propagation.';
+                });
+        }
+
+        // Auto-test all sites on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => testSite('public'), 500);
+            setTimeout(() => testSite('admin'), 1000);
+            setTimeout(() => testSite('default'), 1500);
+        });
+    </script>
+</body>
+</html>

@@ -1,50 +1,25 @@
 {
-  "hosting": [
-    {
-      "target": "bakery-public",
-      "public": "bakery-public/.output/public",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
-      "cleanUrls": true,
-      "trailingSlash": false,
-      "headers": [
-        {
-          "source": "**/*.@(jpg|jpeg|gif|png|svg|webp|js|css|woff|woff2|ttf|eot)",
-          "headers": [
-            {
-              "key": "Cache-Control",
-              "value": "max-age=31536000"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "target": "bakery-admin",
-      "public": "bakery-admin/.output/public",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
-      "cleanUrls": true,
-      "trailingSlash": false,
-      "headers": [
-        {
-          "source": "**/*.@(jpg|jpeg|gif|png|svg|webp|js|css|woff|woff2|ttf|eot)",
-          "headers": [
-            {
-              "key": "Cache-Control",
-              "value": "max-age=31536000"
-            }
-          ]
-        }
-      ]
-    }
-  ],
+  "hosting": {
+    "public": "bakery-public/.output/public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "headers": [
+      {
+        "source": "**/*.@(jpg|jpeg|gif|png|svg|webp|js|css|woff|woff2|ttf|eot)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=31536000"
+          }
+        ]
+      }
+    ]
+  },
   "firestore": {
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"

@@ -58,7 +58,15 @@
       "Bash(firebase hosting:channel:list:*)",
       "WebFetch(domain:bakery-house-f7e32.web.app)",
       "Bash(firebase hosting:clone:*)",
-      "Bash(firebase hosting:channel:deploy:*)"
+      "Bash(firebase hosting:channel:deploy:*)",
+      "Bash(open:*)",
+      "Bash(firebase hosting:sites:get:*)",
+      "Bash(firebase apps:list:*)",
+      "Bash(wrangler login:*)",
+      "Bash(npx wrangler pages project create:*)",
+      "Bash(npx wrangler pages deploy:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
