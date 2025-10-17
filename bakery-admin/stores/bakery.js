@@ -5,6 +5,7 @@ export const useBakeryStore = defineStore('bakery', {
     branches: [],
     bakeries: [],
     bakeryTypes: [],
+    news: [],
     loading: false,
     error: null
   }),
@@ -37,6 +38,10 @@ export const useBakeryStore = defineStore('bakery', {
     // Get type names for dropdowns
     bakeryTypeNames: (state) => {
       return state.bakeryTypes.map(type => type.name)
+    },
+
+    getNewsById: (state) => (id) => {
+      return state.news.find(item => item.id === id)
     }
   },
 
@@ -428,6 +433,83 @@ export const useBakeryStore = defineStore('bakery', {
       } catch (error) {
         this.setError('Failed to delete bakery type')
         console.error('Error deleting bakery type:', error)
+        throw error
+      } finally {
+        this.setLoading(false)
+      }
+    },
+
+    // News Actions
+    async fetchNews() {
+      this.setLoading(true)
+      this.setError(null)
+
+      try {
+        const { getNews } = useFirebase()
+        this.news = await getNews()
+      } catch (error) {
+        this.setError('Failed to fetch news')
+        console.error('Error fetching news:', error)
+      } finally {
+        this.setLoading(false)
+      }
+    },
+
+    async addNews(newsItem) {
+      this.setLoading(true)
+      this.setError(null)
+
+      try {
+        const { addNews } = useFirebase()
+        const id = await addNews(newsItem)
+
+        // Add to local state
+        this.news.push({ id, ...newsItem, createdAt: new Date(), updatedAt: new Date() })
+        return id
+      } catch (error) {
+        this.setError('Failed to add news')
+        console.error('Error adding news:', error)
+        throw error
+      } finally {
+        this.setLoading(false)
+      }
+    },
+
+    async updateNews(id, newsItem) {
+      this.setLoading(true)
+      this.setError(null)
+
+      try {
+        const { updateNews } = useFirebase()
+        await updateNews(id, newsItem)
+
+        // Update local state
+        const index = this.news.findIndex(n => n.id === id)
+        if (index !== -1) {
+          this.news[index] = { ...this.news[index], ...newsItem, updatedAt: new Date() }
+        }
+      } catch (error) {
+        this.setError('Failed to update news')
+        console.error('Error updating news:', error)
+        throw error
+      } finally {
+        this.setLoading(false)
+      }
+    },
+
+    async deleteNews(id) {
+      this.setLoading(true)
+      this.setError(null)
+
+      try {
+        const { deleteNews } = useFirebase()
+        await deleteNews(id)
+
+        // Remove from local state
+        this.news = this.news.filter(item => item.id !== id)
+      } catch (error) {
+        this.setError('Failed to delete news')
+        console.error('Error deleting news:', error)
         throw error
       } finally {
         this.setLoading(false)

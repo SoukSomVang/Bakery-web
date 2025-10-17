@@ -25,7 +25,7 @@
                 <h2
                   class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight text-white"
                 >
-                  Service Since<br />
+                  {{ t('aboutUs.serviceSince') }}<br />
                   <span class="text-4xl sm:text-5xl lg:text-6xl"
                     >10/10/2024</span
                   >
@@ -39,7 +39,7 @@
                 <h3
                   class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-200"
                 >
-                  BakeryHouse
+                  {{ t('aboutUs.bakeryHouse') }}
                 </h3>
               </div>
 
@@ -50,7 +50,7 @@
                 <button
                   class="bg-red-900 hover:bg-red-950 text-white px-6 md:px-10 py-3 md:py-4 rounded-md font-semibold transition-colors w-full sm:w-auto"
                 >
-                  Contact Us
+                  {{ t('aboutUs.contactUs') }}
                 </button>
               </div>
             </div>
@@ -78,18 +78,18 @@
             <h2
               class="text-3xl sm:text-4xl font-bold text-gray-800 mb-6 text-center md:text-left"
             >
-              Our Story
+              {{ t('aboutUs.ourStory') }}
             </h2>
             <p
               class="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base text-justify"
             >
-              BakeryHouse ຖືກສ້າງຕັ້ງຂຶ້ນມາບົນພື້ນຖານຄວາມໝຸ່ງໝັ້ນ ແລະ ວິໃສທັດທີ່ຢາກໃຫ້ປະເທດລາວໄດ້ມີແບຣນເຂົ້າໝົມປັງທີ່ເປັນຂອງຄົນລາວເອງ. ດ້ວຍຄວາມຕັ້ງໃຈທີ່ຈະເຂົ້າມາມີສ່ວນຮ່ວມການແຂ່ງຂັນ ແລະ ມີສ່ວນຮ່ວມໃນຕະຫຼາດເຂົ້າໝົມປັງທັງພາຍໃນແລະ ພາຍນອກປະເທດລາວ, ນອກຈາກນີ້ທາງບໍລິສັດເຮົາກໍໄດ້ມີມາດຕະຖານໂຮງງານຜະລິດທີ່ໄດ້ຮັບການອານຸມັດຈາກ ອຢ ຫຼື (ກົມອາຫານ ແລະ ການຢາ) ທີ່ຈະສ້າງຄວາມເຊື່ອໝັ້ນໃຫ້ແກ່ຜູ້ບໍລິໂພກທຸກປະເພດ, ທຸກໄວຍິງໄປກວ່ານັ້ນທາງບໍລິສັດ BakeryHouse ຍັງຮ່ວມມືກັບອົງກອນ GMP ເພື່ອທີ່ຈະຍົກລະດັບໂຮງງານຜະລິດເຂົ້າໝົມປັງຂອງບໍລິສັດ BakeryHouse ຂອງພວກເຮົາກ້າວໄປສູ່ລະດັບສາກົນ.
+              {{ t('aboutUs.storyContent') }}
             </p>
             <div class="flex justify-center md:justify-start">
               <div
                 class="bg-red-100 text-red-800 px-4 py-2 rounded-full font-semibold text-sm sm:text-base"
               >
-                Service Since 10/10/2024
+                {{ t('aboutUs.serviceSince') }} 10/10/2024
               </div>
             </div>
           </div>
@@ -115,7 +115,7 @@
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
           <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">
-            Our Customers
+            {{ t('home.ourCustomers') }}
           </h2>
         </div>
 
@@ -140,7 +140,7 @@
                 {{ brands[0].name }}
               </h3>
               <div class="flex items-center justify-center text-red-600 group-hover:text-red-700 transition-colors">
-                <span class="text-sm font-medium">Visit {{ brands[0].name }}</span>
+                <span class="text-sm font-medium">{{ t('common.visit') }} {{ brands[0].name }}</span>
                 <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                 </svg>
@@ -167,7 +167,7 @@
                 {{ brands[1].name }}
               </h3>
               <div class="flex items-center justify-center text-red-600 group-hover:text-red-700 transition-colors">
-                <span class="text-sm font-medium">Visit {{brands[1].name}}</span>
+                <span class="text-sm font-medium">{{ t('common.visit') }} {{brands[1].name}}</span>
                 <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                 </svg>
@@ -187,6 +187,8 @@ import CeoImage from "@/assets/images/ceo-image.jpeg";
 import CookingImage from "@/assets/images/about-us.jpeg";
 import KafepaLogo from "@/assets/images/logo/kafepa_logo.jpg";
 import TreekoffLogo from "@/assets/images/logo/treekoff_logo.png";
+
+const { t } = useTranslation();
 
 // Brand data
 const brands = ref([

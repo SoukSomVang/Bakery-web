@@ -5,7 +5,7 @@
       <div class="max-w-7xl mx-auto px-6 py-4">
         <!-- Manual Title -->
         <div class="text-center mb-6">
-          <h2 class="text-lg">Product Manual & Guidelines</h2>
+          <h2 class="text-lg">{{ t('manual.title') }}</h2>
         </div>
 
         <!-- Search Controls (minimal design) -->
@@ -15,14 +15,14 @@
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="ຄົ້ນຫາສິນຄ້າ / Search products..."
+            :placeholder="t('manual.searchPlaceholder')"
             class="px-4 py-2 border border-gray-300 rounded text-sm w-full h-[38px] md:w-64 focus:ring-2 focus:ring-red-800 focus:border-red-800"
           />
           <select
             v-model="selectedType"
             class="px-4 py-2 border border-gray-300 rounded text-sm w-full h-[38px] md:w-auto focus:ring-2 focus:ring-red-800 focus:border-red-800"
           >
-            <option value="">All Types</option>
+            <option value="">{{ t('manual.allTypes') }}</option>
             <option
               v-for="typeName in bakeryTypeNames"
               :key="typeName"
@@ -35,7 +35,7 @@
             @click="clearFilter"
             class="w-full md:w-auto px-4 py-2 bg-red-800 text-white h-[38px] rounded text-sm hover:bg-red-700"
           >
-            Clear
+            {{ t('manual.clear') }}
           </button>
         </div>
       </div>
@@ -55,7 +55,7 @@
         v-if="!loading && filteredItems.length === 0"
         class="text-center py-12"
       >
-        <div class="text-gray-500 text-lg">No items found</div>
+        <div class="text-gray-500 text-lg">{{ t('manual.noItemsFound') }}</div>
       </div>
 
       <!-- PDF-Style Table -->
@@ -70,49 +70,47 @@
               <th
                 class="border border-gray-300 px-2 py-3 text-center text-xs font-bold text-nowrap"
               >
-                <p class="px-4">ລຳດັບ<br />NO.</p>
+                <p class="px-4">{{ t('manual.table.no') }}</p>
               </th>
               <th
                 class="border border-gray-300 px-2 py-3 text-center text-xs font-bold text-nowrap"
               >
-                <p class="px-4">ລາຍການ<br />ITEMS</p>
+                <p class="px-4">{{ t('manual.table.items') }}</p>
               </th>
               <th
                 class="border border-gray-300 px-2 py-3 text-center text-xs font-bold text-nowrap"
               >
-                <p class="px-4">ຮູບສິນຄ້າ<br />IMAGE</p>
+                <p class="px-4">{{ t('manual.table.image') }}</p>
               </th>
               <th
                 class="border border-gray-300 px-2 py-3 text-center text-xs font-bold text-nowrap"
               >
-                <p class="px-4">ອາຍຸການເກັບ<br />SHELF LIFE</p>
+                <p class="px-4">{{ t('manual.table.shelfLife') }}</p>
               </th>
               <th
                 class="border border-gray-300 px-2 py-3 text-center text-xs font-bold text-nowrap"
               >
-                <p class="px-4">ສາມາດອຸ່ນໃຫ້ລູກຄ້າ<br />REHEAT FOR CUSTOMER</p>
+                <p class="px-4">{{ t('manual.table.reheatForCustomer') }}</p>
               </th>
               <th
                 class="border border-gray-300 px-2 py-3 text-center text-xs font-bold text-nowrap"
               >
-                <p class="px-4">ເວລາໃນການອຸ່ນ<br />REHEAT TIME</p>
+                <p class="px-4">{{ t('manual.table.reheatTime') }}</p>
               </th>
               <th
                 class="border border-gray-300 px-2 py-3 text-center text-xs font-bold text-nowrap"
               >
-                <p class="px-4">
-                  ການຈັດເກັບເວລາປິດຮ້ານ<br />STORAGE AFTER CLOSING
-                </p>
+                <p class="px-4">{{ t('manual.table.storageAfterClosing') }}</p>
               </th>
               <th
                 class="border border-gray-300 px-2 py-3 text-center text-xs font-bold text-nowrap"
               >
-                <p class="px-4">ການຈັດວາງຂາຍ<br />DISPLAY METHOD</p>
+                <p class="px-4">{{ t('manual.table.displayMethod') }}</p>
               </th>
               <th
                 class="border border-gray-300 px-2 py-3 text-center text-xs font-bold text-nowrap"
               >
-                <p class="px-4">ຂໍ້ຄວນລະວັງ<br />PRECAUTIONS</p>
+                <p class="px-4">{{ t('manual.table.precautions') }}</p>
               </th>
             </tr>
           </thead>
@@ -393,14 +391,14 @@
         class="mt-8 border-t pt-6"
       >
         <h3 class="text-lg font-bold text-gray-800 mb-4 text-center">
-          ຄຳອະທິບາຍສັນຍາລັກ / Icon Legend
+          {{ t('manual.legend.title') }}
         </h3>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
           <!-- Reheating Icons -->
           <div class="space-y-2">
             <h4 class="font-semibold text-gray-700">
-              ສາມາດອຸ່ນໃຫ້ລູກຄ້າ / Can Reheat:
+              {{ t('manual.legend.reheat.title') }}
             </h4>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
@@ -410,7 +408,7 @@
                   class="w-8 h-8"
                 />
               </div>
-              <span>ສາມາດອຸ່ນໄດ້ / Can reheat</span>
+              <span>{{ t('manual.legend.reheat.canReheat') }}</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
@@ -420,7 +418,7 @@
                   class="w-8 h-8"
                 />
               </div>
-              <span>ບໍ່ສາມາດອຸ່ນ / Cannot reheat</span>
+              <span>{{ t('manual.legend.reheat.cannotReheat') }}</span>
             </div>
             <div class="flex items-center gap-2">
               <div
@@ -432,13 +430,13 @@
                   class="w-8 h-8"
                 />
               </div>
-              <span>ເວລາໃນການອຸ່ນ / Reheat time</span>
+              <span>{{ t('manual.legend.reheat.reheatTime') }}</span>
             </div>
           </div>
 
           <!-- Storage Icons -->
           <div class="space-y-2">
-            <h4 class="font-semibold text-gray-700">ການຈັດເກັບ / Storage:</h4>
+            <h4 class="font-semibold text-gray-700">{{ t('manual.legend.storage.title') }}</h4>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
                 <img
@@ -447,7 +445,7 @@
                   class="w-8 h-8"
                 />
               </div>
-              <span>ເກັບໃນຕູ້ເຢັນ / Store in refrigerator</span>
+              <span>{{ t('manual.legend.storage.refrigerator') }}</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
@@ -457,7 +455,7 @@
                   class="w-8 h-8"
                 />
               </div>
-              <span>ເກັບໃນອຸນຫະພູມເຢັນ / Store at cold temperature</span>
+              <span>{{ t('manual.legend.storage.coldTemperature') }}</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
@@ -467,7 +465,7 @@
                   class="w-8 h-8"
                 />
               </div>
-              <span>ເກັບເຂົ້າກ່ອງ / Store in box</span>
+              <span>{{ t('manual.legend.storage.storeInBox') }}</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
@@ -477,7 +475,7 @@
                   class="w-8 h-8"
                 />
               </div>
-              <span>ບໍ່ໃຫ້ອາກາດເຂົ້າ / Keep airtight</span>
+              <span>{{ t('manual.legend.storage.keepAirtight') }}</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
@@ -487,13 +485,13 @@
                   class="w-8 h-8"
                 />
               </div>
-              <span>ເກັບເຂົ້າຕູ້ເຄັກ / Store in cake display case</span>
+              <span>{{ t('manual.legend.storage.cakeDisplayCase') }}</span>
             </div>
           </div>
 
           <!-- Display Icons -->
           <div class="space-y-2">
-            <h4 class="font-semibold text-gray-700">ການຈັດວາງ / Display:</h4>
+            <h4 class="font-semibold text-gray-700">{{ t('manual.legend.display.title') }}</h4>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
                 <img
@@ -502,7 +500,7 @@
                   class="w-8 h-8"
                 />
               </div>
-              <span>ວາງໃນຕູ້ເບເກີຣີ / Arrange in bakery display case</span>
+              <span>{{ t('manual.legend.display.bakeryCase') }}</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
@@ -512,7 +510,7 @@
                   class="w-8 h-8"
                 />
               </div>
-              <span>ວາງໃນຕູ້ເຄັກ / Arrange in cake display case</span>
+              <span>{{ t('manual.legend.display.cakeCase') }}</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
@@ -522,14 +520,14 @@
                   class="w-8 h-8"
                 />
               </div>
-              <span>ວາງໃນໂຄມແກ້ວ / Arrange in glass dome</span>
+              <span>{{ t('manual.legend.display.glassDome') }}</span>
             </div>
           </div>
 
           <!-- Precaution Icons -->
           <div class="space-y-2">
             <h4 class="font-semibold text-gray-700">
-              ຂໍ້ຄວນລະວັງ / Precautions:
+              {{ t('manual.legend.precautions.title') }}
             </h4>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
@@ -539,7 +537,7 @@
                   class="w-8 h-8"
                 />
               </div>
-              <span>ບໍ່ໃຫ້ຖືກນ້ຳ / Avoid moisture</span>
+              <span>{{ t('manual.legend.precautions.avoidMoisture') }}</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
@@ -549,7 +547,7 @@
                   class="w-8 h-8"
                 />
               </div>
-              <span>ບໍ່ໃຫ້ຖືກແສງແດດ / Avoid sunlight</span>
+              <span>{{ t('manual.legend.precautions.avoidSunlight') }}</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
@@ -559,7 +557,7 @@
                   class="w-8 h-8"
                 />
               </div>
-              <span>ຄວນລະວັງອຸນຫະພູມ / Temperature sensitive</span>
+              <span>{{ t('manual.legend.precautions.temperatureSensitive') }}</span>
             </div>
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded flex items-center justify-center">
@@ -569,7 +567,7 @@
                   class="w-8 h-8"
                 />
               </div>
-              <span>ລະວັງ / Handle with care</span>
+              <span>{{ t('manual.legend.precautions.handleWithCare') }}</span>
             </div>
           </div>
         </div>
@@ -581,7 +579,7 @@
         <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
           <!-- Pagination Info Display -->
           <div class="text-sm text-gray-600">
-            Showing {{ startItem }}-{{ endItem }} of {{ filteredItems.length }} items
+            {{ t('manual.pagination.showing', { start: startItem, end: endItem, total: filteredItems.length }) }}
           </div>
 
           <!-- Pagination Controls -->
@@ -676,7 +674,7 @@
 
           <!-- Items Per Page Selector -->
           <div class="flex items-center gap-2">
-            <span class="text-sm text-gray-600">Items per page:</span>
+            <span class="text-sm text-gray-600">{{ t('manual.pagination.itemsPerPage') }}</span>
             <select
               v-model="itemsPerPage"
               @change="changeItemsPerPage(itemsPerPage)"
@@ -701,6 +699,9 @@
 </template>
 
 <script setup>
+// Translation composable
+const { t, locale: currentLocale } = useTranslation()
+
 // Client-only Firebase initialization
 const getProductsByCakeAndBakeryTypes = async () => {
   // Only fetch on client side

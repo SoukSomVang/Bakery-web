@@ -382,6 +382,109 @@ export const useFirebase = () => {
     }
   }
 
+  // News CRUD
+  const getNews = async () => {
+    try {
+      if (!$db) {
+        throw new Error('Firebase Database is not initialized. Please check your Firebase configuration.')
+      }
+      const q = query(collection($db, 'news'), orderBy('createdAt', 'desc'))
+      const querySnapshot = await getDocs(q)
+      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    } catch (error) {
+      console.error('Error getting news:', error)
+      throw error
+    }
+  }
+
+  const getNewsById = async (id) => {
+    try {
+      const docRef = doc($db, 'news', id)
+      const docSnap = await getDoc(docRef)
+      if (docSnap.exists()) {
+        return { id: docSnap.id, ...docSnap.data() }
+      } else {
+        throw new Error('News not found')
+      }
+    } catch (error) {
+      console.error('Error getting news:', error)
+      throw error
+    }
+  }
+
+  const addNews = async (news) => {
+    try {
+      if (!$db) {
+        throw new Error('Firebase Database is not initialized. Please check your Firebase configuration.')
+      }
+      const docRef = await addDoc(collection($db, 'news'), {
+        ...news,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        publishedAt: news.isPublished ? new Date() : null
+      })
+      console.log('✅ News added successfully with ID:', docRef.id)
+      return docRef.id
+    } catch (error) {
+      console.error('❌ Error adding news:', error)
+      throw error
+    }
+  }
+
+  const updateNews = async (id, news) => {
+    try {
+      const docRef = doc($db, 'news', id)
+      const updateData = {
+        ...news,
+        updatedAt: new Date()
+      }
+
+      // Update publishedAt if status changed to published
+      if (news.isPublished && !news.publishedAt) {
+        updateData.publishedAt = new Date()
+      }
+
+      await updateDoc(docRef, updateData)
+    } catch (error) {
+      console.error('Error updating news:', error)
+      throw error
+    }
+  }
+
+  const deleteNews = async (id) => {
+    try {
+      await deleteDoc(doc($db, 'news', id))
+    } catch (error) {
+      console.error('Error deleting news:', error)
+      throw error
+    }
+  }
+
+  // Upload multiple images
+  const uploadMultipleImages = async (files, path) => {
+    try {
+      if (!$storage) {
+        console.warn('Firebase Storage is not initialized. Skipping image upload.')
+        return []
+      }
+
+      if (!files || files.length === 0) {
+        return []
+      }
+
+      const uploadPromises = Array.from(files).map(async (file) => {
+        const imageRef = storageRef($storage, `images/${path}/${Date.now()}_${file.name}`)
+        const snapshot = await uploadBytes(imageRef, file)
+        return await getDownloadURL(snapshot.ref)
+      })
+
+      return await Promise.all(uploadPromises)
+    } catch (error) {
+      console.error('Error uploading multiple images:', error)
+      throw error
+    }
+  }
+
   return {
     // Bakery Items
     getBakeryItems,
@@ -389,19 +492,19 @@ export const useFirebase = () => {
     addBakeryItem,
     updateBakeryItem,
     deleteBakeryItem,
-    
+
     // Storage Data
     getStorageData,
     addStorageData,
     updateStorageData,
     deleteStorageData,
-    
+
     // Branches
     getBranches,
     addBranch,
     updateBranch,
     deleteBranch,
-    
+
     // Bakeries
     getBakeries,
     getBakeryById,
@@ -412,11 +515,19 @@ export const useFirebase = () => {
     // File Management
     uploadImage,
     deleteImage,
+    uploadMultipleImages,
 
     // Bakery Types
     getBakeryTypes,
     addBakeryType,
     updateBakeryType,
-    deleteBakeryType
+    deleteBakeryType,
+
+    // News
+    getNews,
+    getNewsById,
+    addNews,
+    updateNews,
+    deleteNews
   }
 }

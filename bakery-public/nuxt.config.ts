@@ -17,4 +17,10 @@ export default defineNuxtConfig({
       ],
     },
   },
+  ssr: true,
+  router: {
+    options: {
+      strict: false,
+    },
+  },
 });

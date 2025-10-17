@@ -7,7 +7,12 @@
     "showingResults": "Showing {start}-{end} of {total} items",
     "itemsPerPage": "Items per page",
     "page": "Page",
-    "of": "of"
+    "of": "of",
+    "tryAgain": "Try Again",
+    "retrying": "Retrying...",
+    "getDirections": "Get Directions",
+    "visit": "Visit",
+    "kip": "KIP"
   },
   "nav": {
     "home": "Home",
@@ -16,50 +21,60 @@
     "contactUs": "Contact Us",
     "manual": "Product Manual",
     "gallery": "Gallery",
-    "branches": "Branches"
+    "branches": "Branches",
+    "allBakery": "All Bakery",
+    "cakes": "Cakes"
   },
   "manual": {
     "title": "Product Manual & Guidelines",
     "searchPlaceholder": "Search products...",
     "allTypes": "All Types",
-    "noItems": "No items found",
-    "iconLegend": "Icon Legend",
+    "clear": "Clear",
+    "noItemsFound": "No items found",
     "table": {
       "no": "NO.",
       "items": "ITEMS",
       "image": "IMAGE",
       "shelfLife": "SHELF LIFE",
-      "canReheat": "REHEAT FOR CUSTOMER",
+      "reheatForCustomer": "REHEAT FOR CUSTOMER",
       "reheatTime": "REHEAT TIME",
       "storageAfterClosing": "STORAGE AFTER CLOSING",
       "displayMethod": "DISPLAY METHOD",
       "precautions": "PRECAUTIONS"
     },
-    "legends": {
-      "reheating": "Can Reheat",
-      "canReheat": "Can reheat",
-      "cannotReheat": "Cannot reheat",
-      "reheatTime": "Reheat time",
-      "storage": "Storage",
-      "storeInRefrigerator": "Store in refrigerator",
-      "storeAtColdTemp": "Store at cold temperature",
-      "storeInBox": "Store in box",
-      "keepAirtight": "Keep airtight",
-      "storeInCakeCase": "Store in cake display case",
-      "display": "Display",
-      "bakeryDisplayCase": "Arrange in bakery display case",
-      "cakeDisplayCase": "Arrange in cake display case",
-      "glassDome": "Arrange in glass dome",
-      "precautions": "Precautions",
-      "avoidMoisture": "Avoid moisture",
-      "avoidSunlight": "Avoid sunlight",
-      "tempSensitive": "Temperature sensitive",
-      "handleWithCare": "Handle with care"
+    "legend": {
+      "title": "Icon Legend",
+      "reheat": {
+        "title": "Can Reheat:",
+        "canReheat": "Can reheat",
+        "cannotReheat": "Cannot reheat",
+        "reheatTime": "Reheat time"
+      },
+      "storage": {
+        "title": "Storage:",
+        "refrigerator": "Store in refrigerator",
+        "coldTemperature": "Store at cold temperature",
+        "storeInBox": "Store in box",
+        "keepAirtight": "Keep airtight",
+        "cakeDisplayCase": "Store in cake display case"
+      },
+      "display": {
+        "title": "Display:",
+        "bakeryCase": "Arrange in bakery display case",
+        "cakeCase": "Arrange in cake display case",
+        "glassDome": "Arrange in glass dome"
+      },
+      "precautions": {
+        "title": "Precautions:",
+        "avoidMoisture": "Avoid moisture",
+        "avoidSunlight": "Avoid sunlight",
+        "temperatureSensitive": "Temperature sensitive",
+        "handleWithCare": "Handle with care"
+      }
     },
-    "units": {
-      "days": "days",
-      "min": "min",
-      "celsius": "°C"
+    "pagination": {
+      "showing": "Showing {start}-{end} of {total} items",
+      "itemsPerPage": "Items per page:"
     }
   },
   "products": {
@@ -68,13 +83,74 @@
     "pastries": "Pastries",
     "cookies": "Cookies",
     "bakery": "Bakery",
-    "allProducts": "All Products",
+    "allProducts": "All Bakery Products",
     "freshBaked": "Fresh baked daily with the finest ingredients",
-    "searchPlaceholder": "Search products...",
-    "perPage": "Items per page"
+    "searchPlaceholder": "Search bakery products...",
+    "perPage": "Items per page",
+    "ourBakery": "Our bakery",
+    "noProductsFound": "No products found matching your search.",
+    "adjustSearch": "Try adjusting your search terms or filters.",
+    "noProductsAvailable": "No products available at the moment.",
+    "checkBackLater": "Please check back later or contact us for more information.",
+    "retryAttempt": "Retry attempt",
+    "showing": "Showing"
   },
   "footer": {
     "copyright": "© 2024 Bakery House. All rights reserved.",
-    "followUs": "Follow Us"
+    "followUs": "Follow Us",
+    "explore": "Explore",
+    "products": "Products",
+    "getInTouch": "Get in touch",
+    "allBakeries": "All Bakeries",
+    "contactForm": "Contact Form",
+    "aboutUsTitle": "About us",
+    "aboutUsDesc": "We are a team of passionate people whose goal is to improve everyone's life through disruptive products. We build great products to solve your business problems.",
+    "aboutUsDesc2": "Our products are designed for small to medium size companies willing to optimize their performance.",
+    "serviceSince": "Service Since"
+  },
+  "news": {
+    "title": "Latest News & Updates",
+    "subtitle": "Stay updated with our latest announcements and stories",
+    "newsSection": "News",
+    "home": "Home",
+    "noNews": "No news articles available at the moment",
+    "readMore": "Read More",
+    "backToNews": "Back to News",
+    "backToHome": "Back to Home",
+    "error": "Error Loading News",
+    "tags": "Tags"
+  },
+  "home": {
+    "discoverUs": "Discover us",
+    "whyChoose": "Why Choose BakeryHouse",
+    "commitment": "Our commitment to excellence is reflected in every aspect of our baking process",
+    "premiumIngredients": "Premium Ingredients",
+    "premiumDesc": "Using the finest raw materials to create exceptional baked goods that exceed expectations.",
+    "continuousInnovation": "Continuous Innovation",
+    "innovationDesc": "Constantly developing new products that fulfill the nutritional needs of our community.",
+    "advancedTechnology": "Advanced Technology",
+    "technologyDesc": "Implementing cutting-edge manufacturing technologies for consistent quality improvement.",
+    "safetyFreshness": "Safety & Freshness",
+    "safetyDesc": "Maintaining the highest standards of freshness and cleanliness to deliver the best to our customers.",
+    "allBakery": "ALL BAKERY",
+    "ourCustomers": "Our Customers"
+  },
+  "aboutUs": {
+    "serviceSince": "Service Since",
+    "bakeryHouse": "BakeryHouse",
+    "contactUs": "Contact Us",
+    "ourStory": "Our Story",
+    "storyContent": "BakeryHouse was founded on the basis of commitment and vision to provide Laos with its own Lao bakery brand. With the intention to participate in competition and participate in the bread market both inside and outside Laos, in addition, our company has production plant standards approved by FDA (Food and Drug Administration) to build confidence for all types of consumers, all ages. Furthermore, BakeryHouse also cooperates with GMP organization to upgrade BakeryHouse's bread production plant to an international level."
+  },
+  "contact": {
+    "contactInformation": "Contact Information",
+    "readyToServe": "Ready to satisfy your cravings? Reach out to us through any of the following ways:",
+    "phone": "Phone",
+    "email": "Email",
+    "followUs": "Follow Us",
+    "ourMainLocation": "Our Main Location",
+    "address": "Address",
+    "businessHours": "Business Hours",
+    "yourNeighborhoodBakery": "Your neighborhood bakery"
   }
 }

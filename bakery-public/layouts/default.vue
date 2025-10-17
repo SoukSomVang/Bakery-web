@@ -18,42 +18,42 @@
             class="nav-link"
             :class="{ active: $route.path === '/' }"
           >
-            Home
+            {{ t('nav.home') }}
           </NuxtLink>
           <NuxtLink
             to="/products"
             class="nav-link"
             :class="{ active: $route.path === '/products' }"
           >
-            All Bakery
+            {{ t('nav.allBakery') }}
           </NuxtLink>
           <NuxtLink
             to="/products/cakes"
             :class="{ active: $route.path === '/products/cakes' }"
             class="nav-link"
           >
-            Cakes
+            {{ t('nav.cakes') }}
           </NuxtLink>
           <NuxtLink
             to="/contact-us"
             class="nav-link"
             :class="{ active: $route.path === '/contact-us' }"
           >
-            Contact us
+            {{ t('nav.contactUs') }}
           </NuxtLink>
           <NuxtLink
             to="/about-us"
             class="nav-link"
             :class="{ active: $route.path === '/about-us' }"
           >
-            About Us
+            {{ t('nav.aboutUs') }}
           </NuxtLink>
           <NuxtLink
             to="/manual"
             class="nav-link"
             :class="{ active: $route.path === '/manual' }"
           >
-            Manual
+            {{ t('nav.manual') }}
           </NuxtLink>
 
           <!-- Products Dropdown Menu -->
@@ -135,16 +135,17 @@
           </NuxtLink> -->
         </div>
 
-        <!-- Action Buttons -->
-        <div class="flex items-center space-x-4">
-          <!-- Search Button -->
+        <!-- Action Buttons - Hidden on mobile -->
+        <div class="hidden md:flex items-center space-x-4">
+          <!-- Language Switcher -->
+          <LanguageSwitcher />
 
           <!-- Contact Us Button -->
           <NuxtLink to="/contact-us">
             <button
               class="bg-red-800 text-white px-6 py-2 rounded-md hover:bg-red-900 transition-colors"
             >
-              Contact Us
+              {{ t('nav.contactUs') }}
             </button>
           </NuxtLink>
         </div>
@@ -168,45 +169,72 @@
         </button>
       </nav>
 
+      <!-- Mobile Menu Backdrop -->
+      <Transition name="fade">
+        <div
+          v-show="isMobileMenuOpen"
+          @click="toggleMobileMenu"
+          class="fixed inset-0 bg-black bg-opacity-50 md:hidden"
+          style="top: 72px; z-index: 40;"
+        ></div>
+      </Transition>
+
       <!-- Mobile Menu -->
       <div
         v-show="isMobileMenuOpen"
-        class="md:hidden bg-white border-t border-gray-200"
+        class="md:hidden absolute top-full left-0 w-full bg-white border-t border-gray-200 shadow-lg"
+        style="z-index: 50;"
       >
-        <div class="px-4 py-2 space-y-1">
+        <div class="px-4 py-2 space-y-1 max-h-[calc(100vh-80px)] overflow-y-auto">
           <NuxtLink to="/" class="block py-2 text-gray-700 hover:text-red-800">
-            Home
+            {{ t('nav.home') }}
           </NuxtLink>
           <NuxtLink
             to="/products"
             class="block py-2 text-gray-700 hover:text-red-800"
           >
-            All Bakery
+            {{ t('nav.allBakery') }}
           </NuxtLink>
           <NuxtLink
             to="/products/cakes"
             class="block py-2 text-gray-700 hover:text-red-800"
           >
-            Cakes
+            {{ t('nav.cakes') }}
           </NuxtLink>
           <NuxtLink
             to="/contact-us"
             class="block py-2 text-gray-700 hover:text-red-800"
           >
-            Contact us
+            {{ t('nav.contactUs') }}
           </NuxtLink>
           <NuxtLink
             to="/about-us"
             class="block py-2 text-gray-700 hover:text-red-800"
           >
-            About Us
+            {{ t('nav.aboutUs') }}
           </NuxtLink>
           <NuxtLink
             to="/manual"
             class="block py-2 text-gray-700 hover:text-red-800"
           >
-            Manual
+            {{ t('nav.manual') }}
           </NuxtLink>
+
+          <!-- Language Switcher for Mobile -->
+          <div class="py-2 border-t border-gray-200 mt-2">
+            <LanguageSwitcher />
+          </div>
+
+          <!-- Contact Us Button for Mobile -->
+          <div class="py-2 border-t border-gray-200">
+            <NuxtLink to="/contact-us" class="block">
+              <button
+                class="w-full bg-red-800 text-white px-6 py-2 rounded-md hover:bg-red-900 transition-colors"
+              >
+                {{ t('nav.contactUs') }}
+              </button>
+            </NuxtLink>
+          </div>
           <!-- <div class="py-2">
             <span class="text-gray-700 font-medium">Products</span>
             <div class="ml-4 mt-1 space-y-1">
@@ -300,21 +328,21 @@
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           <!-- Explore -->
           <div>
-            <h3 class="text-lg font-semibold mb-4">Explore</h3>
+            <h3 class="text-lg font-semibold mb-4">{{ t('footer.explore') }}</h3>
             <ul class="space-y-2">
               <li>
                 <NuxtLink to="/" class="text-red-400 hover:text-red-300"
-                  >Home</NuxtLink
+                  >{{ t('nav.home') }}</NuxtLink
                 >
               </li>
               <li>
                 <NuxtLink to="/about-us" class="text-red-400 hover:text-red-300"
-                  >About Us</NuxtLink
+                  >{{ t('nav.aboutUs') }}</NuxtLink
                 >
               </li>
               <li>
                 <NuxtLink to="/manual" class="text-red-400 hover:text-red-300"
-                  >Manual</NuxtLink
+                  >{{ t('nav.manual') }}</NuxtLink
                 >
               </li>
             </ul>
@@ -322,18 +350,18 @@
 
           <!-- Products -->
           <div>
-            <h3 class="text-lg font-semibold mb-4">Products</h3>
+            <h3 class="text-lg font-semibold mb-4">{{ t('footer.products') }}</h3>
             <ul class="space-y-2">
               <li>
                 <NuxtLink to="/products" class="text-red-400 hover:text-red-300"
-                  >All Bakeries</NuxtLink
+                  >{{ t('footer.allBakeries') }}</NuxtLink
                 >
               </li>
               <li>
                 <NuxtLink
                   to="/products/cakes"
                   class="text-red-400 hover:text-red-300"
-                  >Cakes</NuxtLink
+                  >{{ t('nav.cakes') }}</NuxtLink
                 >
               </li>
             </ul>
@@ -374,7 +402,7 @@
 
           <!-- Contact -->
           <div>
-            <h3 class="text-lg font-semibold mb-4">Get in touch</h3>
+            <h3 class="text-lg font-semibold mb-4">{{ t('footer.getInTouch') }}</h3>
             <ul class="space-y-2">
               <li>
                 <a
@@ -390,12 +418,12 @@
                 <NuxtLink
                   to="/contact-us"
                   class="text-red-400 hover:text-red-300"
-                  >Contact Form</NuxtLink
+                  >{{ t('footer.contactForm') }}</NuxtLink
                 >
               </li>
             </ul>
             <div class="mt-4">
-              <h4 class="text-sm font-semibold mb-2">Follow us</h4>
+              <h4 class="text-sm font-semibold mb-2">{{ t('footer.followUs') }}</h4>
               <div class="flex space-x-3">
                 <!-- WhatsApp -->
                 <a href="https://wa.me/8562055221214" class="text-gray-400" target="_blank">
@@ -417,34 +445,31 @@
 
           <!-- Company Info -->
           <div>
-            <h3 class="text-lg font-semibold mb-4">Bakery House</h3>
+            <h3 class="text-lg font-semibold mb-4">{{ t('aboutUs.bakeryHouse') }}</h3>
             <address class="text-gray-300 not-italic">
-              Bakery House<br />
+              {{ t('aboutUs.bakeryHouse') }}<br />
               Nongnieng Road, Ban Nongnieng<br />
               Saysettha District, Vientiane Capital, Laos <br />
-              Service Since 10/10/2024
+              {{ t('footer.serviceSince') }} 10/10/2024
             </address>
           </div>
         </div>
 
         <!-- About Us -->
         <div class="mt-12 pt-8 border-t border-gray-700">
-          <h3 class="text-lg font-semibold mb-4">About us</h3>
+          <h3 class="text-lg font-semibold mb-4">{{ t('footer.aboutUsTitle') }}</h3>
           <p class="text-gray-300 max-w-2xl">
-            We are a team of passionate people whose goal is to improve
-            everyone's life through disruptive products. We build great products
-            to solve your business problems.
+            {{ t('footer.aboutUsDesc') }}
           </p>
           <p class="text-gray-300 mt-4">
-            Our products are designed for small to medium size companies willing
-            to optimize their performance.
+            {{ t('footer.aboutUsDesc2') }}
           </p>
         </div>
 
         <!-- Copyright -->
         <div class="mt-8 pt-8 border-t border-gray-700 text-center">
           <p class="text-gray-400">
-            © {{ new Date().getFullYear() }} Bakery House. All rights reserved.
+            {{ t('footer.copyright').replace('2024', new Date().getFullYear()) }}
           </p>
         </div>
       </div>
@@ -482,12 +507,23 @@ import WhatsappIcon from "@/assets/images/icons/whatsapp.png";
 import TikTokIcon from "@/assets/images/icons/tik-tok.png";
 import FacebookIcon from "@/assets/images/icons/facebook.png";
 
+const { t } = useTranslation();
+
+// Get route safely
+const route = useRoute();
+const router = useRouter();
+
 // Reactive state for navigation
 const isProductsDropdownOpen = ref(false);
 const isMobileMenuOpen = ref(false);
 const isSearchOpen = ref(false);
 const searchQuery = ref("");
 const productsDropdown = ref(null);
+
+// Helper function to check if route is active
+const isRouteActive = (path) => {
+  return route?.path === path;
+};
 
 // Scroll to top functionality
 const showScrollTop = ref(false);
@@ -548,8 +584,7 @@ const closeDropdowns = (event) => {
   }
 };
 
-// Handle route changes
-const route = useRoute();
+// Handle route changes - watch route to close menus
 watch(
   () => route.path,
   () => {
@@ -608,5 +643,16 @@ onUnmounted(() => {
 .scroll-top-leave-to {
   opacity: 0;
   transform: translateY(20px) scale(0.8);
+}
+
+/* Fade transition for backdrop */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

@@ -2,8 +2,8 @@ import enTranslations from '~/locales/en.json'
 import loTranslations from '~/locales/lo.json'
 
 export const useTranslation = () => {
-  // Current locale state (default to Lao)
-  const currentLocale = useState('locale', () => 'lo')
+  // Current locale state (default to English)
+  const currentLocale = useState('locale', () => 'en')
 
   // Available locales
   const availableLocales = [

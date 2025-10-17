@@ -140,3 +140,22 @@ export interface StorageData {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export interface News {
+  id?: string;
+  title: string;
+  titleEn?: string;
+  content: string;
+  contentEn?: string;
+  summary?: string;
+  summaryEn?: string;
+  imageUrl?: string; // Main/featured image (kept for backward compatibility)
+  images?: string[]; // Multiple images support
+  author?: string;
+  category?: string;
+  tags?: string[];
+  isPublished: boolean;
+  publishedAt?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+}

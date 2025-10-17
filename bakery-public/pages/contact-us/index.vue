@@ -7,9 +7,9 @@
           <!-- Contact Information -->
           <div class="space-y-8">
             <div>
-              <h2 class="text-3xl font-bold text-gray-800 mb-6">Contact Information</h2>
+              <h2 class="text-3xl font-bold text-gray-800 mb-6">{{ t('contact.contactInformation') }}</h2>
               <p class="text-gray-600 mb-8 leading-relaxed">
-                Ready to satisfy your cravings? Reach out to us through any of the following ways:
+                {{ t('contact.readyToServe') }}
               </p>
             </div>
 
@@ -23,7 +23,7 @@
                   </svg>
                 </div>
                 <div>
-                  <h3 class="text-lg font-semibold text-gray-800 mb-2">Phone</h3>
+                  <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ t('contact.phone') }}</h3>
                   <p class="text-gray-600">+856 20 522 212 14</p>
                 </div>
               </div>
@@ -37,7 +37,7 @@
                   </svg>
                 </div>
                 <div>
-                  <h3 class="text-lg font-semibold text-gray-800 mb-2">Email</h3>
+                  <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ t('contact.email') }}</h3>
                   <p class="text-gray-600">bakeryhouse@gmail.com</p>
                 </div>
               </div>
@@ -50,7 +50,7 @@
                   </svg>
                 </div>
                 <div>
-                  <h3 class="text-lg font-semibold text-gray-800 mb-2">BakeryHouse</h3>
+                  <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ t('aboutUs.bakeryHouse') }}</h3>
                   <p class="text-gray-600">Nongnieng Road, Ban Nongnieng</p>
                   <p class="text-gray-600">Saysettha District, Vientiane Capital</p>
                   <p class="text-gray-600">Laos</p>
@@ -65,7 +65,7 @@
                   </svg>
                 </div>
                 <div>
-                  <h3 class="text-lg font-semibold text-gray-800 mb-2">Follow Us</h3>
+                  <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ t('contact.followUs') }}</h3>
                   <div class="flex space-x-4">
                     <a href="https://wa.me/8562055221214" class="text-red-600 hover:text-red-800 transition-colors" target="_blank">
                       <img :src="WhatsappIcon" alt="FaceBook icon" class="w-5 h-5">
@@ -93,15 +93,15 @@
               >
               <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-lg"></div>
               <div class="absolute bottom-4 left-4 text-white">
-                <h3 class="text-xl font-semibold">BakeryHouse</h3>
-                <p class="text-sm opacity-90">Your neighborhood bakery</p>
+                <h3 class="text-xl font-semibold">{{ t('aboutUs.bakeryHouse') }}</h3>
+                <p class="text-sm opacity-90">{{ t('contact.yourNeighborhoodBakery') }}</p>
               </div>
             </div>
 
             <!-- Location Details -->
             <div class="bg-gray-50 p-8 rounded-lg shadow-lg">
-              <h3 class="text-2xl font-bold text-gray-800 mb-6">Our Main Location</h3>
-              
+              <h3 class="text-2xl font-bold text-gray-800 mb-6">{{ t('contact.ourMainLocation') }}</h3>
+
               <div class="space-y-4">
                 <!-- Address -->
                 <div class="flex items-start space-x-3">
@@ -111,7 +111,7 @@
                     </svg>
                   </div>
                   <div>
-                    <h4 class="font-semibold text-gray-800">Address</h4>
+                    <h4 class="font-semibold text-gray-800">{{ t('contact.address') }}</h4>
                     <p class="text-gray-600">Nongnieng Road, Ban Nongnieng</p>
                     <p class="text-gray-600">Saysettha District, Vientiane Capital</p>
                   </div>
@@ -142,7 +142,7 @@
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
                     </svg>
-                    <span>Get Directions</span>
+                    <span>{{ t('common.getDirections') }}</span>
                   </button>
                 </a>
               </div>
@@ -160,6 +160,7 @@ import WhatsappIcon from "@/assets/images/icons/whatsapp_red_color.png";
 import TikTokIcon from "@/assets/images/icons/tik-tok-red-color.png";
 import FacebookIcon from "@/assets/images/icons/facebook-app-red-color.png";
 
+const { t } = useTranslation();
 const LOCATION = "https://maps.app.goo.gl/wHpTRKX8xvqQYYpd6"
 // Meta tags for SEO
 useHead({

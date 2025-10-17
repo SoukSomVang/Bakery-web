@@ -60,6 +60,15 @@
           <i class="mdi mdi-tag w-5 h-5"></i>
           Bakery Types
         </NuxtLink>
+
+        <NuxtLink
+          to="/news"
+          class="nav-link"
+          :class="{ active: $route.path.startsWith('/news') }"
+        >
+          <i class="mdi mdi-newspaper w-5 h-5"></i>
+          News
+        </NuxtLink>
       </nav>
     </div>
 

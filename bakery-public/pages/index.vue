@@ -45,7 +45,7 @@
               class="bg-red-900 hover:bg-red-950 text-white px-8 sm:px-10 md:px-12 py-3 md:py-4 rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-base md:text-lg"
               @click="handleGotoAboutUs"
             >
-              Discover us
+              {{ t('home.discoverUs') }}
             </button>
           </div>
         </div>
@@ -57,11 +57,10 @@
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
           <h2 class="text-4xl font-bold text-gray-800 mb-4">
-            Why Choose BakeryHouse
+            {{ t('home.whyChoose') }}
           </h2>
           <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-            Our commitment to excellence is reflected in every aspect of our
-            baking process
+            {{ t('home.commitment') }}
           </p>
         </div>
         <div class="grid lg:grid-cols-2 gap-8 items-center">
@@ -75,10 +74,9 @@
               >
                 <span class="text-2xl font-bold">1</span>
               </div>
-              <h3 class="text-lg font-bold mb-3">Premium Ingredients</h3>
+              <h3 class="text-lg font-bold mb-3">{{ t('home.premiumIngredients') }}</h3>
               <p class="text-sm opacity-90 leading-relaxed">
-                Using the finest raw materials to create exceptional baked goods
-                that exceed expectations.
+                {{ t('home.premiumDesc') }}
               </p>
             </div>
 
@@ -92,11 +90,10 @@
                 <span class="text-2xl font-bold text-red-800">2</span>
               </div>
               <h3 class="text-lg font-bold mb-3 text-gray-800">
-                Continuous Innovation
+                {{ t('home.continuousInnovation') }}
               </h3>
               <p class="text-sm text-gray-600 leading-relaxed">
-                Constantly developing new products that fulfill the nutritional
-                needs of our community.
+                {{ t('home.innovationDesc') }}
               </p>
             </div>
 
@@ -110,11 +107,10 @@
                 <span class="text-2xl font-bold text-red-800">3</span>
               </div>
               <h3 class="text-lg font-bold mb-3 text-gray-800">
-                Advanced Technology
+                {{ t('home.advancedTechnology') }}
               </h3>
               <p class="text-sm text-gray-600 leading-relaxed">
-                Implementing cutting-edge manufacturing technologies for
-                consistent quality improvement.
+                {{ t('home.technologyDesc') }}
               </p>
             </div>
 
@@ -127,10 +123,9 @@
               >
                 <span class="text-2xl font-bold">4</span>
               </div>
-              <h3 class="text-lg font-bold mb-3">Safety & Freshness</h3>
+              <h3 class="text-lg font-bold mb-3">{{ t('home.safetyFreshness') }}</h3>
               <p class="text-sm opacity-90 leading-relaxed">
-                Maintaining the highest standards of freshness and cleanliness
-                to deliver the best to our customers.
+                {{ t('home.safetyDesc') }}
               </p>
             </div>
           </div>
@@ -157,7 +152,7 @@
           class="text-2xl sm:text-3xl text-white font-semibold bg-red-800 mb-8 md:mb-12 px-8 sm:px-10 md:px-12 py-3 sm:py-4 rounded-full cursor-pointer transition-all duration-300 hover:bg-red-900"
           @click="$router.push('/products')"
         >
-          ALL BAKERY
+          {{ t('home.allBakery') }}
         </button>
       </div>
     </section>
@@ -218,7 +213,7 @@
     <section class="py-16 bg-gray-50">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold text-gray-800 mb-4">Our Customers</h2>
+          <h2 class="text-4xl font-bold text-gray-800 mb-4">{{ t('home.ourCustomers') }}</h2>
           <!-- <p class="text-lg text-gray-600">
             Bringing quality products to your table
           </p> -->
@@ -282,6 +277,9 @@
         </div>
       </div>
     </section>
+
+    <!-- News Section -->
+    <NewsSection />
   </div>
 </template>
 
@@ -294,6 +292,7 @@ import KafepaLogo from "@/assets/images/logo/kafepa_logo.jpg";
 import TreekoffLogo from "@/assets/images/logo/treekoff_logo.png";
 
 const router = useRouter();
+const { t } = useTranslation();
 
 // Use client-only wrapper for Firebase composable
 let getProductsByBakeryType;

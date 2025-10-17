@@ -10,7 +10,7 @@
       <div class="absolute inset-0 bg-black/50"></div>
       <div class="relative z-10 h-full flex items-center justify-center px-4">
         <div class="text-center text-white">
-          <h1 class="text-5xl lg:text-7xl font-bold mb-4 italic" style="font-family: 'Brush Script MT', cursive;">
+          <h1 class="text-5xl lg:text-7xl font-bold mb-4 italic">
             Our cakes
           </h1>
           <p class="text-xl lg:text-2xl">Fresh baked daily with the finest ingredients</p>
