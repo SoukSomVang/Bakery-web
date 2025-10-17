@@ -25,13 +25,42 @@ export const useNews = () => {
     try {
       const { db } = useClientFirebase()
       checkFirestore(db)
-      const q = query(
-        collection(db, 'news'),
-        where('isPublished', '==', true),
-        orderBy('publishedAt', 'desc')
-      )
-      const querySnapshot = await getDocs(q)
-      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+
+      // Try query with index first
+      try {
+        const q = query(
+          collection(db, 'news'),
+          where('isPublished', '==', true),
+          orderBy('publishedAt', 'desc')
+        )
+        const querySnapshot = await getDocs(q)
+        console.log('✅ PUBLIC: Got all news with publishedAt orderBy:', querySnapshot.size)
+        return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      } catch (indexError) {
+        // If index error, fall back to simpler query
+        if (indexError.code === 'failed-precondition' || indexError.message.includes('index')) {
+          console.warn('⚠️ PUBLIC: Firestore index missing for getNews, using fallback')
+
+          // Fallback: get all published news and sort in memory
+          const q = query(
+            collection(db, 'news'),
+            where('isPublished', '==', true)
+          )
+          const querySnapshot = await getDocs(q)
+          const allNews = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+
+          // Sort by publishedAt or createdAt in memory
+          allNews.sort((a, b) => {
+            const dateA = a.publishedAt?.toDate?.() || a.createdAt?.toDate?.() || new Date(0)
+            const dateB = b.publishedAt?.toDate?.() || b.createdAt?.toDate?.() || new Date(0)
+            return dateB - dateA
+          })
+
+          console.log('✅ PUBLIC: Got all news with fallback query:', allNews.length)
+          return allNews
+        }
+        throw indexError
+      }
     } catch (error) {
       console.error('PUBLIC: Error getting news:', error)
       throw error
@@ -43,14 +72,44 @@ export const useNews = () => {
     try {
       const { db } = useClientFirebase()
       checkFirestore(db)
-      const q = query(
-        collection(db, 'news'),
-        where('isPublished', '==', true),
-        orderBy('publishedAt', 'desc'),
-        limit(limitCount)
-      )
-      const querySnapshot = await getDocs(q)
-      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+
+      // Try query with index first
+      try {
+        const q = query(
+          collection(db, 'news'),
+          where('isPublished', '==', true),
+          orderBy('publishedAt', 'desc'),
+          limit(limitCount)
+        )
+        const querySnapshot = await getDocs(q)
+        console.log('✅ PUBLIC: Got news with publishedAt orderBy:', querySnapshot.size)
+        return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      } catch (indexError) {
+        // If index error, fall back to simpler query
+        if (indexError.code === 'failed-precondition' || indexError.message.includes('index')) {
+          console.warn('⚠️ PUBLIC: Firestore index missing, using fallback query')
+          console.warn('Create index at:', indexError.message)
+
+          // Fallback: get all published news and sort in memory
+          const q = query(
+            collection(db, 'news'),
+            where('isPublished', '==', true)
+          )
+          const querySnapshot = await getDocs(q)
+          const allNews = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+
+          // Sort by publishedAt or createdAt in memory
+          allNews.sort((a, b) => {
+            const dateA = a.publishedAt?.toDate?.() || a.createdAt?.toDate?.() || new Date(0)
+            const dateB = b.publishedAt?.toDate?.() || b.createdAt?.toDate?.() || new Date(0)
+            return dateB - dateA
+          })
+
+          console.log('✅ PUBLIC: Got news with fallback query:', allNews.length)
+          return allNews.slice(0, limitCount)
+        }
+        throw indexError
+      }
     } catch (error) {
       console.error('PUBLIC: Error getting latest news:', error)
       throw error

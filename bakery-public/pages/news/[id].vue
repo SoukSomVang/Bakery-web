@@ -30,27 +30,10 @@
 
     <!-- News Content -->
     <article v-else-if="newsItem" class="container mx-auto px-4 py-16">
-      <!-- Breadcrumb -->
-      <nav class="mb-8 text-sm">
-        <ol class="flex items-center space-x-2 text-gray-600">
-          <li>
-            <a href="/" class="hover:text-red-800 transition-colors">{{ t('news.home') }}</a>
-          </li>
-          <li>/</li>
-          <li>
-            <a href="/#news" class="hover:text-red-800 transition-colors">{{ t('news.newsSection') }}</a>
-          </li>
-          <li>/</li>
-          <li class="text-gray-900 font-medium truncate max-w-xs">
-            {{ currentLocale === 'en' && newsItem.titleEn ? newsItem.titleEn : newsItem.title }}
-          </li>
-        </ol>
-      </nav>
-
       <!-- Article Header -->
       <header class="mb-8">
         <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-          {{ currentLocale === 'en' && newsItem.titleEn ? newsItem.titleEn : newsItem.title }}
+          {{ currentLocale.value === 'en' && newsItem.titleEn ? newsItem.titleEn : newsItem.title }}
         </h1>
 
         <!-- Meta Information -->
@@ -85,7 +68,7 @@
         <img
           v-if="!newsItem.images || newsItem.images.length === 1"
           :src="newsItem.imageUrl || newsItem.images[0]"
-          :alt="currentLocale === 'en' && newsItem.titleEn ? newsItem.titleEn : newsItem.title"
+          :alt="currentLocale.value === 'en' && newsItem.titleEn ? newsItem.titleEn : newsItem.title"
           class="w-full h-auto max-h-[600px] object-cover rounded-lg shadow-xl"
         />
 
@@ -94,7 +77,7 @@
           <!-- Main/Featured Image -->
           <img
             :src="newsItem.images[0]"
-            :alt="currentLocale === 'en' && newsItem.titleEn ? newsItem.titleEn : newsItem.title"
+            :alt="currentLocale.value === 'en' && newsItem.titleEn ? newsItem.titleEn : newsItem.title"
             class="w-full h-auto max-h-[600px] object-cover rounded-lg shadow-xl"
           />
 
@@ -104,7 +87,7 @@
               v-for="(image, index) in newsItem.images.slice(1)"
               :key="index"
               :src="image"
-              :alt="`${currentLocale === 'en' && newsItem.titleEn ? newsItem.titleEn : newsItem.title} - Image ${index + 2}`"
+              :alt="`${currentLocale.value === 'en' && newsItem.titleEn ? newsItem.titleEn : newsItem.title} - Image ${index + 2}`"
               class="w-full h-48 object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
               @click="openImageModal(image)"
             />
@@ -116,7 +99,7 @@
       <div class="prose prose-lg max-w-none">
         <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
           <div class="text-gray-700 leading-relaxed whitespace-pre-wrap">
-            {{ currentLocale === 'en' && newsItem.contentEn ? newsItem.contentEn : newsItem.content }}
+            {{ currentLocale.value === 'en' && newsItem.contentEn ? newsItem.contentEn : newsItem.content }}
           </div>
         </div>
 
@@ -180,7 +163,7 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const { locale: currentLocale, t } = useTranslation()
+const { currentLocale, t } = useTranslation()
 
 const newsItem = ref(null)
 const loading = ref(true)

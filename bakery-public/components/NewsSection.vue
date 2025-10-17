@@ -45,7 +45,7 @@
             <img
               v-if="news.imageUrl || (news.images && news.images[0])"
               :src="news.imageUrl || news.images[0]"
-              :alt="currentLocale === 'en' && news.titleEn ? news.titleEn : news.title"
+              :alt="currentLocale.value === 'en' && news.titleEn ? news.titleEn : news.title"
               class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
             />
             <div v-else class="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-100 to-red-200">
@@ -66,12 +66,12 @@
           <div class="p-6">
             <!-- Title -->
             <h3 class="text-xl font-bold text-gray-800 mb-3 line-clamp-2 group-hover:text-red-800 transition-colors">
-              {{ currentLocale === 'en' && news.titleEn ? news.titleEn : news.title }}
+              {{ currentLocale.value === 'en' && news.titleEn ? news.titleEn : news.title }}
             </h3>
 
             <!-- Summary -->
             <p class="text-gray-600 text-sm mb-4 line-clamp-3">
-              {{ currentLocale === 'en' && news.summaryEn ? news.summaryEn : (news.summary || news.content?.substring(0, 120) + '...') }}
+              {{ currentLocale.value === 'en' && news.summaryEn ? news.summaryEn : (news.summary || news.content?.substring(0, 120) + '...') }}
             </p>
 
             <!-- Meta Info -->
@@ -100,7 +100,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-const { locale: currentLocale, t } = useTranslation()
+const { currentLocale, t } = useTranslation()
 
 const newsItems = ref([])
 const loading = ref(true)

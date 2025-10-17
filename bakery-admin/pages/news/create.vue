@@ -107,68 +107,74 @@
           ></textarea>
         </div>
 
-        <!-- Images Upload -->
-        <div>
+        <!-- Image URLs -->
+        <div class="space-y-4">
           <label class="block text-sm font-medium text-gray-700 mb-2">
-            Images
+            Images (Enter Image URLs)
           </label>
-          <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-            <div class="space-y-1 text-center">
-              <svg
-                class="mx-auto h-12 w-12 text-gray-400"
-                stroke="currentColor"
-                fill="none"
-                viewBox="0 0 48 48"
-              >
-                <path
-                  d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              <div class="flex text-sm text-gray-600">
-                <label
-                  for="images"
-                  class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none"
-                >
-                  <span>Upload images</span>
-                  <input
-                    id="images"
-                    ref="imageInput"
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    class="sr-only"
-                    @change="handleImageSelect"
-                  />
-                </label>
-                <p class="pl-1">or drag and drop</p>
-              </div>
-              <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB each</p>
-            </div>
+
+          <!-- Image URL 1 -->
+          <div>
+            <label for="imageUrl1" class="block text-xs font-medium text-gray-600 mb-1">
+              Image URL 1 <span class="text-red-500">*</span>
+            </label>
+            <input
+              id="imageUrl1"
+              v-model="form.imageUrl1"
+              type="url"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="https://example.com/image1.jpg"
+            />
+            <img
+              v-if="form.imageUrl1"
+              :src="form.imageUrl1"
+              alt="Preview 1"
+              class="mt-2 w-full h-48 object-cover rounded-lg"
+              @error="handleImageError($event, 1)"
+            />
           </div>
 
-          <!-- Image Previews -->
-          <div v-if="imagePreviews.length > 0" class="mt-4 grid grid-cols-3 gap-4">
-            <div
-              v-for="(preview, index) in imagePreviews"
-              :key="index"
-              class="relative group"
-            >
-              <img
-                :src="preview"
-                :alt="`Preview ${index + 1}`"
-                class="w-full h-32 object-cover rounded-lg"
-              />
-              <button
-                type="button"
-                @click="removeImage(index)"
-                class="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <i class="mdi mdi-close text-sm"></i>
-              </button>
-            </div>
+          <!-- Image URL 2 -->
+          <div>
+            <label for="imageUrl2" class="block text-xs font-medium text-gray-600 mb-1">
+              Image URL 2
+            </label>
+            <input
+              id="imageUrl2"
+              v-model="form.imageUrl2"
+              type="url"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="https://example.com/image2.jpg"
+            />
+            <img
+              v-if="form.imageUrl2"
+              :src="form.imageUrl2"
+              alt="Preview 2"
+              class="mt-2 w-full h-48 object-cover rounded-lg"
+              @error="handleImageError($event, 2)"
+            />
+          </div>
+
+          <!-- Image URL 3 -->
+          <div>
+            <label for="imageUrl3" class="block text-xs font-medium text-gray-600 mb-1">
+              Image URL 3
+            </label>
+            <input
+              id="imageUrl3"
+              v-model="form.imageUrl3"
+              type="url"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="https://example.com/image3.jpg"
+            />
+            <img
+              v-if="form.imageUrl3"
+              :src="form.imageUrl3"
+              alt="Preview 3"
+              class="mt-2 w-full h-48 object-cover rounded-lg"
+              @error="handleImageError($event, 3)"
+            />
           </div>
         </div>
 
@@ -262,40 +268,22 @@ const form = ref({
   contentEn: '',
   summary: '',
   summaryEn: '',
+  imageUrl1: '',
+  imageUrl2: '',
+  imageUrl3: '',
   author: '',
   category: '',
   isPublished: false
 })
 
 const tagsInput = ref('')
-const imageFiles = ref([])
-const imagePreviews = ref([])
-const imageInput = ref(null)
 const loading = ref(false)
 const error = ref(null)
 
-// Handle image selection
-const handleImageSelect = (event) => {
-  const files = Array.from(event.target.files)
-
-  files.forEach((file) => {
-    if (file.type.startsWith('image/')) {
-      imageFiles.value.push(file)
-
-      // Create preview
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        imagePreviews.value.push(e.target.result)
-      }
-      reader.readAsDataURL(file)
-    }
-  })
-}
-
-// Remove image
-const removeImage = (index) => {
-  imageFiles.value.splice(index, 1)
-  imagePreviews.value.splice(index, 1)
+// Handle image URL errors
+const handleImageError = (event, imageNumber) => {
+  console.error(`Image ${imageNumber} failed to load`)
+  event.target.style.display = 'none'
 }
 
 // Submit form
@@ -304,13 +292,12 @@ const handleSubmit = async () => {
   error.value = null
 
   try {
-    const { uploadMultipleImages } = useFirebase()
-
-    // Upload images
-    let imageUrls = []
-    if (imageFiles.value.length > 0) {
-      imageUrls = await uploadMultipleImages(imageFiles.value, 'news')
-    }
+    // Collect image URLs into array
+    const imageUrls = [
+      form.value.imageUrl1,
+      form.value.imageUrl2,
+      form.value.imageUrl3
+    ].filter(url => url && url.trim() !== '')
 
     // Process tags
     const tags = tagsInput.value
@@ -319,7 +306,15 @@ const handleSubmit = async () => {
 
     // Prepare news data
     const newsData = {
-      ...form.value,
+      title: form.value.title,
+      titleEn: form.value.titleEn,
+      content: form.value.content,
+      contentEn: form.value.contentEn,
+      summary: form.value.summary,
+      summaryEn: form.value.summaryEn,
+      author: form.value.author,
+      category: form.value.category,
+      isPublished: form.value.isPublished,
       images: imageUrls,
       imageUrl: imageUrls[0] || null, // Set first image as main image
       tags

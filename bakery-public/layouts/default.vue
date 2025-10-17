@@ -182,7 +182,7 @@
       <!-- Mobile Menu -->
       <div
         v-show="isMobileMenuOpen"
-        class="md:hidden absolute top-full left-0 w-full bg-white border-t border-gray-200 shadow-lg"
+        class="md:hidden absolute top-[75%] left-0 w-full bg-white border-t border-gray-200 shadow-lg"
         style="z-index: 50;"
       >
         <div class="px-4 py-2 space-y-1 max-h-[calc(100vh-80px)] overflow-y-auto">
@@ -418,7 +418,7 @@
                 <NuxtLink
                   to="/contact-us"
                   class="text-red-400 hover:text-red-300"
-                  >{{ t('footer.contactForm') }}</NuxtLink
+                  >{{ t('aboutUs.contactUs') }}</NuxtLink
                 >
               </li>
             </ul>
