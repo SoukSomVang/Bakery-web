@@ -107,75 +107,69 @@
           ></textarea>
         </div>
 
-        <!-- Image URLs -->
+        <!-- Image URLs - Dynamic -->
         <div class="space-y-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
-            Images (Enter Image URLs)
-          </label>
-
-          <!-- Image URL 1 -->
-          <div>
-            <label for="imageUrl1" class="block text-xs font-medium text-gray-600 mb-1">
-              Image URL 1 <span class="text-red-500">*</span>
+          <div class="flex items-center justify-between mb-2">
+            <label class="block text-sm font-medium text-gray-700">
+              Images (Enter Image URLs)
             </label>
-            <input
-              id="imageUrl1"
-              v-model="form.imageUrl1"
-              type="url"
-              required
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="https://example.com/image1.jpg"
-            />
-            <img
-              v-if="form.imageUrl1"
-              :src="form.imageUrl1"
-              alt="Preview 1"
-              class="mt-2 w-full h-48 object-cover rounded-lg"
-              @error="handleImageError($event, 1)"
-            />
+            <button
+              type="button"
+              @click="addImageUrl"
+              class="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-1"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+              Add Image
+            </button>
           </div>
 
-          <!-- Image URL 2 -->
-          <div>
-            <label for="imageUrl2" class="block text-xs font-medium text-gray-600 mb-1">
-              Image URL 2
-            </label>
+          <!-- Dynamic Image URL Inputs -->
+          <div
+            v-for="(imageUrl, index) in imageUrls"
+            :key="index"
+            class="border border-gray-200 rounded-lg p-4 relative"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <label :for="`imageUrl${index}`" class="block text-xs font-medium text-gray-600">
+                Image URL {{ index + 1 }}
+                <span v-if="index === 0" class="text-red-500">*</span>
+              </label>
+              <button
+                v-if="imageUrls.length > 1"
+                type="button"
+                @click="removeImageUrl(index)"
+                class="text-red-600 hover:text-red-800 transition-colors"
+                :title="`Remove image ${index + 1}`"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                </svg>
+              </button>
+            </div>
             <input
-              id="imageUrl2"
-              v-model="form.imageUrl2"
+              :id="`imageUrl${index}`"
+              v-model="imageUrls[index]"
               type="url"
+              :required="index === 0"
               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="https://example.com/image2.jpg"
+              :placeholder="`https://example.com/image${index + 1}.jpg`"
             />
-            <img
-              v-if="form.imageUrl2"
-              :src="form.imageUrl2"
-              alt="Preview 2"
-              class="mt-2 w-full h-48 object-cover rounded-lg"
-              @error="handleImageError($event, 2)"
-            />
+            <!-- Image Preview -->
+            <div v-if="imageUrls[index]" class="mt-2 relative">
+              <img
+                :src="imageUrls[index]"
+                :alt="`Preview ${index + 1}`"
+                class="w-full h-48 object-cover rounded-lg"
+                @error="handleImageError($event, index)"
+              />
+            </div>
           </div>
 
-          <!-- Image URL 3 -->
-          <div>
-            <label for="imageUrl3" class="block text-xs font-medium text-gray-600 mb-1">
-              Image URL 3
-            </label>
-            <input
-              id="imageUrl3"
-              v-model="form.imageUrl3"
-              type="url"
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="https://example.com/image3.jpg"
-            />
-            <img
-              v-if="form.imageUrl3"
-              :src="form.imageUrl3"
-              alt="Preview 3"
-              class="mt-2 w-full h-48 object-cover rounded-lg"
-              @error="handleImageError($event, 3)"
-            />
-          </div>
+          <p class="text-xs text-gray-500 mt-2">
+            At least one image is required. Click "Add Image" to add more images.
+          </p>
         </div>
 
         <!-- Author -->
@@ -268,21 +262,31 @@ const form = ref({
   contentEn: '',
   summary: '',
   summaryEn: '',
-  imageUrl1: '',
-  imageUrl2: '',
-  imageUrl3: '',
   author: '',
   category: '',
   isPublished: false
 })
 
 const tagsInput = ref('')
+const imageUrls = ref(['']) // Start with one empty image URL
 const loading = ref(false)
 const error = ref(null)
 
+// Add a new image URL field
+const addImageUrl = () => {
+  imageUrls.value.push('')
+}
+
+// Remove an image URL field
+const removeImageUrl = (index) => {
+  if (imageUrls.value.length > 1) {
+    imageUrls.value.splice(index, 1)
+  }
+}
+
 // Handle image URL errors
-const handleImageError = (event, imageNumber) => {
-  console.error(`Image ${imageNumber} failed to load`)
+const handleImageError = (event, index) => {
+  console.error(`Image ${index + 1} failed to load`)
   event.target.style.display = 'none'
 }
 
@@ -292,12 +296,14 @@ const handleSubmit = async () => {
   error.value = null
 
   try {
-    // Collect image URLs into array
-    const imageUrls = [
-      form.value.imageUrl1,
-      form.value.imageUrl2,
-      form.value.imageUrl3
-    ].filter(url => url && url.trim() !== '')
+    // Collect and filter valid image URLs
+    const validImageUrls = imageUrls.value.filter(url => url && url.trim() !== '')
+
+    if (validImageUrls.length === 0) {
+      error.value = 'At least one image URL is required'
+      loading.value = false
+      return
+    }
 
     // Process tags
     const tags = tagsInput.value
@@ -315,8 +321,8 @@ const handleSubmit = async () => {
       author: form.value.author,
       category: form.value.category,
       isPublished: form.value.isPublished,
-      images: imageUrls,
-      imageUrl: imageUrls[0] || null, // Set first image as main image
+      images: validImageUrls,
+      imageUrl: validImageUrls[0], // Set first image as main image
       tags
     }
 
