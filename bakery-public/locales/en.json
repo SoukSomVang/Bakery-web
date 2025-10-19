@@ -83,9 +83,9 @@
     "pastries": "Pastries",
     "cookies": "Cookies",
     "bakery": "Bakery",
-    "allProducts": "All Bakery Products",
+    "allProducts": "All Bakery",
     "freshBaked": "Fresh baked daily with the finest ingredients",
-    "searchPlaceholder": "Search bakery products...",
+    "searchPlaceholder": "Search bakery...",
     "perPage": "Items per page",
     "ourBakery": "Our bakery",
     "noProductsFound": "No products found matching your search.",
@@ -95,8 +95,19 @@
     "retryAttempt": "Retry attempt",
     "showing": "Showing"
   },
+  "cakes": {
+    "title": "Our cakes",
+    "subtitle": "Fresh baked daily with the finest ingredients",
+    "allCakes": "All Cakes",
+    "searchPlaceholder": "Search cakes...",
+    "showingCakes": "Showing {start}-{end} of {total} cakes",
+    "cakesPerPage": "Items per page:",
+    "noCakesFound": "No cakes found.",
+    "adjustSearch": "Try adjusting your search terms.",
+    "checkBackLater": "Check back later for new cake varieties."
+  },
   "footer": {
-    "copyright": "© 2024 Bakery House. All rights reserved.",
+    "copyright": "© 2024 BakeryHouse. All rights reserved.",
     "followUs": "Follow Us",
     "explore": "Explore",
     "products": "Products",

@@ -83,7 +83,7 @@
     "pastries": "ເພສະຕຣີ",
     "cookies": "ຄຸກກີ້",
     "bakery": "ເບເກີຣີ",
-    "allProducts": "ສິນຄ້າເບເກີຣີທັງໝົດ",
+    "allProducts": "ເບເກີຣີທັງໝົດ",
     "freshBaked": "ອົບສົດໃໝ່ທຸກມື້ດ້ວຍວັດຖຸດິບຄຸນນະພາບດີທີ່ສຸດ",
     "searchPlaceholder": "ຄົ້ນຫາເບເກີຣີ...",
     "perPage": "ລາຍການຕໍ່ໜ້າ",
@@ -95,8 +95,19 @@
     "retryAttempt": "ການລອງໃໝ່",
     "showing": "ສະແດງ"
   },
+  "cakes": {
+    "title": "ເຄັກຂອງພວກເຮົາ",
+    "subtitle": "ອົບສົດໃໝ່ທຸກມື້ດ້ວຍວັດຖຸດິບຄຸນນະພາບດີທີ່ສຸດ",
+    "allCakes": "ເຄັກທັງໝົດ",
+    "searchPlaceholder": "ຄົ້ນຫາເຄັກ...",
+    "showingCakes": "ສະແດງ {start}-{end} ຈາກທັງໝົດ {total} ເຄັກ",
+    "cakesPerPage": "ລາຍການຕໍ່ໜ້າ:",
+    "noCakesFound": "ບໍ່ພົບເຄັກ",
+    "adjustSearch": "ລອງປັບຄຳຄົ້ນຫາຂອງທ່ານໃໝ່",
+    "checkBackLater": "ກວດເບິ່ງອີກຄັ້ງໃນພາຍຫຼັງສຳລັບເຄັກໃໝ່"
+  },
   "footer": {
-    "copyright": "© 2024 Bakery House. ສະຫງວນລິຂະສິດ.",
+    "copyright": "© 2024 BakeryHouse. ສະຫງວນລິຂະສິດ.",
     "followUs": "ຕິດຕາມເຮົາ",
     "explore": "ສຳຫຼວດ",
     "products": "ສິນຄ້າ",
@@ -121,7 +132,7 @@
     "tags": "ແທັກ"
   },
   "home": {
-    "discoverUs": "ຄົ້ນພົບພວກເຮົາ",
+    "discoverUs": "ກ່ຽວກັບພວກເຮົາ",
     "whyChoose": "ເປັນຫຍັງຕ້ອງເລືອກ BakeryHouse",
     "commitment": "ຄວາມມຸ່ງໝັ້ນຂອງພວກເຮົາຕໍ່ຄວາມເປັນເລີດສະທ້ອນໃຫ້ເຫັນໃນທຸກດ້ານຂອງຂະບວນການອົບເບເກີຣີຂອງພວກເຮົາ",
     "premiumIngredients": "ວັດຖຸດິບຄຸນນະພາບດີ",

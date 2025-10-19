@@ -112,96 +112,69 @@
           ></textarea>
         </div>
 
-        <!-- Existing Images -->
-        <div v-if="existingImages.length > 0">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
-            Current Images
-          </label>
-          <div class="grid grid-cols-3 gap-4">
-            <div
-              v-for="(image, index) in existingImages"
-              :key="`existing-${index}`"
-              class="relative group"
+        <!-- Image URLs - Dynamic -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between mb-2">
+            <label class="block text-sm font-medium text-gray-700">
+              Images (Enter Image URLs)
+            </label>
+            <button
+              type="button"
+              @click="addImageUrl"
+              class="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-1"
             >
-              <img
-                :src="image"
-                :alt="`Existing ${index + 1}`"
-                class="w-full h-32 object-cover rounded-lg"
-              />
-              <button
-                type="button"
-                @click="removeExistingImage(index)"
-                class="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <i class="mdi mdi-close text-sm"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Add New Images -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">
-            Add New Images
-          </label>
-          <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-            <div class="space-y-1 text-center">
-              <svg
-                class="mx-auto h-12 w-12 text-gray-400"
-                stroke="currentColor"
-                fill="none"
-                viewBox="0 0 48 48"
-              >
-                <path
-                  d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
               </svg>
-              <div class="flex text-sm text-gray-600">
-                <label
-                  for="images"
-                  class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none"
-                >
-                  <span>Upload images</span>
-                  <input
-                    id="images"
-                    ref="imageInput"
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    class="sr-only"
-                    @change="handleImageSelect"
-                  />
-                </label>
-                <p class="pl-1">or drag and drop</p>
-              </div>
-              <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB each</p>
+              Add Image
+            </button>
+          </div>
+
+          <!-- Dynamic Image URL Inputs -->
+          <div
+            v-for="(imageUrl, index) in imageUrls"
+            :key="index"
+            class="border border-gray-200 rounded-lg p-4 relative"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <label :for="`imageUrl${index}`" class="block text-xs font-medium text-gray-600">
+                Image URL {{ index + 1 }}
+                <span v-if="index === 0" class="text-red-500">*</span>
+              </label>
+              <button
+                v-if="imageUrls.length > 1"
+                type="button"
+                @click="removeImageUrl(index)"
+                class="text-red-600 hover:text-red-800 transition-colors"
+                :title="`Remove image ${index + 1}`"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                </svg>
+              </button>
+            </div>
+            <input
+              :id="`imageUrl${index}`"
+              v-model="imageUrls[index]"
+              type="url"
+              :required="index === 0"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              :placeholder="`https://example.com/image${index + 1}.jpg`"
+            />
+            <!-- Image Preview -->
+            <div v-if="imageUrls[index]" class="mt-2 relative">
+              <img
+                :src="imageUrls[index]"
+                :alt="`Preview ${index + 1}`"
+                class="w-full h-48 object-cover rounded-lg"
+                @error="handleImageError($event, index)"
+              />
             </div>
           </div>
 
-          <!-- New Image Previews -->
-          <div v-if="newImagePreviews.length > 0" class="mt-4 grid grid-cols-3 gap-4">
-            <div
-              v-for="(preview, index) in newImagePreviews"
-              :key="`new-${index}`"
-              class="relative group"
-            >
-              <img
-                :src="preview"
-                :alt="`New Preview ${index + 1}`"
-                class="w-full h-32 object-cover rounded-lg"
-              />
-              <button
-                type="button"
-                @click="removeNewImage(index)"
-                class="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <i class="mdi mdi-close text-sm"></i>
-              </button>
-            </div>
-          </div>
+          <p class="text-xs text-gray-500 mt-2">
+            At least one image is required. Click "Add Image" to add more images.
+          </p>
         </div>
 
         <!-- Author -->
@@ -301,10 +274,7 @@ const form = ref({
 })
 
 const tagsInput = ref('')
-const existingImages = ref([])
-const newImageFiles = ref([])
-const newImagePreviews = ref([])
-const imageInput = ref(null)
+const imageUrls = ref(['']) // Start with one empty image URL
 const initialLoading = ref(true)
 const loading = ref(false)
 const error = ref(null)
@@ -329,11 +299,13 @@ onMounted(async () => {
         isPublished: newsData.isPublished || false
       }
 
-      // Set existing images
+      // Set existing images into imageUrls array
       if (newsData.images && newsData.images.length > 0) {
-        existingImages.value = [...newsData.images]
+        imageUrls.value = [...newsData.images]
       } else if (newsData.imageUrl) {
-        existingImages.value = [newsData.imageUrl]
+        imageUrls.value = [newsData.imageUrl]
+      } else {
+        imageUrls.value = [''] // Ensure at least one empty field
       }
 
       // Set tags
@@ -349,33 +321,22 @@ onMounted(async () => {
   }
 })
 
-// Handle new image selection
-const handleImageSelect = (event) => {
-  const files = Array.from(event.target.files)
-
-  files.forEach((file) => {
-    if (file.type.startsWith('image/')) {
-      newImageFiles.value.push(file)
-
-      // Create preview
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        newImagePreviews.value.push(e.target.result)
-      }
-      reader.readAsDataURL(file)
-    }
-  })
+// Add a new image URL field
+const addImageUrl = () => {
+  imageUrls.value.push('')
 }
 
-// Remove existing image
-const removeExistingImage = (index) => {
-  existingImages.value.splice(index, 1)
+// Remove an image URL field
+const removeImageUrl = (index) => {
+  if (imageUrls.value.length > 1) {
+    imageUrls.value.splice(index, 1)
+  }
 }
 
-// Remove new image
-const removeNewImage = (index) => {
-  newImageFiles.value.splice(index, 1)
-  newImagePreviews.value.splice(index, 1)
+// Handle image URL errors
+const handleImageError = (event, index) => {
+  console.error(`Image ${index + 1} failed to load`)
+  event.target.style.display = 'none'
 }
 
 // Submit form
@@ -384,16 +345,14 @@ const handleSubmit = async () => {
   error.value = null
 
   try {
-    const { uploadMultipleImages } = useFirebase()
+    // Collect and filter valid image URLs
+    const validImageUrls = imageUrls.value.filter(url => url && url.trim() !== '')
 
-    // Upload new images
-    let newImageUrls = []
-    if (newImageFiles.value.length > 0) {
-      newImageUrls = await uploadMultipleImages(newImageFiles.value, 'news')
+    if (validImageUrls.length === 0) {
+      error.value = 'At least one image URL is required'
+      loading.value = false
+      return
     }
-
-    // Combine existing and new images
-    const allImages = [...existingImages.value, ...newImageUrls]
 
     // Process tags
     const tags = tagsInput.value
@@ -403,8 +362,8 @@ const handleSubmit = async () => {
     // Prepare news data
     const newsData = {
       ...form.value,
-      images: allImages,
-      imageUrl: allImages[0] || null,
+      images: validImageUrls,
+      imageUrl: validImageUrls[0],
       tags
     }
 

@@ -11,9 +11,9 @@
       <div class="relative z-10 h-full flex items-center justify-center px-4">
         <div class="text-center text-white">
           <h1 class="text-5xl lg:text-7xl font-bold mb-4 italic">
-            Our cakes
+            {{ t('cakes.title') }}
           </h1>
-          <p class="text-xl lg:text-2xl">Fresh baked daily with the finest ingredients</p>
+          <p class="text-xl lg:text-2xl">{{ t('cakes.subtitle') }}</p>
         </div>
       </div>
     </section>
@@ -21,7 +21,7 @@
     <!-- Product Categories -->
     <section class="py-16">
       <div class="container mx-auto px-4">
-        <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">All Cakes</h2>
+        <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">{{ t('cakes.allCakes') }}</h2>
 
         <!-- Loading State -->
         <div v-if="loading" class="flex justify-center items-center py-20">
@@ -35,7 +35,7 @@
             @click="fetchCakes"
             class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors"
           >
-            Try Again
+            {{ t('common.tryAgain') }}
           </button>
         </div>
 
@@ -44,7 +44,7 @@
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="Search cakes..."
+            :placeholder="t('cakes.searchPlaceholder')"
             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-800 focus:border-red-800 outline-none"
           />
         </div>
@@ -75,7 +75,7 @@
           <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
             <!-- Pagination Info Display -->
             <div class="text-sm text-gray-600">
-              Showing {{ startItem }}-{{ endItem }} of {{ filteredCakes.length }} cakes
+              {{ t('cakes.showingCakes', { start: startItem, end: endItem, total: filteredCakes.length }) }}
             </div>
 
             <!-- Pagination Controls -->
@@ -170,7 +170,7 @@
 
             <!-- Items Per Page Selector -->
             <div class="flex items-center gap-2">
-              <span class="text-sm text-gray-600">Cakes per page:</span>
+              <span class="text-sm text-gray-600">{{ t('cakes.cakesPerPage') }}</span>
               <select
                 v-model="itemsPerPage"
                 @change="changeItemsPerPage(itemsPerPage)"
@@ -186,8 +186,8 @@
 
         <!-- No Cakes Message -->
         <div v-else-if="!loading && !error && filteredCakes.length === 0" class="text-center py-20">
-          <div class="text-gray-600 text-xl">No cakes found.</div>
-          <p class="text-gray-500 mt-2">{{ searchQuery ? 'Try adjusting your search terms.' : 'Check back later for new cake varieties.' }}</p>
+          <div class="text-gray-600 text-xl">{{ t('cakes.noCakesFound') }}</div>
+          <p class="text-gray-500 mt-2">{{ searchQuery ? t('cakes.adjustSearch') : t('cakes.checkBackLater') }}</p>
         </div>
       </div>
     </section>
@@ -198,6 +198,9 @@
 <script setup>
 // Use client-only wrapper for Firebase composable
 import cakeImage from "@/assets/images/cake-section.jpeg"
+
+const { currentLocale, t } = useTranslation()
+
 let getProductsByBakeryType;
 
 if (import.meta.client) {
