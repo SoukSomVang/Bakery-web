@@ -155,7 +155,7 @@
 </template>
 
 <script setup>
-import BackgrounImage from "@/assets/images/contact-place.jpeg";
+import BackgrounImage from "@/assets/images/contact-us-page.jpeg";
 import WhatsappIcon from "@/assets/images/icons/whatsapp_red_color.png";
 import TikTokIcon from "@/assets/images/icons/tik-tok-red-color.png";
 import FacebookIcon from "@/assets/images/icons/facebook-app-red-color.png";
