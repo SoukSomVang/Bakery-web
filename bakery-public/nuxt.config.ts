@@ -24,7 +24,7 @@ export default defineNuxtConfig({
       ],
     },
   },
-  ssr: true,
+  ssr: false,
   router: {
     options: {
       strict: false,

@@ -9,6 +9,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "deploy:static": "nuxt generate",
+    "deploy:cloudflare": "nuxt generate && wrangler pages deploy .output/public --project-name=bakery-web",
     "deploy:netlify": "nuxt generate && netlify deploy --prod --dir dist",
     "deploy:gh-pages": "nuxt generate && gh-pages -d dist",
     "deploy:vercel": "vercel --prod"
