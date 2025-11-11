@@ -349,16 +349,18 @@ const loadMoreImages = () => {
 
 // Handle keyboard events for lightbox
 onMounted(() => {
-  const handleKeydown = (e) => {
-    if (e.key === 'Escape' && lightboxImage.value) {
-      closeLightbox();
-    }
-  };
-  document.addEventListener('keydown', handleKeydown);
-  
-  onBeforeUnmount(() => {
-    document.removeEventListener('keydown', handleKeydown);
-  });
+  if (import.meta.client) {
+    const handleKeydown = (e) => {
+      if (e.key === 'Escape' && lightboxImage.value) {
+        closeLightbox();
+      }
+    };
+    document.addEventListener('keydown', handleKeydown);
+
+    onBeforeUnmount(() => {
+      document.removeEventListener('keydown', handleKeydown);
+    });
+  }
 });
 
 // SEO

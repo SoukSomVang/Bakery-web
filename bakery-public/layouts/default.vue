@@ -539,7 +539,7 @@ const toggleMobileMenu = () => {
 
 const toggleSearch = () => {
   isSearchOpen.value = !isSearchOpen.value;
-  if (isSearchOpen.value) {
+  if (isSearchOpen.value && import.meta.client) {
     nextTick(() => {
       const searchInput = document.querySelector('input[type="text"]');
       if (searchInput) searchInput.focus();
@@ -563,15 +563,19 @@ const performSearch = () => {
 
 // Scroll to top function
 const scrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
+  if (import.meta.client) {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
 };
 
 // Handle scroll events
 const handleScroll = () => {
-  showScrollTop.value = window.scrollY > 300;
+  if (import.meta.client) {
+    showScrollTop.value = window.scrollY > 300;
+  }
 };
 
 // Close dropdowns when clicking outside
@@ -597,13 +601,17 @@ watch(
 
 // Lifecycle hooks
 onMounted(() => {
-  document.addEventListener("click", closeDropdowns);
-  window.addEventListener("scroll", handleScroll);
+  if (import.meta.client) {
+    document.addEventListener("click", closeDropdowns);
+    window.addEventListener("scroll", handleScroll);
+  }
 });
 
 onUnmounted(() => {
-  document.removeEventListener("click", closeDropdowns);
-  window.removeEventListener("scroll", handleScroll);
+  if (import.meta.client) {
+    document.removeEventListener("click", closeDropdowns);
+    window.removeEventListener("scroll", handleScroll);
+  }
 });
 </script>
 

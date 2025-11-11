@@ -90,7 +90,7 @@ const selectedLocale = computed(() => {
 })
 
 const calculateDropdownPosition = () => {
-  if (!switcherRef.value) return
+  if (!switcherRef.value || !import.meta.client) return
 
   const rect = switcherRef.value.getBoundingClientRect()
   const isMobile = window.innerWidth < 768
@@ -160,15 +160,19 @@ watch(isOpen, (newValue) => {
 })
 
 onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-  window.addEventListener('scroll', handleScroll, true)
-  window.addEventListener('resize', handleResize)
+  if (import.meta.client) {
+    document.addEventListener('click', handleClickOutside)
+    window.addEventListener('scroll', handleScroll, true)
+    window.addEventListener('resize', handleResize)
+  }
 })
 
 onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside)
-  window.removeEventListener('scroll', handleScroll, true)
-  window.removeEventListener('resize', handleResize)
+  if (import.meta.client) {
+    document.removeEventListener('click', handleClickOutside)
+    window.removeEventListener('scroll', handleScroll, true)
+    window.removeEventListener('resize', handleResize)
+  }
 })
 </script>
 
