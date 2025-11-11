@@ -72,9 +72,13 @@ export const useTranslation = () => {
   const switchLocale = (locale) => {
     if (translations[locale]) {
       currentLocale.value = locale
-      // Save to localStorage
+      // Save to localStorage (with iOS Safari safety check)
       if (import.meta.client) {
-        localStorage.setItem('locale', locale)
+        try {
+          localStorage.setItem('locale', locale)
+        } catch (error) {
+          console.warn('Failed to save locale to localStorage:', error)
+        }
       }
     } else {
       console.error(`Locale not supported: ${locale}`)
@@ -104,9 +108,14 @@ export const useTranslation = () => {
   // Initialize locale from localStorage on client
   onMounted(() => {
     if (import.meta.client) {
-      const savedLocale = localStorage.getItem('locale')
-      if (savedLocale && translations[savedLocale]) {
-        currentLocale.value = savedLocale
+      try {
+        const savedLocale = localStorage.getItem('locale')
+        if (savedLocale && translations[savedLocale]) {
+          currentLocale.value = savedLocale
+        }
+      } catch (error) {
+        console.warn('Failed to read locale from localStorage:', error)
+        // Use default locale (en) if localStorage is unavailable
       }
     }
   })
