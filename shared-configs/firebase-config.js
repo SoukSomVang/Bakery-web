@@ -14,35 +14,42 @@ const firebaseConfig = {
   measurementId: "G-SN3VG7L5XX"
 }
 
-console.log('🔧 Initializing Firebase with config:', firebaseConfig)
 let app
-try {
-  app = initializeApp(firebaseConfig)
-  console.log('✅ Firebase app initialized successfully:', app ? 'success' : 'failed')
-  console.log('📱 App name:', app.name)
-  console.log('📱 App options:', app.options)
-} catch (error) {
-  console.error('❌ Firebase app initialization failed:', error)
-  console.error('Error details:', error.message)
-  throw error
+// Only initialize Firebase on the client side (browser)
+if (typeof window !== 'undefined') {
+  console.log('🔧 Initializing Firebase with config:', firebaseConfig)
+  try {
+    app = initializeApp(firebaseConfig)
+    console.log('✅ Firebase app initialized successfully:', app ? 'success' : 'failed')
+    console.log('📱 App name:', app.name)
+    console.log('📱 App options:', app.options)
+  } catch (error) {
+    console.error('❌ Firebase app initialization failed:', error)
+    console.error('Error details:', error.message)
+    throw error
+  }
+} else {
+  console.log('🔧 Server-side rendering - Firebase will be initialized on client')
 }
 
 // Initialize Auth with error handling
 let auth = null
-try {
-  auth = getAuth(app)
-  console.log('✅ Firebase Auth initialized successfully')
-} catch (error) {
-  console.error('❌ Auth initialization failed:', error)
-  console.error('Please ensure Authentication is enabled in your Firebase Console')
+if (typeof window !== 'undefined' && app) {
+  try {
+    auth = getAuth(app)
+    console.log('✅ Firebase Auth initialized successfully')
+  } catch (error) {
+    console.error('❌ Auth initialization failed:', error)
+    console.error('Please ensure Authentication is enabled in your Firebase Console')
+  }
 }
 export { auth }
 
 // Initialize Firestore with error handling
 let db = null
-try {
-  // Only initialize Firestore in browser environment
-  if (typeof window !== 'undefined') {
+// Only initialize Firestore in browser environment
+if (typeof window !== 'undefined' && app) {
+  try {
     db = getFirestore(app)
     console.log('✅ Firestore initialized successfully')
     console.log('📊 Database object:', !!db)
@@ -51,18 +58,18 @@ try {
 
     // The database is initialized correctly - any permission errors will occur during operations
     console.log('🔥 Firestore is ready for operations')
-  } else {
-    console.log('🔧 Server-side rendering - Firestore will be initialized on client')
-  }
-} catch (error) {
-  console.error('❌ Firestore initialization failed:', error)
-  console.error('Error details:', error.message)
-  console.error('Error code:', error.code)
-  console.error('Please ensure Firestore is enabled in your Firebase Console')
-  console.error('Visit: https://console.firebase.google.com/project/bakery-house-f7e32/firestore')
+  } catch (error) {
+    console.error('❌ Firestore initialization failed:', error)
+    console.error('Error details:', error.message)
+    console.error('Error code:', error.code)
+    console.error('Please ensure Firestore is enabled in your Firebase Console')
+    console.error('Visit: https://console.firebase.google.com/project/bakery-house-f7e32/firestore')
 
-  // Set a flag so we know initialization failed
-  db = null
+    // Set a flag so we know initialization failed
+    db = null
+  }
+} else {
+  console.log('🔧 Server-side rendering - Firestore will be initialized on client')
 }
 
 // Verify database is properly exported
@@ -76,29 +83,30 @@ export { db }
 
 // Initialize Storage with error handling
 let storage = null
-try {
-  // Only initialize Storage in browser environment
-  if (typeof window !== 'undefined') {
+// Only initialize Storage in browser environment
+if (typeof window !== 'undefined' && app) {
+  try {
     storage = getStorage(app)
     console.log('✅ Firebase Storage initialized successfully')
     console.log('📁 Storage bucket:', storage.app.options.storageBucket)
-  } else {
-    console.log('🔧 Server-side rendering - Storage will be initialized on client')
+  } catch (error) {
+    console.error('❌ Storage initialization failed:', error)
+    console.error('Please ensure Storage is enabled in your Firebase Console')
+    console.error('Visit: https://console.firebase.google.com/project/bakery-house-f7e32/storage')
   }
-} catch (error) {
-  console.error('❌ Storage initialization failed:', error)
-  console.error('Please ensure Storage is enabled in your Firebase Console')
-  console.error('Visit: https://console.firebase.google.com/project/bakery-house-f7e32/storage')
+} else {
+  console.log('🔧 Server-side rendering - Storage will be initialized on client')
 }
 export { storage }
 
 // Initialize analytics only in browser environment
 let analytics = null
-if (typeof window !== 'undefined') {
+if (typeof window !== 'undefined' && app) {
   try {
     analytics = getAnalytics(app)
+    console.log('✅ Firebase Analytics initialized successfully')
   } catch (error) {
-    console.warn('Analytics initialization failed:', error)
+    console.warn('⚠️ Analytics initialization failed:', error)
   }
 }
 export { analytics }
