@@ -14,22 +14,19 @@ const firebaseConfig = {
   measurementId: "G-SN3VG7L5XX"
 }
 
-let app
+let app = null
+
 // Only initialize Firebase on the client side (browser)
 if (typeof window !== 'undefined') {
-  console.log('🔧 Initializing Firebase with config:', firebaseConfig)
   try {
+    console.log('🔧 Initializing Firebase on client...')
     app = initializeApp(firebaseConfig)
-    console.log('✅ Firebase app initialized successfully:', app ? 'success' : 'failed')
-    console.log('📱 App name:', app.name)
-    console.log('📱 App options:', app.options)
+    console.log('✅ Firebase app initialized successfully')
   } catch (error) {
     console.error('❌ Firebase app initialization failed:', error)
-    console.error('Error details:', error.message)
-    throw error
+    // Don't throw - allow app to continue without Firebase
+    app = null
   }
-} else {
-  console.log('🔧 Server-side rendering - Firebase will be initialized on client')
 }
 
 // Initialize Auth with error handling
@@ -70,13 +67,6 @@ if (typeof window !== 'undefined' && app) {
   }
 } else {
   console.log('🔧 Server-side rendering - Firestore will be initialized on client')
-}
-
-// Verify database is properly exported
-if (db) {
-  console.log('✅ Database exported successfully')
-} else {
-  console.error('❌ Database is null - export failed')
 }
 
 export { db }
