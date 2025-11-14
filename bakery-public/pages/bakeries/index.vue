@@ -14,11 +14,14 @@
       </div>
     </section>
 
-    <!-- Loading State -->
-    <div v-if="loading" class="py-16 text-center">
-      <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-red-600 mx-auto mb-4"></div>
-      <p class="text-gray-600">Loading our bakery locations...</p>
-    </div>
+    <!-- Loading State with Skeleton -->
+    <section v-if="loading" class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <SkeletonCard v-for="i in 6" :key="i" />
+        </div>
+      </div>
+    </section>
 
     <!-- Error State -->
     <div v-else-if="error" class="py-16 text-center">
@@ -57,7 +60,7 @@
             <div
               v-for="bakery in paginatedBakeries"
               :key="bakery.id"
-              class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
+              class="bg-white rounded-xl shadow-lg overflow-hidden"
             >
               <!-- Bakery Image -->
               <div class="relative h-64 bg-gray-200">
@@ -111,7 +114,7 @@
                     <svg class="w-4 h-4 text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                     </svg>
-                    <a :href="`tel:${bakery.phone}`" class="text-sm text-gray-700 hover:text-red-600 transition-colors">
+                    <a :href="`tel:${bakery.phone}`" class="text-sm text-gray-700 hover:text-red-600">
                       {{ bakery.phone }}
                     </a>
                   </div>
@@ -120,7 +123,7 @@
                     <svg class="w-4 h-4 text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                     </svg>
-                    <a :href="`mailto:${bakery.email}`" class="text-sm text-gray-700 hover:text-red-600 transition-colors">
+                    <a :href="`mailto:${bakery.email}`" class="text-sm text-gray-700 hover:text-red-600">
                       {{ bakery.email }}
                     </a>
                   </div>
@@ -151,9 +154,9 @@
                 </div>
 
                 <!-- Action Button -->
-                <button 
+                <button
                   @click="openDirections(bakery)"
-                  class="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center gap-2"
+                  class="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 4m0 13V4m0 0L9 7"></path>
@@ -289,9 +292,9 @@
         <p class="text-red-100 mb-8 max-w-2xl mx-auto">
           We're always expanding! Contact us to suggest a new location or inquire about franchise opportunities.
         </p>
-        <NuxtLink 
+        <NuxtLink
           to="/contact-us"
-          class="bg-white text-red-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-semibold transition-colors duration-200 inline-flex items-center gap-2"
+          class="bg-white text-red-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-semibold inline-flex items-center gap-2"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
@@ -420,21 +423,5 @@ useSeoMeta({
 <style scoped>
 .container {
   max-width: 1200px;
-}
-
-/* Custom animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out;
 }
 </style>

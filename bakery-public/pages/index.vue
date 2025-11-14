@@ -53,7 +53,7 @@
     </section>
 
     <!-- Features Section -->
-    <section class="w-full bg-gray-50 py-16">
+    <section class="w-full bg-gray-50 py-16 scroll-section opacity-0 translate-y-10 transition-all duration-700">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
           <h2 class="text-4xl font-bold text-gray-800 mb-4">
@@ -142,7 +142,7 @@
 
     <!-- Products Section -->
     <section
-      class="py-16 bg-cover bg-[center_bottom_43%] h-[70vh] sm:h-[80vh] md:h-[90vh]"
+      class="py-16 bg-cover bg-[center_bottom_43%] h-[70vh] sm:h-[80vh] md:h-[90vh] scroll-section opacity-0 translate-y-10 transition-all duration-700"
       :style="{ backgroundImage: `url('${productSectionImage}')` }"
     >
       <div
@@ -158,7 +158,7 @@
     </section>
 
     <!-- Product Showcase -->
-    <!-- <section class="py-16 bg-white">
+    <section class="py-16 bg-white">
       <div class="container mx-auto px-4">
         <div class="grid lg:grid-cols-2 gap-12 items-center">
           <div class="order-2 lg:order-1">
@@ -184,12 +184,6 @@
                 >
                   View Whole Bread
                 </button>
-                <button
-                  @click="$router.push('/products')"
-                  class="border-2 border-red-800 text-red-800 hover:bg-red-800 hover:text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300"
-                >
-                  View All Products
-                </button>
               </div>
             </div>
           </div>
@@ -207,10 +201,10 @@
           </div>
         </div>
       </div>
-    </section> -->
+    </section>
 
     <!-- Brands Section -->
-    <section class="py-16 bg-gray-50">
+    <section class="py-16 bg-gray-50 scroll-section opacity-0 translate-y-10 transition-all duration-700">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
           <h2 class="text-4xl font-bold text-gray-800 mb-4">{{ t('home.ourCustomers') }}</h2>
@@ -279,77 +273,54 @@
     </section>
 
     <!-- News Section -->
-    <section class="py-16 bg-gray-50">
+    <section class="py-16 bg-white scroll-section opacity-0 translate-y-10 transition-all duration-700">
       <div class="container mx-auto px-4">
         <!-- Section Header -->
-        <header class="mb-8 text-center">
-          <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            News
-          </h2>
-
-          <!-- Meta Information -->
-          <div class="flex flex-wrap items-center justify-center gap-4 text-gray-600">
-            <div class="flex items-center">
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-              </svg>
-              <time>{{ new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) }}</time>
-            </div>
-
-            <div class="flex items-center">
-              <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">
-                Featured
-              </span>
-            </div>
-          </div>
-        </header>
-
-        <!-- Featured Images -->
-        <div class="mb-8 max-w-5xl mx-auto">
-          <!-- Main/Featured Image -->
-          <img
-            :src="news1"
-            alt="BakeryHouse News"
-            class="w-full h-auto max-h-[600px] object-cover rounded-lg shadow-xl mb-4"
-          />
-
-          <!-- Additional Images Grid -->
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <img
-              :src="news2"
-              alt="BakeryHouse News - Image 2"
-              class="w-full h-48 object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow"
-            />
-            <img
-              :src="news3"
-              alt="BakeryHouse News - Image 3"
-              class="w-full h-48 object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow"
-            />
-          </div>
+        <div class="text-center mb-12">
+          <h2 class="text-4xl font-bold text-gray-800 mb-4">Latest News</h2>
+          <p class="text-lg text-gray-600">Stay updated with our latest announcements and stories</p>
         </div>
 
-        <!-- Article Content -->
-        <article class="prose prose-lg max-w-5xl mx-auto">
-          <div class=" rounded-lg p-8">
-            <div class="text-gray-700 leading-relaxed space-y-6">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        <!-- Single News Card -->
+        <div class="max-w-2xl mx-auto">
+          <div
+            class="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2 cursor-pointer"
+            @click="$router.push('/news-static')"
+          >
+            <div class="relative h-96 overflow-hidden">
+              <img
+                :src="news1"
+                alt="Latest News"
+                class="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+              />
+              <div class="absolute top-4 right-4">
+                <span class="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                  Featured
+                </span>
+              </div>
+            </div>
+            <div class="p-8">
+              <div class="flex items-center text-sm text-gray-500 mb-4">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <time>January 15, 2024</time>
+              </div>
+              <h3 class="text-2xl font-bold text-gray-800 mb-4">
+                New Product Launch: Artisan Sourdough Collection
+              </h3>
+              <p class="text-gray-600 mb-6 leading-relaxed">
+                We're excited to announce our new line of artisan sourdough breads, crafted with traditional techniques and premium ingredients for the perfect texture and flavor. Discover the art of slow fermentation and authentic baking methods.
               </p>
-
-              <p>
-                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-
-              <p>
-                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-              </p>
-
-              <p>
-                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.
-              </p>
+              <div class="flex items-center text-red-600 font-semibold hover:text-red-700 transition-colors">
+                <span>Read More</span>
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </div>
             </div>
           </div>
-        </article>
+        </div>
       </div>
     </section>
 
@@ -366,8 +337,6 @@ import productSectionImage from "@/assets/images/prop-image.jpeg";
 import KafepaLogo from "@/assets/images/logo/kafepa_logo.jpg";
 import TreekoffLogo from "@/assets/images/logo/treekoff_logo.png";
 import news1 from "@/assets/images/news1.jpeg";
-import news2 from "@/assets/images/news2.jpeg";
-import news3 from "@/assets/images/news3.jpeg";
 
 const router = useRouter();
 const { t } = useTranslation();
@@ -401,27 +370,8 @@ const brands = ref([
 const bakeryProducts = ref([]);
 const productsLoading = ref(true);
 
-const cakeProducts = ref([
-  { id: 9, name: "Cookie matcha", image: "" },
-  { id: 10, name: "Cream puffs", image: "" },
-  { id: 11, name: "Cream puffs matcha", image: "" },
-  { id: 12, name: "Coconut pie", image: "" },
-  { id: 13, name: "Carrot cake", image: "" },
-  { id: 14, name: "Mousse cake Matcha", image: "" },
-  { id: 15, name: "Cheese cake", image: "" },
-  { id: 16, name: "Red velvet cake", image: "" },
-]);
-
-const additionalProducts = ref([
-  { id: 17, name: "Cake milk", image: "" },
-  { id: 18, name: "Chocolate top mousse", image: "" },
-  { id: 19, name: "Timbering Matcha", image: "" },
-  { id: 20, name: "Timbering Chocolate", image: "" },
-  { id: 21, name: "Coffee", image: "" },
-  { id: 22, name: "Coffee chocolate", image: "" },
-  { id: 23, name: "Coffee Matcha", image: "" },
-  { id: 24, name: "Eggs tart", image: "" },
-]);
+// Scroll animations
+const { observeAllSections } = useScrollAnimation()
 
 // Load products
 onMounted(async () => {
@@ -433,6 +383,9 @@ onMounted(async () => {
         "✅ HOME: Bakery products loaded:",
         bakeryProducts.value.length
       );
+
+      // Setup scroll animations
+      observeAllSections()
     }
   } catch (error) {
     console.error("Failed to load data:", error);

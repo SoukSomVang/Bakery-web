@@ -1,42 +1,12 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <!-- Hero Section -->
-    <section
-      class="relative bg-cover bg-center h-[50vh]"
-      :style="{
-        backgroundImage: `url('https://images.unsplash.com/photo-1509440159596-0249088772ff?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3')`,
-      }"
-    >
-      <div class="absolute inset-0 bg-black/50"></div>
-      <div class="relative z-10 h-full flex items-center justify-center px-4">
-        <div class="text-center text-white">
-          <h1 class="text-5xl lg:text-6xl font-bold mb-4 italic" style="font-family: 'Brush Script MT', cursive;">
-            Fresh Breads
-          </h1>
-          <p class="text-xl lg:text-2xl">Artisan breads baked fresh every morning</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Breadcrumb -->
-    <section class="py-4 bg-white border-b">
-      <div class="container mx-auto px-4">
-        <nav class="text-sm text-gray-600">
-          <NuxtLink to="/" class="hover:text-red-600">Home</NuxtLink>
-          <span class="mx-2">></span>
-          <NuxtLink to="/products" class="hover:text-red-600">Products</NuxtLink>
-          <span class="mx-2">></span>
-          <span class="text-gray-800 font-semibold">Breads</span>
-        </nav>
-      </div>
-    </section>
 
     <!-- Products Section -->
     <section class="py-16">
       <div class="container mx-auto px-4">
-        <!-- Loading State -->
-        <div v-if="loading" class="flex justify-center items-center py-20">
-          <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-red-600"></div>
+        <!-- Loading State with Skeleton -->
+        <div v-if="loading" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <SkeletonProductCard v-for="i in 8" :key="i" />
         </div>
 
         <!-- Error State -->
@@ -44,7 +14,7 @@
           <div class="text-red-600 text-xl mb-4">{{ error }}</div>
           <button
             @click="fetchBreads"
-            class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors"
+            class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200"
           >
             Try Again
           </button>
@@ -63,7 +33,7 @@
         <!-- Breads Grid -->
         <div v-if="!loading && !error" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <div v-for="bread in paginatedBreads" :key="bread.id">
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow hover:shadow-xl h-full flex flex-col">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 h-full flex flex-col">
               <img
                 :src="bread.image || 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=300&h=200&fit=crop'"
                 :alt="bread.name"
@@ -102,7 +72,7 @@
                 @click="goToFirstPage"
                 :disabled="currentPage === 1"
                 :class="[
-                  'px-3 py-2 rounded-lg font-medium transition-colors border',
+                  'px-3 py-2 rounded-lg font-medium border',
                   currentPage === 1
                     ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
                     : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50 hover:border-red-300 hover:text-red-600'
@@ -118,7 +88,7 @@
                 @click="prevPage"
                 :disabled="currentPage === 1"
                 :class="[
-                  'px-3 py-2 rounded-lg font-medium transition-colors border',
+                  'px-3 py-2 rounded-lg font-medium border',
                   currentPage === 1
                     ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
                     : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50 hover:border-red-300 hover:text-red-600'
@@ -157,7 +127,7 @@
                 @click="nextPage"
                 :disabled="currentPage === totalPages"
                 :class="[
-                  'px-3 py-2 rounded-lg font-medium transition-colors border',
+                  'px-3 py-2 rounded-lg font-medium border',
                   currentPage === totalPages
                     ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
                     : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50 hover:border-red-300 hover:text-red-600'
@@ -173,7 +143,7 @@
                 @click="goToLastPage"
                 :disabled="currentPage === totalPages"
                 :class="[
-                  'px-3 py-2 rounded-lg font-medium transition-colors border',
+                  'px-3 py-2 rounded-lg font-medium border',
                   currentPage === totalPages
                     ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
                     : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50 hover:border-red-300 hover:text-red-600'
@@ -203,67 +173,55 @@
       </div>
     </section>
 
-    <!-- Our Commitment Section -->
+    <!-- Our Partners Section -->
     <section class="py-16 bg-white">
       <div class="container mx-auto px-4">
-        <div class="grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 class="text-3xl font-bold text-gray-900 mb-6">Our Commitment to Quality</h2>
-            <p class="text-lg text-gray-700 mb-6">
-              Every loaf is crafted with passion and precision, using time-honored techniques passed down through generations of bakers.
-            </p>
-            <div class="space-y-4">
-              <div class="flex items-center space-x-3">
-                <div class="bg-red-100 p-2 rounded-full">
-                  <svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                  </svg>
-                </div>
-                <span class="text-gray-700">Organic flour and premium ingredients</span>
-              </div>
-              <div class="flex items-center space-x-3">
-                <div class="bg-red-100 p-2 rounded-full">
-                  <svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                  </svg>
-                </div>
-                <span class="text-gray-700">Natural fermentation process</span>
-              </div>
-              <div class="flex items-center space-x-3">
-                <div class="bg-red-100 p-2 rounded-full">
-                  <svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                  </svg>
-                </div>
-                <span class="text-gray-700">Hand-shaped and stone-baked</span>
-              </div>
-            </div>
-          </div>
-          <div>
-            <img
-              src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop"
-              alt="Baker at work"
-              class="rounded-lg shadow-lg"
-            />
-          </div>
+        <div class="text-center mb-12">
+          <h2 class="text-4xl font-bold text-gray-900 mb-4">Our Partners</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            Trusted by leading restaurants, hotels, and cafes across the region
+          </p>
         </div>
-      </div>
-    </section>
 
-    <!-- Call to Action -->
-    <section class="py-16 bg-red-900 text-white">
-      <div class="container mx-auto px-4 text-center">
-        <h2 class="text-4xl font-bold mb-6">Fresh Daily</h2>
-        <p class="text-xl mb-8 max-w-2xl mx-auto">
-          Our breads are baked fresh every morning. Pre-order to guarantee your favorites!
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <button class="bg-white text-red-800 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-            Pre-Order Now
-          </button>
-          <button class="border-2 border-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-red-800 transition-colors">
-            View All Products
-          </button>
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- Partner 1 -->
+          <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow duration-300">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 text-center mb-2">Grand Hotel Chain</h3>
+            <p class="text-gray-600 text-center text-sm">
+              Premium supplier for their breakfast buffet and in-room dining services
+            </p>
+          </div>
+
+          <!-- Partner 2 -->
+          <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow duration-300">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 text-center mb-2">The Coffee District</h3>
+            <p class="text-gray-600 text-center text-sm">
+              Exclusive artisan bread supplier for their cafe network of 15+ locations
+            </p>
+          </div>
+
+          <!-- Partner 3 -->
+          <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow duration-300">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 text-center mb-2">Restaurant Group Co.</h3>
+            <p class="text-gray-600 text-center text-sm">
+              Trusted wholesale partner providing fresh bread daily to fine dining establishments
+            </p>
+          </div>
         </div>
       </div>
     </section>

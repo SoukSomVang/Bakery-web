@@ -1,25 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <!-- Hero Section -->
-    <section
-      class="relative bg-cover bg-center h-[50vh]"
-      :style="{
-        backgroundImage: `url('https://images.squarespace-cdn.com/content/v1/5ccc9bada9ab950174f0b374/1719853260027-MUYMSU6RJOXZFKQ8QIU2/Nature%27s+Own+-+Perfectly+Crafted+-+Multigrain+WEB+-+FOP.png?format=500w')`,
-      }"
-    >
-      <div class="absolute inset-0 bg-black/60"></div>
-      <div class="relative z-10 h-full flex items-center justify-center px-4">
-        <div class="text-center text-white">
-          <h1 class="text-5xl lg:text-6xl font-bold mb-4 italic" style="font-family: 'Brush Script MT', cursive;">
-            Whole Wheat Multigrain Bread
-          </h1>
-          <p class="text-xl lg:text-2xl">Nutritious • Delicious • Freshly Baked</p>
-        </div>
-      </div>
-    </section>
-
     <!-- Product Details Section -->
-    <section class="py-16 bg-white">
+    <section class="py-16 bg-white scroll-section opacity-0 translate-y-10 transition-all duration-700">
       <div class="container mx-auto px-4">
         <div class="grid lg:grid-cols-2 gap-12 items-center">
           <div>
@@ -94,10 +76,10 @@
               </div>
 
               <!-- Action Buttons -->
-              <div class="flex flex-col sm:flex-row gap-4">
+              <!-- <div class="flex flex-col sm:flex-row gap-4">
                 <button
                   @click="$router.push('/contact-us')"
-                  class="bg-red-800 hover:bg-red-900 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                  class="bg-red-800 hover:bg-red-900 text-white px-8 py-4 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                 >
                   Order Now
                 </button>
@@ -107,7 +89,7 @@
                 >
                   View All Products
                 </button>
-              </div>
+              </div> -->
             </div>
           </div>
 
@@ -126,149 +108,98 @@
       </div>
     </section>
 
-    <!-- Ingredients Section -->
-    <section class="py-16 bg-gray-50">
+    <!-- Our Partners Section -->
+    <section class="py-16 bg-gray-50 scroll-section opacity-0 translate-y-10 transition-all duration-700">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold text-gray-800 mb-4">Premium Ingredients</h2>
-          <p class="text-gray-600 max-w-2xl mx-auto">
-            We carefully select only the finest ingredients to ensure every loaf meets our high standards of quality and nutrition.
-          </p>
+          <h2 class="text-4xl font-bold text-gray-800 mb-4">Our Partners</h2>
         </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
-              <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
-              </svg>
+        <!-- Partner Cards -->
+        <div class="grid sm:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <!-- Kafepa Card -->
+          <a
+            :href="brands[0].link"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2"
+          >
+            <div class="w-full h-64 bg-gray-50">
+              <img
+                :src="brands[0].image"
+                :alt="brands[0].name"
+                class="w-full h-full object-cover"
+              />
             </div>
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">Whole Wheat Flour</h3>
-            <p class="text-gray-600">Stone-ground whole wheat flour provides essential nutrients and a rich, nutty flavor.</p>
-          </div>
+            <div class="p-6 text-center bg-gradient-to-br from-white to-gray-50">
+              <h3 class="text-2xl font-bold text-gray-800 group-hover:text-red-800 transition-colors mb-2">
+                {{ brands[0].name }}
+              </h3>
+              <div class="flex items-center justify-center text-red-600 group-hover:text-red-700 transition-colors">
+                <span class="text-sm font-medium">Visit {{ brands[0].name }}</span>
+                <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </div>
+            </div>
+          </a>
 
-          <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
-              <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
-              </svg>
+          <!-- Treekoff Card -->
+          <a
+            :href="brands[1].link"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2"
+          >
+            <div class="w-full h-64 bg-gray-50">
+              <img
+                :src="brands[1].image"
+                :alt="brands[1].name"
+                class="w-full h-full object-cover"
+              />
             </div>
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">Ancient Grains</h3>
-            <p class="text-gray-600">A blend of quinoa, millet, and amaranth adds texture and nutritional value.</p>
-          </div>
-
-          <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
-              <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd"/>
-              </svg>
+            <div class="p-6 text-center bg-gradient-to-br from-white to-gray-50">
+              <h3 class="text-2xl font-bold text-gray-800 group-hover:text-red-800 transition-colors mb-2">
+                {{ brands[1].name }}
+              </h3>
+              <div class="flex items-center justify-center text-red-600 group-hover:text-red-700 transition-colors">
+                <span class="text-sm font-medium">Visit {{ brands[1].name }}</span>
+                <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </div>
             </div>
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">Seeds & Nuts</h3>
-            <p class="text-gray-600">Sunflower seeds, pumpkin seeds, and crushed walnuts for extra crunch and nutrition.</p>
-          </div>
+          </a>
         </div>
       </div>
     </section>
-
-    <!-- Our Branches Section -->
-    <section class="py-16 bg-white">
-      <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold text-gray-800 mb-4">Available at Our Branches</h2>
-          <p class="text-gray-600 max-w-2xl mx-auto">
-            Visit any of our locations to get fresh whole wheat multigrain bread baked daily
-          </p>
-        </div>
-
-        <!-- Loading State -->
-        <div v-if="branchesLoading" class="text-center">
-          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600 mx-auto"></div>
-        </div>
-
-        <!-- Branches List -->
-        <div v-else-if="branches.length > 0" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div
-            v-for="branch in branches"
-            :key="branch.id"
-            class="text-center"
-          >
-            <h3
-              @click="handleLocationClick(branch)"
-              class="text-lg font-medium text-red-700 underline cursor-pointer hover:text-red-900 transition-colors"
-            >
-              {{ branch.name }}
-            </h3>
-          </div>
-        </div>
-
-        <!-- Empty State -->
-        <div v-else class="text-center py-8">
-          <p class="text-gray-500">No branches available at the moment.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Location Dialog -->
-    <div v-if="showLocationDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-        <div class="text-center">
-          <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-          </svg>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">Location Not Available</h3>
-          <p class="text-gray-600 mb-6">
-            Branch does not have location data
-          </p>
-          <button
-            @click="closeDialog"
-            class="bg-red-900 hover:bg-red-950 text-white px-6 py-2 rounded-md font-semibold transition-colors"
-          >
-            OK
-          </button>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script setup>
-import { useFirebase } from '~/composables/useFirebase'
+import KafepaLogo from "@/assets/images/logo/kafepa_logo.jpg";
+import TreekoffLogo from "@/assets/images/logo/treekoff_logo.png";
 
-const { getBranches } = useFirebase()
-
-// Branch locations data
-const branches = ref([])
-const branchesLoading = ref(true)
-const showLocationDialog = ref(false)
-const selectedBranch = ref(null)
-
-// Handle location button click
-const handleLocationClick = (branch) => {
-  if (branch.locationUrl && branch.locationUrl.trim()) {
-    // Open location URL in new tab
-    window.open(branch.locationUrl, '_blank')
-  } else {
-    // Show dialog for missing location
-    selectedBranch.value = branch
-    showLocationDialog.value = true
+// Brand data
+const brands = ref([
+  {
+    name: "Kafepa'",
+    link: "https://www.facebook.com/share/17eGRPxhBW/?mibextid=wwXIfr",
+    image: KafepaLogo
+  },
+  {
+    name: "Treekoff",
+    link: "https://treekoff.coffee/",
+    image: TreekoffLogo
   }
-}
+]);
 
-// Close dialog
-const closeDialog = () => {
-  showLocationDialog.value = false
-  selectedBranch.value = null
-}
+// Scroll animations
+const { observeAllSections } = useScrollAnimation()
 
-// Load branch locations
-onMounted(async () => {
-  try {
-    branches.value = await getBranches()
-  } catch (error) {
-    console.error('Failed to load branches:', error)
-  } finally {
-    branchesLoading.value = false
-  }
+// Setup scroll animations on mount
+onMounted(() => {
+  observeAllSections()
 })
 
 // SEO

@@ -1099,9 +1099,9 @@ td:nth-child(2) {
   }
 }
 
-/* Button transitions */
+/* Button styles */
 button {
-  transition: all 0.2s ease;
+  /* No transitions */
 }
 
 /* Logo styling */

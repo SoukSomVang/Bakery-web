@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <!-- Contact Information & Location Section -->
-    <section class="py-16 bg-white">
+    <section class="py-16 bg-white scroll-section opacity-0 translate-y-10 transition-all duration-700">
       <div class="container mx-auto px-6">
         <div class="grid lg:grid-cols-2 gap-12">
           <!-- Contact Information -->
@@ -162,6 +162,16 @@ import FacebookIcon from "@/assets/images/icons/facebook-app-red-color.png";
 
 const { t } = useTranslation();
 const LOCATION = "https://maps.app.goo.gl/wHpTRKX8xvqQYYpd6"
+
+// Scroll animations
+const { observeAllSections } = useScrollAnimation()
+
+onMounted(() => {
+  if (import.meta.client) {
+    observeAllSections()
+  }
+})
+
 // Meta tags for SEO
 useHead({
   title: 'Contact Us - BakeryHouse | Get In Touch',

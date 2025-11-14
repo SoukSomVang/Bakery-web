@@ -48,17 +48,17 @@
           <div
             v-for="image in filteredImages"
             :key="image.id"
-            class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group"
+            class="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer group"
             @click="openLightbox(image)"
           >
             <div class="relative overflow-hidden">
               <img
                 :src="image.thumbnail"
                 :alt="image.title"
-                class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                class="w-full h-64 object-cover"
               />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
-                <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 flex items-center justify-center">
+                <div class="opacity-0 group-hover:opacity-100">
                   <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm5 3a1 1 0 000 2h4a1 1 0 100-2H8z" clip-rule="evenodd"/>
                   </svg>
@@ -79,9 +79,9 @@
 
         <!-- Load More Button -->
         <div class="text-center mt-12" v-if="hasMoreImages">
-          <button 
+          <button
             @click="loadMoreImages"
-            class="bg-red-900 hover:bg-red-950 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+            class="bg-red-900 hover:bg-red-950 text-white px-8 py-3 rounded-lg font-semibold"
           >
             Load More Images
           </button>
@@ -109,9 +109,9 @@
             <img
               :src="scene.thumbnail"
               :alt="scene.title"
-              class="w-full h-64 object-cover rounded-lg shadow-lg group-hover:shadow-xl transition-shadow"
+              class="w-full h-64 object-cover rounded-lg shadow-lg"
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent rounded-lg opacity-0 group-hover:opacity-100">
               <div class="absolute bottom-4 left-4 text-white">
                 <h3 class="text-lg font-semibold">{{ scene.title }}</h3>
                 <p class="text-sm opacity-90">{{ scene.description }}</p>
@@ -388,22 +388,8 @@ useHead({
   max-width: 1200px;
 }
 
-/* Smooth transitions */
-button {
-  transition: all 0.3s ease;
-}
-
 /* Custom scrollbar for body when lightbox is open */
 body.lightbox-open {
   overflow: hidden;
-}
-
-/* Lightbox animation */
-.lightbox-enter-active, .lightbox-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.lightbox-enter-from, .lightbox-leave-to {
-  opacity: 0;
 }
 </style>

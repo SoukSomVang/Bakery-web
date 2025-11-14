@@ -549,17 +549,9 @@ td {
   margin-top: 0.25rem;
 }
 
-/* Button hover effects */
+/* Button styles */
 button {
-  transition: all 0.3s ease;
-}
-
-button:hover {
-  transform: translateY(-1px);
-}
-
-button:disabled {
-  transform: none;
+  /* No transitions */
 }
 
 /* Scrollbar styling */

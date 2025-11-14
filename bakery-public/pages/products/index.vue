@@ -23,9 +23,9 @@
       <div class="container mx-auto px-4">
         <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">{{ t('products.allProducts') }}</h2>
 
-        <!-- Loading State -->
-        <div v-if="loading" class="flex justify-center items-center py-20">
-          <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-red-600"></div>
+        <!-- Loading State with Skeleton -->
+        <div v-if="loading" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <SkeletonProductCard v-for="i in 8" :key="i" />
         </div>
 
         <!-- Error State -->

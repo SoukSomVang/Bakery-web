@@ -23,9 +23,9 @@
       <div class="container mx-auto px-4">
         <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">{{ t('cakes.allCakes') }}</h2>
 
-        <!-- Loading State -->
-        <div v-if="loading" class="flex justify-center items-center py-20">
-          <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-red-600"></div>
+        <!-- Loading State with Skeleton -->
+        <div v-if="loading" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <SkeletonProductCard v-for="i in 10" :key="i" />
         </div>
 
         <!-- Error State -->
@@ -220,8 +220,8 @@ const searchQuery = ref('');
 
 // Pagination
 const currentPage = ref(1);
-const itemsPerPage = ref(8);
-const itemsPerPageOptions = [8, 16, 24];
+const itemsPerPage = ref(10);
+const itemsPerPageOptions = [10, 20, 50];
 
 // Data
 const allCakes = ref([]);

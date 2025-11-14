@@ -71,7 +71,7 @@
     </section>
 
     <!-- Our Story Section -->
-    <section class="py-12 md:py-16 bg-white">
+    <section class="py-12 md:py-16 bg-white scroll-section opacity-0 translate-y-10 transition-all duration-700">
       <div class="container mx-auto px-4 md:px-6">
         <div class="grid md:grid-cols-2 gap-10 md:gap-12 items-center">
           <div>
@@ -111,7 +111,7 @@
     </section>
 
     <!-- Brands Section -->
-    <section class="py-12 md:py-16 bg-gray-50">
+    <section class="py-12 md:py-16 bg-gray-50 scroll-section opacity-0 translate-y-10 transition-all duration-700">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
           <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">
@@ -189,6 +189,15 @@ import KafepaLogo from "@/assets/images/logo/kafepa_logo.jpg";
 import TreekoffLogo from "@/assets/images/logo/treekoff_logo.png";
 
 const { t } = useTranslation();
+
+// Scroll animations
+const { observeAllSections } = useScrollAnimation()
+
+onMounted(() => {
+  if (import.meta.client) {
+    observeAllSections()
+  }
+})
 
 // Brand data
 const brands = ref([
