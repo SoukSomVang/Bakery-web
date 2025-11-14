@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "target": "bakery-public",
     "public": "bakery-public/.output/public",
     "ignore": [
       "firebase.json",
@@ -8,6 +9,12 @@
     ],
     "cleanUrls": true,
     "trailingSlash": false,
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
     "headers": [
       {
         "source": "**/*.@(jpg|jpeg|gif|png|svg|webp|js|css|woff|woff2|ttf|eot)",

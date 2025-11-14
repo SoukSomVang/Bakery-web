@@ -279,7 +279,82 @@
     </section>
 
     <!-- News Section -->
-    <NewsSection />
+    <section class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <!-- Section Header -->
+        <header class="mb-8 text-center">
+          <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            News
+          </h2>
+
+          <!-- Meta Information -->
+          <div class="flex flex-wrap items-center justify-center gap-4 text-gray-600">
+            <div class="flex items-center">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+              <time>{{ new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) }}</time>
+            </div>
+
+            <div class="flex items-center">
+              <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">
+                Featured
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Featured Images -->
+        <div class="mb-8 max-w-5xl mx-auto">
+          <!-- Main/Featured Image -->
+          <img
+            :src="news1"
+            alt="BakeryHouse News"
+            class="w-full h-auto max-h-[600px] object-cover rounded-lg shadow-xl mb-4"
+          />
+
+          <!-- Additional Images Grid -->
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <img
+              :src="news2"
+              alt="BakeryHouse News - Image 2"
+              class="w-full h-48 object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow"
+            />
+            <img
+              :src="news3"
+              alt="BakeryHouse News - Image 3"
+              class="w-full h-48 object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow"
+            />
+          </div>
+        </div>
+
+        <!-- Article Content -->
+        <article class="prose prose-lg max-w-5xl mx-auto">
+          <div class=" rounded-lg p-8">
+            <div class="text-gray-700 leading-relaxed space-y-6">
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              </p>
+
+              <p>
+                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </p>
+
+              <p>
+                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              </p>
+
+              <p>
+                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.
+              </p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- News Section -->
+    <!-- <NewsSection /> -->
   </div>
 </template>
 
@@ -290,6 +365,9 @@ import propImage from "@/assets/images/prop-image2.jpg";
 import productSectionImage from "@/assets/images/prop-image.jpeg";
 import KafepaLogo from "@/assets/images/logo/kafepa_logo.jpg";
 import TreekoffLogo from "@/assets/images/logo/treekoff_logo.png";
+import news1 from "@/assets/images/news1.jpeg";
+import news2 from "@/assets/images/news2.jpeg";
+import news3 from "@/assets/images/news3.jpeg";
 
 const router = useRouter();
 const { t } = useTranslation();
