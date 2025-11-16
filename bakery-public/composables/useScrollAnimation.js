@@ -15,8 +15,8 @@ export const useScrollAnimation = () => {
     if (!import.meta.client) return null
 
     const {
-      threshold = 0.1,
-      rootMargin = '0px 0px -50px 0px'
+      threshold = 0.05,
+      rootMargin = '0px 0px -100px 0px'
     } = options
 
     observer.value = new IntersectionObserver(
@@ -120,13 +120,13 @@ export const useScrollAnimation = () => {
       setupObserver()
     }
 
-    // Use setTimeout to ensure DOM is ready
-    setTimeout(() => {
+    // Use nextTick to ensure DOM is ready
+    nextTick(() => {
       const sections = document.querySelectorAll('.scroll-section')
       sections.forEach((section) => {
         observer.value.observe(section)
       })
-    }, 100)
+    })
   }
 
   /**

@@ -5,7 +5,7 @@
       <!-- Article Header -->
       <header class="mb-8 scroll-section opacity-0 translate-y-10 transition-all duration-700">
         <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-          New Product Launch: Artisan Sourdough Collection
+          Building Our Dream Bakery: Construction Update
         </h1>
 
         <!-- Meta Information -->
@@ -14,12 +14,12 @@
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
             </svg>
-            <time>January 15, 2024</time>
+            <time>January 2025</time>
           </div>
 
           <div class="flex items-center">
             <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">
-              Product Launch
+              Construction Update
             </span>
           </div>
         </div>
@@ -30,7 +30,7 @@
         <!-- Main/Featured Image -->
         <img
           :src="news1"
-          alt="New Product Launch: Artisan Sourdough Collection"
+          alt="Building Our Dream Bakery - Construction Progress"
           class="w-full h-auto max-h-[600px] object-cover rounded-lg shadow-xl mb-6"
         />
 
@@ -38,12 +38,12 @@
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
           <img
             :src="news2"
-            alt="Artisan Sourdough - Image 2"
+            alt="Construction Site - Interior Work"
             class="w-full h-48 object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
           />
           <img
             :src="news3"
-            alt="Artisan Sourdough - Image 3"
+            alt="Construction Site - Equipment Installation"
             class="w-full h-48 object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
           />
         </div>
@@ -52,17 +52,17 @@
       <!-- Article Content -->
       <div class="prose prose-lg max-w-none scroll-section opacity-0 translate-y-10 transition-all duration-700">
         <div class="rounded-lg mb-8">
-          <div class="text-gray-700 leading-relaxed whitespace-pre-wrap">We're thrilled to announce the launch of our new Artisan Sourdough Collection, a carefully curated selection of handcrafted breads that celebrate the ancient art of sourdough baking.
+          <div class="text-gray-700 leading-relaxed whitespace-pre-wrap">We're excited to share the latest progress on our brand new bakery location! Our construction team has been working tirelessly to bring our vision to life, and we couldn't be more thrilled with how everything is coming together.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Our master bakers have spent years perfecting the art of sourdough fermentation, creating a starter culture that has been lovingly maintained and nurtured to develop complex flavors and perfect texture.
+The foundation has been laid, and the main structure is now complete. We're currently in the exciting phase of interior construction, where you can really start to see the space taking shape. Our dedicated team is installing state-of-the-art baking equipment that will allow us to serve you the freshest, highest-quality products.
 
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Each loaf undergoes a slow fermentation process that can take up to 48 hours, allowing the natural yeasts and bacteria to develop the signature tangy flavor and chewy texture that sourdough lovers cherish.
+The design of our new facility reflects our commitment to both tradition and innovation. We've created a modern, efficient workspace for our bakers while maintaining the warm, welcoming atmosphere that our customers love. The spacious customer area will feature comfortable seating and large windows that let you watch our bakers at work.
 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Our commitment to quality begins with sourcing the finest organic flour from local mills, ensuring that every ingredient meets our exacting standards.
+We're installing custom-built ovens that will give our bread that perfect crust and tender interior. The dough preparation area is being equipped with professional mixers and proofing chambers to ensure consistency and quality in every batch. Every detail has been carefully planned to create the perfect environment for crafting exceptional baked goods.
 
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. The Artisan Sourdough Collection features five distinct varieties, each with its own unique character and flavor profile.
+Our location was chosen specifically for its accessibility and visibility. Situated in a prime area with ample parking, the new bakery will be easy to find and convenient for both our regular customers and new visitors. We're committed to becoming a cornerstone of the community.
 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam. Stop by any of our locations to experience the difference that traditional craftsmanship makes. Our team is ready to help you discover your new favorite bread.</div>
+The grand opening is approaching quickly! We can't wait to welcome you to our new home and share the fruits of our labor. Stay tuned for more updates as we move closer to opening day. Follow us on social media to be the first to know when we'll be ready to serve you in our beautiful new space!</div>
         </div>
       </div>
 
@@ -98,12 +98,12 @@ onMounted(() => {
 
 // Meta tags for SEO
 useSeoMeta({
-  title: "New Product Launch: Artisan Sourdough Collection - BakeryHouse",
-  ogTitle: "New Product Launch: Artisan Sourdough Collection - BakeryHouse",
+  title: "Building Our Dream Bakery: Construction Update - BakeryHouse",
+  ogTitle: "Building Our Dream Bakery: Construction Update - BakeryHouse",
   description:
-    "Discover our new line of artisan sourdough breads, crafted with traditional techniques and premium ingredients.",
+    "Follow our construction progress as we build our brand new bakery location with state-of-the-art equipment and modern facilities.",
   ogDescription:
-    "Discover our new line of artisan sourdough breads, crafted with traditional techniques and premium ingredients.",
+    "Follow our construction progress as we build our brand new bakery location with state-of-the-art equipment and modern facilities.",
   ogImage: "/api/placeholder/1200/630",
   twitterCard: "summary_large_image",
 });

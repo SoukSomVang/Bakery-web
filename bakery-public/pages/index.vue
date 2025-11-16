@@ -158,7 +158,7 @@
     </section>
 
     <!-- Product Showcase -->
-    <section class="py-16 bg-white">
+    <section class="py-16 bg-white scroll-section opacity-0 translate-y-10 transition-all duration-700">
       <div class="container mx-auto px-4">
         <div class="grid lg:grid-cols-2 gap-12 items-center">
           <div class="order-2 lg:order-1">
@@ -290,12 +290,12 @@
             <div class="relative h-96 overflow-hidden">
               <img
                 :src="news1"
-                alt="Latest News"
+                alt="Construction Progress - Building Our Dream Bakery"
                 class="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
               />
               <div class="absolute top-4 right-4">
                 <span class="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                  Featured
+                  In Progress
                 </span>
               </div>
             </div>
@@ -304,13 +304,13 @@
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                 </svg>
-                <time>January 15, 2024</time>
+                <time>January 2025</time>
               </div>
               <h3 class="text-2xl font-bold text-gray-800 mb-4">
-                New Product Launch: Artisan Sourdough Collection
+                Building Our Dream Bakery: Construction Update
               </h3>
               <p class="text-gray-600 mb-6 leading-relaxed">
-                We're excited to announce our new line of artisan sourdough breads, crafted with traditional techniques and premium ingredients for the perfect texture and flavor. Discover the art of slow fermentation and authentic baking methods.
+                We're excited to share the latest progress on our brand new bakery location! Our construction team is making excellent progress on the new facility, installing state-of-the-art equipment and creating a warm, inviting space for our customers.
               </p>
               <div class="flex items-center text-red-600 font-semibold hover:text-red-700 transition-colors">
                 <span>Read More</span>
