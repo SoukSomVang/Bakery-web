@@ -52,6 +52,14 @@ service cloud.firestore {
     match /branches/{document} {
       allow read, write: if true; // Change to require auth in production
     }
+
+    match /bakeryTypes/{document} {
+      allow read, write: if true; // Allow public access for development
+    }
+
+    match /news/{document} {
+      allow read, write: if true; // Allow public access for development
+    }
     
     // Public collections for customer-facing app
     match /products/{document} {

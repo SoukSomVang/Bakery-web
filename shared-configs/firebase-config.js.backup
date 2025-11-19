@@ -5,13 +5,13 @@ import { getStorage, connectStorageEmulator } from 'firebase/storage'
 import { getAnalytics } from 'firebase/analytics'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDaMUzqQ_HLNI2yrzFAgioucAZ2ipAmXH8",
-  authDomain: "bakery-house-bf7a5.firebaseapp.com",
-  projectId: "bakery-house-bf7a5",
-  storageBucket: "bakery-house-bf7a5.appspot.com",
-  messagingSenderId: "433307387606",
-  appId: "1:433307387606:web:b47a7378ac07ae9e940d80",
-  measurementId: "G-5X6YLGVP1Z"
+  apiKey: "AIzaSyA-mTuHs5LPPthtSn5jFOe0hOQVpBI1Sj0",
+  authDomain: "bakery-house-f7e32.firebaseapp.com",
+  projectId: "bakery-house-f7e32",
+  storageBucket: "bakery-house-f7e32.appspot.com",
+  messagingSenderId: "617557360769",
+  appId: "1:617557360769:web:b47a7378ac07ae9e940d80",
+  measurementId: "G-SN3VG7L5XX"
 }
 
 let app = null
@@ -60,7 +60,7 @@ if (typeof window !== 'undefined' && app) {
     console.error('Error details:', error.message)
     console.error('Error code:', error.code)
     console.error('Please ensure Firestore is enabled in your Firebase Console')
-    console.error('Visit: https://console.firebase.google.com/project/bakery-house-bf7a5/firestore')
+    console.error('Visit: https://console.firebase.google.com/project/bakery-house-f7e32/firestore')
 
     // Set a flag so we know initialization failed
     db = null
@@ -82,7 +82,7 @@ if (typeof window !== 'undefined' && app) {
   } catch (error) {
     console.error('❌ Storage initialization failed:', error)
     console.error('Please ensure Storage is enabled in your Firebase Console')
-    console.error('Visit: https://console.firebase.google.com/project/bakery-house-bf7a5/storage')
+    console.error('Visit: https://console.firebase.google.com/project/bakery-house-f7e32/storage')
   }
 } else {
   console.log('🔧 Server-side rendering - Storage will be initialized on client')

@@ -1,21 +1,5 @@
 {
   "projects": {
-    "default": "bakery-house-f7e32"
-  },
-  "targets": {
-    "bakery-house-f7e32": {
-      "hosting": {
-        "test": [
-          "bakeryhouse-test"
-        ],
-        "bakery-public": [
-          "bakeryhouse-shop-55849"
-        ],
-        "bakery-admin": [
-          "bakery-admin-dashboard-ea9d5"
-        ]
-      }
-    }
-  },
-  "etags": {}
+    "default": "bakery-house-bf7a5"
+  }
 }

@@ -70,7 +70,15 @@
       "Bash(git push:*)",
       "Bash(npm --version)",
       "Bash(find:*)",
-      "Bash(lsof:*)"
+      "Bash(lsof:*)",
+      "Bash(firebase login:list:*)",
+      "Bash(brew:*)",
+      "Bash(./verify-setup.sh:*)",
+      "Bash(gsutil -m cp:*)",
+      "Bash(gsutil ls:*)",
+      "Bash(./update-config.sh:*)",
+      "Bash(/Users/souksom/Documents/Web_project/Bakery-web/cleanup.sh)",
+      "Bash(xargs rm:*)"
     ],
     "deny": [],
     "ask": []
