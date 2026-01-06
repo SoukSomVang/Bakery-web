@@ -39,7 +39,7 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          accountId: 6c0574c70269560286ef958f8bcf56d7
           command: pages deploy bakery-public/.output/public --project-name=bakery-public --commit-dirty=true
 
   deploy-admin:
@@ -74,5 +74,5 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          accountId: 6c0574c70269560286ef958f8bcf56d7
           command: pages deploy bakery-admin/.output/public --project-name=bakery-admin --commit-dirty=true
