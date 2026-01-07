@@ -1,12 +1,15 @@
 {
-  "name": "Bakery House",
-  "short_name": "Bakery House",
-  "description": "Fresh baked goods, custom cakes, pastries, and desserts",
+  "name": "Bakery House Laos - Vientiane",
+  "short_name": "Bakery Laos",
+  "description": "Premium bakery in Vientiane, Laos - Fresh baked goods, custom cakes, pastries, and desserts",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#DC2626",
   "orientation": "portrait-primary",
+  "lang": "en-LA",
+  "dir": "ltr",
+  "scope": "/",
   "icons": [
     {
       "src": "/favicon.png",
@@ -26,6 +29,9 @@
       "type": "image/png"
     }
   ],
-  "categories": ["food", "shopping"],
+  "categories": ["food", "shopping", "business"],
+  "iarc_rating_id": "",
+  "related_applications": [],
+  "prefer_related_applications": false,
   "screenshots": []
 }

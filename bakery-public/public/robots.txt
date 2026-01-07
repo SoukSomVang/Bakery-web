@@ -1,2 +1,34 @@
-User-Agent: *
-Disallow:
+# Robots.txt for Bakery House Laos
+# https://bakery-house.org
+
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://bakery-house.org/sitemap.xml
+
+# Crawl-delay for better server performance
+Crawl-delay: 1
+
+# Disallow admin/private paths if any
+# Disallow: /admin/
+# Disallow: /private/
+
+# Allow all common search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
