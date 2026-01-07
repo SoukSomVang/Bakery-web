@@ -109,7 +109,7 @@ graph TB
 - **Firebase Firestore** - NoSQL document database
 - **Firebase Authentication** - User authentication system
 - **Firebase Storage** - File storage for images
-- **Firebase Hosting** - Web hosting platform
+- **Cloudflare Pages** - Web hosting platform with auto-deployment
 - **Firebase Functions** - Serverless functions (if needed)
 
 ### Development Tools
@@ -302,76 +302,61 @@ firebase emulators:start
 
 ## 🚀 Deployment
 
-### Firebase Hosting Setup
+### Cloudflare Pages - Auto-Deployment
 
-1. **Configure Hosting Targets**
-   ```bash
-   # Set up hosting targets
-   firebase target:apply hosting public bakery-public-site
-   firebase target:apply hosting admin bakery-admin-site
-   ```
+This project uses **automatic deployment** via GitHub Actions. Every push to the `main` branch triggers deployment to Cloudflare Pages.
 
-2. **Update firebase.json**
-   ```json
-   {
-     "hosting": [
-       {
-         "target": "public",
-         "public": "bakery-public/dist",
-         "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-         "rewrites": [
-           {
-             "source": "**",
-             "destination": "/index.html"
-           }
-         ]
-       },
-       {
-         "target": "admin", 
-         "public": "bakery-admin/dist",
-         "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-         "rewrites": [
-           {
-             "source": "**",
-             "destination": "/index.html"
-           }
-         ]
-       }
-     ]
-   }
-   ```
+**Live URLs:**
+- **Public Site**: https://bakery-public.pages.dev
+- **Admin Panel**: https://bakery-admin.pages.dev
 
-### Deployment Commands
+### How Auto-Deploy Works
+
+1. Push changes to `main` branch
+2. GitHub Actions workflow (`.github/workflows/cloudflare-pages.yml`) automatically triggers
+3. Both applications build in parallel
+4. Deploy to Cloudflare Pages
+5. Live in 2-3 minutes!
+
+### Setup Auto-Deploy
+
+See **CLOUDFLARE_AUTO_DEPLOY.md** for detailed setup instructions.
+
+Quick setup:
+1. Create Cloudflare API token
+2. Add `CLOUDFLARE_API_TOKEN` to GitHub Secrets
+3. Push to `main` branch
+
+### Manual Deployment (if needed)
 
 ```bash
 # Build both applications
-npm run build:public
-npm run build:admin
+npm run build:all
 
-# Deploy to Firebase Hosting
-firebase deploy --only hosting
+# Deploy using Wrangler CLI
+cd bakery-public
+npx wrangler pages deploy .output/public --project-name=bakery-public
 
-# Deploy specific target
-firebase deploy --only hosting:public
-firebase deploy --only hosting:admin
+cd ../bakery-admin
+npx wrangler pages deploy .output/public --project-name=bakery-admin
+```
 
-# Deploy Firestore rules
-firebase deploy --only firestore:rules
+### Deploy Firestore Rules
 
-# Deploy everything
-firebase deploy
+```bash
+# Deploy database rules and indexes
+npm run deploy:firestore
 ```
 
 ### Production Deployment Checklist
 
-- [ ] Environment variables configured
-- [ ] Firebase project set to production
+- [ ] `CLOUDFLARE_API_TOKEN` added to GitHub Secrets
+- [ ] Environment variables configured (if needed)
 - [ ] Firestore security rules updated
 - [ ] TypeScript compilation successful
-- [ ] Build process completed without errors
-- [ ] Domain configuration (if custom domain)
-- [ ] SSL certificates configured
-- [ ] Performance optimization applied
+- [ ] GitHub Actions workflow passing
+- [ ] Custom domain configured (optional)
+- [ ] SSL automatically managed by Cloudflare
 
 ## 📡 API Reference
 

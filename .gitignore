@@ -67,3 +67,11 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+# Nuxt build artifacts
+.nuxt
+.output
+dist
+
+# Wrangler cache
+.wrangler

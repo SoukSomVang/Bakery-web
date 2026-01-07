@@ -81,7 +81,8 @@
       "Bash(xargs rm:*)",
       "Bash(wrangler:*)",
       "Bash(npx wrangler:*)",
-      "Read(//Users/souksom/Library/Preferences/.wrangler/logs/**)"
+      "Read(//Users/souksom/Library/Preferences/.wrangler/logs/**)",
+      "Bash(rm:*)"
     ],
     "deny": [],
     "ask": []

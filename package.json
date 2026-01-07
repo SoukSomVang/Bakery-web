@@ -12,12 +12,8 @@
     "build:all": "npm run build:public && npm run build:admin",
     "build:public": "cd bakery-public && npm run generate",
     "build:admin": "cd bakery-admin && npm run generate",
-    "deploy": "node deploy.js",
-    "deploy:cloudflare": "bash deploy-cloudflare.sh",
-    "deploy:public": "node deploy.js --public && firebase deploy --only hosting:bakery-public",
-    "deploy:admin": "node deploy.js --admin && firebase deploy --only hosting:bakery-admin",
-    "deploy:firebase-rules": "firebase deploy --only firestore:rules,firestore:indexes",
-    "setup": "npm run install:all && npm run deploy:firebase-rules"
+    "deploy:firestore": "firebase deploy --only firestore:rules,firestore:indexes",
+    "setup": "npm run install:all"
   },
   "keywords": [
     "bakery",
