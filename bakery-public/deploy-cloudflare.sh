@@ -25,9 +25,9 @@ if [ ! -d "node_modules" ]; then
   npm install
 fi
 
-# Step 3: Build the project
-echo -e "${BLUE}🔨 Building project for production...${NC}"
-npm run build
+# Step 3: Generate static site for Cloudflare Pages
+echo -e "${BLUE}🔨 Generating static site for production...${NC}"
+npm run generate
 
 # Check if build was successful
 if [ ! -d ".output/public" ]; then
