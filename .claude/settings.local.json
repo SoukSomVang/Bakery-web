@@ -80,7 +80,8 @@
       "Bash(/Users/souksom/Documents/Web_project/Bakery-web/cleanup.sh)",
       "Bash(xargs rm:*)",
       "Bash(wrangler:*)",
-      "Bash(npx wrangler:*)"
+      "Bash(npx wrangler:*)",
+      "Read(//Users/souksom/Library/Preferences/.wrangler/logs/**)"
     ],
     "deny": [],
     "ask": []
