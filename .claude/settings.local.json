@@ -82,7 +82,8 @@
       "Bash(wrangler:*)",
       "Bash(npx wrangler:*)",
       "Read(//Users/souksom/Library/Preferences/.wrangler/logs/**)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(./deploy-cloudflare.sh:*)"
     ],
     "deny": [],
     "ask": []

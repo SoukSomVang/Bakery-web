@@ -26,24 +26,6 @@ export default defineSitemapEventHandler(async () => {
       lastmod: new Date(),
     },
     {
-      loc: '/products/pastries',
-      changefreq: 'daily',
-      priority: 0.9,
-      lastmod: new Date(),
-    },
-    {
-      loc: '/products/cookies',
-      changefreq: 'daily',
-      priority: 0.9,
-      lastmod: new Date(),
-    },
-    {
-      loc: '/gallery',
-      changefreq: 'weekly',
-      priority: 0.8,
-      lastmod: new Date(),
-    },
-    {
       loc: '/about-us',
       changefreq: 'monthly',
       priority: 0.7,
@@ -56,27 +38,15 @@ export default defineSitemapEventHandler(async () => {
       lastmod: new Date(),
     },
     {
-      loc: '/branches',
-      changefreq: 'monthly',
-      priority: 0.8,
-      lastmod: new Date(),
-    },
-    {
-      loc: '/catering',
-      changefreq: 'monthly',
-      priority: 0.8,
-      lastmod: new Date(),
-    },
-    {
       loc: '/whole-bread',
       changefreq: 'weekly',
       priority: 0.8,
       lastmod: new Date(),
     },
     {
-      loc: '/bakeries',
-      changefreq: 'weekly',
-      priority: 0.8,
+      loc: '/manual',
+      changefreq: 'monthly',
+      priority: 0.7,
       lastmod: new Date(),
     },
     // Add more dynamic routes here as needed
