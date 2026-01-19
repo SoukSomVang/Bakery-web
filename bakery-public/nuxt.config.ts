@@ -36,7 +36,7 @@ export default defineNuxtConfig({
         // Open Graph Meta Tags for Google Search & Social Media - Laos Specific
         { property: 'og:title', content: 'Bakery House Laos - Fresh Baked Goods Daily in Vientiane' },
         { property: 'og:description', content: 'Premium bakery in Vientiane, Laos offering fresh baked goods, custom cakes, pastries, and desserts. Best bakery in Laos for weddings, birthdays, and special occasions.' },
-        { property: 'og:image', content: 'https://bakery-house.org/favicon.png' },
+        { property: 'og:image', content: 'https://bakery-house.org/icon-192.png' },
         { property: 'og:url', content: 'https://bakery-house.org' },
         { property: 'og:type', content: 'website' },
         { property: 'og:site_name', content: 'Bakery House Laos' },
@@ -57,7 +57,7 @@ export default defineNuxtConfig({
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: 'Bakery House Laos - Fresh Baked Goods Daily in Vientiane' },
         { name: 'twitter:description', content: 'Premium bakery in Vientiane, Laos offering fresh baked goods, custom cakes, pastries, and desserts.' },
-        { name: 'twitter:image', content: '/favicon.png' },
+        { name: 'twitter:image', content: 'https://bakery-house.org/icon-192.png' },
 
         // Theme Color for Mobile Browsers
         { name: 'theme-color', content: '#DC2626' },
@@ -68,9 +68,12 @@ export default defineNuxtConfig({
         { name: 'apple-mobile-web-app-title', content: 'Bakery House Laos' },
       ],
       link: [
-        // Favicon for different sizes
-        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon.png' },
-        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon.png' },
+        // Favicon - .ico for best compatibility
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+
+        // PNG favicons for different sizes
+        { rel: 'icon', type: 'image/png', sizes: '48x48', href: '/favicon.png' },
+        { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/icon-192.png' },
 
         // Apple Touch Icon
         { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
@@ -89,7 +92,7 @@ export default defineNuxtConfig({
             '@context': 'https://schema.org',
             '@type': 'Bakery',
             name: 'Bakery House Laos',
-            image: 'https://bakery-house.org/favicon.png',
+            image: 'https://bakery-house.org/icon-192.png',
             '@id': 'https://bakery-house.org',
             url: 'https://bakery-house.org',
             telephone: '+856 20 552 212 14',

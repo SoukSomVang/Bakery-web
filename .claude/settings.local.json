@@ -83,7 +83,14 @@
       "Bash(npx wrangler:*)",
       "Read(//Users/souksom/Library/Preferences/.wrangler/logs/**)",
       "Bash(rm:*)",
-      "Bash(./deploy-cloudflare.sh:*)"
+      "Bash(./deploy-cloudflare.sh:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(gh run list:*)",
+      "Bash(git fetch:*)",
+      "Bash(sips:*)",
+      "WebFetch(domain:bakery-house.org)",
+      "WebFetch(domain:b5e139e2.bakery-public.pages.dev)",
+      "Bash(mv:*)"
     ],
     "deny": [],
     "ask": []
