@@ -9,14 +9,14 @@
 <script setup>
 // SEO Meta Tags - Ensures proper indexing by Google
 useSeoMeta({
-  title: 'BakeryHouse - Fresh Baked Goods Daily in Vientiane, Laos',
+  title: 'BakeryHouse',
   description: 'BakeryHouse - Premium bakery in Vientiane, Laos offering fresh baked goods, custom cakes, pastries, and desserts. Best bakery in Laos for weddings, birthdays, and special occasions. Order online for pickup or delivery in Vientiane.',
-  ogTitle: 'BakeryHouse - Fresh Baked Goods Daily in Vientiane, Laos',
+  ogTitle: 'BakeryHouse',
   ogDescription: 'Premium bakery in Vientiane, Laos offering fresh baked goods, custom cakes, pastries, and desserts. Best bakery in Laos for weddings, birthdays, and special occasions.',
   ogImage: 'https://bakery-house.org/icon-512.png',
   ogUrl: 'https://bakery-house.org',
   twitterCard: 'summary_large_image',
-  twitterTitle: 'BakeryHouse - Fresh Baked Goods Daily in Vientiane, Laos',
+  twitterTitle: 'BakeryHouse',
   twitterDescription: 'Premium bakery in Vientiane, Laos offering fresh baked goods, custom cakes, pastries, and desserts.',
   twitterImage: 'https://bakery-house.org/icon-512.png',
 })

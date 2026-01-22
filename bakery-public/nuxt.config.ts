@@ -11,7 +11,7 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'en-LA', // English in Laos
       },
-      title: 'BakeryHouse - Fresh Baked Goods Daily in Vientiane, Laos',
+      title: 'BakeryHouse',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes' },
@@ -37,7 +37,7 @@ export default defineNuxtConfig({
         { name: 'googlebot', content: 'index, follow' },
 
         // Open Graph Meta Tags for Google Search & Social Media - Laos Specific
-        { property: 'og:title', content: 'BakeryHouse - Fresh Baked Goods Daily in Vientiane, Laos' },
+        { property: 'og:title', content: 'BakeryHouse' },
         { property: 'og:description', content: 'Premium bakery in Vientiane, Laos offering fresh baked goods, custom cakes, pastries, and desserts. Best bakery in Laos for weddings, birthdays, and special occasions.' },
         { property: 'og:image', content: 'https://bakery-house.org/icon-192.png' },
         { property: 'og:url', content: 'https://bakery-house.org' },
@@ -58,7 +58,7 @@ export default defineNuxtConfig({
 
         // Twitter Card Meta Tags - Laos Specific
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: 'BakeryHouse - Fresh Baked Goods Daily in Vientiane, Laos' },
+        { name: 'twitter:title', content: 'BakeryHouse' },
         { name: 'twitter:description', content: 'Premium bakery in Vientiane, Laos offering fresh baked goods, custom cakes, pastries, and desserts.' },
         { name: 'twitter:image', content: 'https://bakery-house.org/icon-192.png' },
 
