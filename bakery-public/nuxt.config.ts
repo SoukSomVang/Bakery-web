@@ -19,6 +19,9 @@ export default defineNuxtConfig({
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
         { name: 'apple-mobile-web-app-status-bar-style', content: 'default' },
 
+        // Google Search Console Verification
+        { name: 'google-site-verification', content: 'WyodPu_YzHpBhtOlIKnaruttNINUuCQ9hDuv4UvO3j8' },
+
         // Language & Location
         { 'http-equiv': 'content-language', content: 'en-LA' },
         { name: 'language', content: 'English' },
