@@ -13,12 +13,12 @@ useSeoMeta({
   description: 'BakeryHouse - Premium bakery in Vientiane, Laos offering fresh baked goods, custom cakes, pastries, and desserts. Best bakery in Laos for weddings, birthdays, and special occasions. Order online for pickup or delivery in Vientiane.',
   ogTitle: 'BakeryHouse',
   ogDescription: 'Premium bakery in Vientiane, Laos offering fresh baked goods, custom cakes, pastries, and desserts. Best bakery in Laos for weddings, birthdays, and special occasions.',
-  ogImage: 'https://bakery-house.org/icon-512.png',
+  ogImage: 'https://bakery-house.org/icon-192.png',
   ogUrl: 'https://bakery-house.org',
   twitterCard: 'summary_large_image',
   twitterTitle: 'BakeryHouse',
   twitterDescription: 'Premium bakery in Vientiane, Laos offering fresh baked goods, custom cakes, pastries, and desserts.',
-  twitterImage: 'https://bakery-house.org/icon-512.png',
+  twitterImage: 'https://bakery-house.org/icon-192.png',
 })
 
 // Global error handler for iOS debugging
