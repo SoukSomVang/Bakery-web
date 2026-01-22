@@ -141,17 +141,10 @@ export default defineNuxtConfig({
       ],
     },
   },
-  ssr: true, // Enable SSR for better SEO
+  ssr: false,
   router: {
     options: {
       strict: false,
-    },
-  },
-  nitro: {
-    preset: 'cloudflare-pages',
-    prerender: {
-      crawlLinks: true,
-      routes: ['/'], // Prerender home page
     },
   },
   // Sitemap Configuration for Laos SEO
