@@ -91,7 +91,9 @@
       "WebFetch(domain:bakery-house.org)",
       "WebFetch(domain:b5e139e2.bakery-public.pages.dev)",
       "Bash(mv:*)",
-      "WebFetch(domain:ff7cc656.bakery-public.pages.dev)"
+      "WebFetch(domain:ff7cc656.bakery-public.pages.dev)",
+      "Bash(git show:*)",
+      "Bash(ls:*)"
     ],
     "deny": [],
     "ask": []
