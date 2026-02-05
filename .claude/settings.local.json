@@ -93,7 +93,9 @@
       "Bash(mv:*)",
       "WebFetch(domain:ff7cc656.bakery-public.pages.dev)",
       "Bash(git show:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(python3:*)",
+      "Bash(pip3 install:*)"
     ],
     "deny": [],
     "ask": []
