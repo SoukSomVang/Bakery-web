@@ -95,7 +95,10 @@
       "Bash(git show:*)",
       "Bash(ls:*)",
       "Bash(python3:*)",
-      "Bash(pip3 install:*)"
+      "Bash(pip3 install:*)",
+      "Bash(npm ci:*)",
+      "Bash(git status:*)",
+      "Bash(git ls-tree:*)"
     ],
     "deny": [],
     "ask": []
