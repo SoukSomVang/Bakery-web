@@ -165,24 +165,22 @@
             <div class="max-w-lg">
               <span
                 class="text-red-600 font-semibold text-sm uppercase tracking-wider mb-2 block"
-                >Featured Product</span
+                >{{ t('home.wholeBreadSection.featuredProduct') }}</span
               >
               <h2
                 class="text-4xl lg:text-5xl font-bold mb-6 text-gray-800 leading-tight"
               >
-                Whole Wheat Multigrain Bread
+                {{ t('home.wholeBreadSection.title') }}
               </h2>
               <p class="text-gray-600 text-lg mb-8 leading-relaxed">
-                Our signature multigrain bread combines the wholesome goodness
-                of wheat with a perfect blend of seeds and grains, creating a
-                nutritious and delicious choice for health-conscious customers.
+                {{ t('home.wholeBreadSection.description') }}
               </p>
               <div class="flex flex-col sm:flex-row gap-4">
                 <button
                   @click="$router.push('/whole-bread')"
                   class="bg-red-800 hover:bg-red-900 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                 >
-                  View Whole Bread
+                  {{ t('home.wholeBreadSection.viewWholeBread') }}
                 </button>
               </div>
             </div>
