@@ -15,8 +15,8 @@ export const useScrollAnimation = () => {
     if (!import.meta.client) return null
 
     const {
-      threshold = 0.05,
-      rootMargin = '0px 0px -100px 0px'
+      threshold = 0.1,
+      rootMargin = '0px 0px -50px 0px'
     } = options
 
     observer.value = new IntersectionObserver(
@@ -25,44 +25,55 @@ export const useScrollAnimation = () => {
           if (entry.isIntersecting) {
             const element = entry.target
 
+            // Add will-change for GPU acceleration before animation
+            element.style.willChange = 'opacity, transform'
+
             // Determine animation type from data attribute or default
             const animationType = element.dataset.animation || 'fade-up'
 
-            // Remove all initial state classes
-            element.classList.remove('opacity-0', 'translate-y-20', 'translate-y-10', '-translate-x-20', 'translate-x-20', 'scale-95', 'scale-90', 'rotate-3', '-rotate-3', 'blur-sm')
+            // Use requestAnimationFrame for smoother animations
+            requestAnimationFrame(() => {
+              // Remove all initial state classes
+              element.classList.remove('opacity-0', 'translate-y-20', 'translate-y-10', '-translate-x-20', 'translate-x-20', 'scale-95', 'scale-90', 'rotate-3', '-rotate-3', 'blur-sm')
 
-            // Add visible state classes based on animation type
-            switch (animationType) {
-              case 'fade-up':
-                element.classList.add('opacity-100', 'translate-y-0')
-                break
-              case 'fade-down':
-                element.classList.add('opacity-100', 'translate-y-0')
-                break
-              case 'fade-left':
-                element.classList.add('opacity-100', 'translate-x-0')
-                break
-              case 'fade-right':
-                element.classList.add('opacity-100', 'translate-x-0')
-                break
-              case 'zoom-in':
-                element.classList.add('opacity-100', 'scale-100')
-                break
-              case 'zoom-out':
-                element.classList.add('opacity-100', 'scale-100')
-                break
-              case 'rotate-in':
-                element.classList.add('opacity-100', 'rotate-0', 'scale-100')
-                break
-              case 'blur-in':
-                element.classList.add('opacity-100', 'blur-none', 'scale-100')
-                break
-              default:
-                element.classList.add('opacity-100', 'translate-y-0')
-            }
+              // Add visible state classes based on animation type
+              switch (animationType) {
+                case 'fade-up':
+                  element.classList.add('opacity-100', 'translate-y-0')
+                  break
+                case 'fade-down':
+                  element.classList.add('opacity-100', 'translate-y-0')
+                  break
+                case 'fade-left':
+                  element.classList.add('opacity-100', 'translate-x-0')
+                  break
+                case 'fade-right':
+                  element.classList.add('opacity-100', 'translate-x-0')
+                  break
+                case 'zoom-in':
+                  element.classList.add('opacity-100', 'scale-100')
+                  break
+                case 'zoom-out':
+                  element.classList.add('opacity-100', 'scale-100')
+                  break
+                case 'rotate-in':
+                  element.classList.add('opacity-100', 'rotate-0', 'scale-100')
+                  break
+                case 'blur-in':
+                  element.classList.add('opacity-100', 'blur-none', 'scale-100')
+                  break
+                default:
+                  element.classList.add('opacity-100', 'translate-y-0')
+              }
 
-            // Optional: unobserve after animation (performance optimization)
-            // observer.value.unobserve(entry.target)
+              // Remove will-change after animation completes
+              setTimeout(() => {
+                element.style.willChange = 'auto'
+              }, 700) // Match animation duration
+            })
+
+            // Unobserve after animation (performance optimization)
+            observer.value.unobserve(entry.target)
           }
         })
       },

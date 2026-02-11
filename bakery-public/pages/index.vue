@@ -53,7 +53,7 @@
     </section>
 
     <!-- Features Section -->
-    <section class="w-full bg-gray-50 py-16 scroll-section opacity-0 translate-y-10 transition-all duration-700">
+    <section class="w-full bg-gray-50 py-16 scroll-section opacity-0 translate-y-10 transition-all duration-700 ease-out">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
           <h2 class="text-4xl font-bold text-gray-800 mb-4">
@@ -142,7 +142,7 @@
 
     <!-- Products Section -->
     <section
-      class="py-16 bg-cover bg-[center_bottom_43%] h-[70vh] sm:h-[80vh] md:h-[90vh] scroll-section opacity-0 translate-y-10 transition-all duration-700"
+      class="py-16 bg-cover bg-[center_bottom_43%] h-[70vh] sm:h-[80vh] md:h-[90vh] scroll-section opacity-0 translate-y-10 transition-all duration-700 ease-out"
       :style="{ backgroundImage: `url('${productSectionImage}')` }"
     >
       <div
@@ -158,7 +158,7 @@
     </section>
 
     <!-- Product Showcase -->
-    <section class="py-16 bg-white scroll-section opacity-0 translate-y-10 transition-all duration-700">
+    <section class="py-16 bg-white scroll-section opacity-0 translate-y-10 transition-all duration-700 ease-out">
       <div class="container mx-auto px-4">
         <div class="grid lg:grid-cols-2 gap-12 items-center">
           <div class="order-2 lg:order-1">
@@ -202,7 +202,7 @@
     </section>
 
     <!-- Brands Section -->
-    <section class="py-16 bg-gray-50 scroll-section opacity-0 translate-y-10 transition-all duration-700">
+    <section class="py-16 bg-gray-50 scroll-section opacity-0 translate-y-10 transition-all duration-700 ease-out">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
           <h2 class="text-4xl font-bold text-gray-800 mb-4">{{ t('home.ourCustomers') }}</h2>
@@ -271,7 +271,7 @@
     </section>
 
     <!-- News Section -->
-    <section class="py-16 bg-white scroll-section opacity-0 translate-y-10 transition-all duration-700">
+    <section class="py-16 bg-white scroll-section opacity-0 translate-y-10 transition-all duration-700 ease-out">
       <div class="container mx-auto px-4">
         <!-- Section Header -->
         <div class="text-center mb-12">
@@ -418,6 +418,17 @@ useSeoMeta({
 /* Custom shadow for the card */
 .shadow-2xl {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Smooth scroll animations with hardware acceleration */
+.scroll-section {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* Smooth transitions */
