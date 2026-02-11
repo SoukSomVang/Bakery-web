@@ -134,8 +134,31 @@ export const useScrollAnimation = () => {
     // Use nextTick to ensure DOM is ready
     nextTick(() => {
       const sections = document.querySelectorAll('.scroll-section')
+
+      if (sections.length === 0) {
+        console.warn('No .scroll-section elements found')
+        return
+      }
+
       sections.forEach((section) => {
-        observer.value.observe(section)
+        // Check if section is already visible in viewport
+        const rect = section.getBoundingClientRect()
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0
+
+        if (isVisible) {
+          // Immediately show sections that are already in viewport
+          section.style.willChange = 'opacity, transform'
+          requestAnimationFrame(() => {
+            section.classList.remove('opacity-0', 'translate-y-10')
+            section.classList.add('opacity-100', 'translate-y-0')
+            setTimeout(() => {
+              section.style.willChange = 'auto'
+            }, 700)
+          })
+        } else {
+          // Observe sections that are not yet visible
+          observer.value.observe(section)
+        }
       })
     })
   }

@@ -376,14 +376,16 @@ onMounted(async () => {
   try {
     // Load bakery products (client-side only)
     if (import.meta.client) {
+      // Setup scroll animations first
+      setTimeout(() => {
+        observeAllSections()
+      }, 100)
+
       bakeryProducts.value = await getProductsByBakeryType("bakery");
       console.log(
         "✅ HOME: Bakery products loaded:",
         bakeryProducts.value.length
       );
-
-      // Setup scroll animations
-      observeAllSections()
     }
   } catch (error) {
     console.error("Failed to load data:", error);
