@@ -53,7 +53,7 @@
               </div>
 
               <!-- Nutrition Facts -->
-              <div class="bg-gray-50 p-6 rounded-lg mb-8">
+              <!-- <div class="bg-gray-50 p-6 rounded-lg mb-8">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">{{ t('wholeBread.nutritionTitle') }}</h3>
                 <div class="grid grid-cols-2 gap-4 text-sm">
                   <div>
@@ -73,7 +73,7 @@
                     <span class="font-semibold ml-2">16g</span>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
               <!-- Action Buttons -->
               <!-- <div class="flex flex-col sm:flex-row gap-4">
