@@ -132,7 +132,9 @@
     "error": "Error Loading News",
     "tags": "Tags",
     "allNews": "All News",
-    "loadMore": "Load More"
+    "loadMore": "Load More",
+    "viewAll": "View All",
+    "allImages": "All Images"
   },
   "home": {
     "discoverUs": "Discover us",

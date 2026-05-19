@@ -81,16 +81,31 @@
             class="w-full h-auto max-h-[800px] object-cover rounded-lg shadow-xl"
           />
 
-          <!-- Additional Images Grid -->
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <img
-              v-for="(image, index) in newsItem.images.slice(1)"
+          <!-- Additional Images Grid (shows first 2, +N overlay on the 2nd if more) -->
+          <div class="grid grid-cols-2 gap-4">
+            <div
+              v-for="(image, index) in newsItem.images.slice(1, 3)"
               :key="index"
-              :src="image"
-              :alt="`${currentLocale.value === 'en' && newsItem.titleEn ? newsItem.titleEn : newsItem.title} - Image ${index + 2}`"
-              class="w-full h-[350px] object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-              @click="openImageModal(image)"
-            />
+              class="relative cursor-pointer group"
+              @click="index === 1 && hiddenImageCount > 0 ? openGalleryModal() : openImageModal(image)"
+            >
+              <img
+                :src="image"
+                :alt="`${currentLocale.value === 'en' && newsItem.titleEn ? newsItem.titleEn : newsItem.title} - Image ${index + 2}`"
+                class="w-full h-[350px] object-cover rounded-lg shadow-lg group-hover:shadow-xl transition-shadow"
+              />
+
+              <!-- "+N more" overlay on the second tile when extra images exist -->
+              <div
+                v-if="index === 1 && hiddenImageCount > 0"
+                class="absolute inset-0 bg-black/60 group-hover:bg-black/70 rounded-lg flex flex-col items-center justify-center text-white transition-colors"
+              >
+                <span class="text-5xl font-bold leading-none">+{{ hiddenImageCount }}</span>
+                <span class="mt-2 text-sm font-medium uppercase tracking-wider">
+                  {{ t('news.viewAll') }}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -132,6 +147,42 @@
       </div>
     </article>
 
+    <!-- Gallery Modal (all images in a grid) -->
+    <div
+      v-if="showGalleryModal"
+      class="fixed inset-0 bg-black/95 z-40 overflow-y-auto"
+      @click.self="closeGalleryModal"
+    >
+      <div class="container mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-6 sticky top-0 bg-black/95 py-3">
+          <h3 class="text-white text-xl font-bold">
+            {{ t('news.allImages') }}
+            <span class="text-gray-400 font-normal">({{ newsItem?.images?.length || 0 }})</span>
+          </h3>
+          <button
+            @click="closeGalleryModal"
+            class="text-white hover:text-gray-300 transition-colors"
+            :aria-label="t('news.backToNews')"
+          >
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <img
+            v-for="(image, index) in newsItem?.images || []"
+            :key="index"
+            :src="image"
+            :alt="`Image ${index + 1}`"
+            class="w-full h-48 object-cover rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
+            loading="lazy"
+            @click="openImageModal(image)"
+          />
+        </div>
+      </div>
+    </div>
+
     <!-- Image Modal -->
     <div
       v-if="showImageModal"
@@ -159,7 +210,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
@@ -179,6 +230,14 @@ const loading = ref(true)
 const error = ref(null)
 const showImageModal = ref(false)
 const selectedImage = ref(null)
+const showGalleryModal = ref(false)
+
+// Count of additional images beyond the 2 shown in the preview grid (images[1] + images[2]).
+// images[0] is the main featured image, so additional = images.length - 1, preview shows 2 of them.
+const hiddenImageCount = computed(() => {
+  const total = newsItem.value?.images?.length || 0
+  return total > 3 ? total - 3 : 0
+})
 
 // Image modal functions
 const openImageModal = (image) => {
@@ -189,6 +248,14 @@ const openImageModal = (image) => {
 const closeImageModal = () => {
   showImageModal.value = false
   selectedImage.value = null
+}
+
+const openGalleryModal = () => {
+  showGalleryModal.value = true
+}
+
+const closeGalleryModal = () => {
+  showGalleryModal.value = false
 }
 
 // Get news composable (client-side only)
