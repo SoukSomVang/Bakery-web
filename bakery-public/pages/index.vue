@@ -271,53 +271,108 @@
     </section>
 
     <!-- News Section -->
-    <section class="py-16 bg-white scroll-section opacity-0 translate-y-10 transition-all duration-700 ease-out">
+    <section
+      v-if="newsLoading || latestNews.length > 0"
+      class="py-16 bg-white scroll-section opacity-0 translate-y-10 transition-all duration-700 ease-out"
+    >
       <div class="container mx-auto px-4">
         <!-- Section Header -->
         <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold text-gray-800 mb-4">Latest News</h2>
-          <p class="text-lg text-gray-600">Stay updated with our latest announcements and stories</p>
+          <h2 class="text-4xl font-bold text-gray-800 mb-4">{{ t('news.title') }}</h2>
+          <p class="text-lg text-gray-600">{{ t('news.subtitle') }}</p>
         </div>
 
-        <!-- Single News Card -->
-        <div class="max-w-2xl mx-auto">
+        <!-- Loading Skeletons -->
+        <div
+          v-if="newsLoading"
+          class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto"
+        >
           <div
-            class="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2 cursor-pointer"
-            @click="$router.push('/news-static')"
+            v-for="n in 3"
+            :key="n"
+            class="bg-white rounded-lg shadow-lg overflow-hidden animate-pulse"
           >
-            <div class="relative h-96 overflow-hidden">
-              <img
-                :src="news1"
-                alt="Construction Progress - Building Our Dream Bakery"
-                class="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-              />
-              <div class="absolute top-4 right-4">
-                <span class="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                  In Progress
-                </span>
-              </div>
+            <div class="h-56 bg-gray-300"></div>
+            <div class="p-6 space-y-3">
+              <div class="h-4 bg-gray-300 rounded w-1/3"></div>
+              <div class="h-6 bg-gray-300 rounded w-3/4"></div>
+              <div class="h-4 bg-gray-300 rounded"></div>
+              <div class="h-4 bg-gray-300 rounded w-5/6"></div>
             </div>
-            <div class="p-8">
-              <div class="flex items-center text-sm text-gray-500 mb-4">
+          </div>
+        </div>
+
+        <!-- News Cards Grid (up to 3 newest) -->
+        <div
+          v-else
+          class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto"
+        >
+          <div
+            v-for="item in latestNews"
+            :key="item.id"
+            class="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2 cursor-pointer flex flex-col"
+            @click="$router.push(`/news/${item.id}`)"
+          >
+            <div class="relative h-56 overflow-hidden bg-gray-100">
+              <img
+                v-if="item.imageUrl || (item.images && item.images[0])"
+                :src="item.imageUrl || item.images[0]"
+                :alt="getNewsTitle(item)"
+                class="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                loading="lazy"
+              />
+              <div
+                v-else
+                class="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-50 to-red-100"
+              >
+                <svg class="w-16 h-16 text-red-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
+                </svg>
+              </div>
+              <span
+                v-if="item.category"
+                class="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold"
+              >
+                {{ item.category }}
+              </span>
+            </div>
+            <div class="p-6 flex-1 flex flex-col">
+              <div class="flex items-center text-sm text-gray-500 mb-3">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                 </svg>
-                <time>January 2025</time>
+                <time>{{ formatNewsDate(item.publishedAt || item.createdAt) }}</time>
               </div>
-              <h3 class="text-2xl font-bold text-gray-800 mb-4">
-                Building Our Dream Bakery: Construction Update
+              <h3 class="text-xl font-bold text-gray-800 mb-3 line-clamp-2">
+                {{ getNewsTitle(item) }}
               </h3>
-              <p class="text-gray-600 mb-6 leading-relaxed">
-                We're excited to share the latest progress on our brand new bakery location! Our construction team is making excellent progress on the new facility, installing state-of-the-art equipment and creating a warm, inviting space for our customers.
+              <p
+                v-if="getNewsSummary(item)"
+                class="text-gray-600 mb-4 leading-relaxed line-clamp-3 flex-1"
+              >
+                {{ getNewsSummary(item) }}
               </p>
-              <div class="flex items-center text-red-600 font-semibold hover:text-red-700 transition-colors">
-                <span>Read More</span>
+              <div class="flex items-center text-red-600 font-semibold hover:text-red-700 transition-colors mt-auto">
+                <span>{{ t('news.readMore') }}</span>
                 <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                 </svg>
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- All News Link -->
+        <div v-if="!newsLoading && latestNews.length > 0" class="text-center mt-10">
+          <NuxtLink
+            to="/news"
+            class="inline-flex items-center text-red-700 hover:text-red-900 font-semibold text-lg transition-colors"
+          >
+            <span>{{ t('news.allNews') }}</span>
+            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </NuxtLink>
         </div>
       </div>
     </section>
@@ -334,20 +389,23 @@ import propImage from "@/assets/images/prop-image2.jpg";
 import productSectionImage from "@/assets/images/prop-image.jpeg";
 import KafepaLogo from "@/assets/images/logo/kafepa_logo.jpg";
 import TreekoffLogo from "@/assets/images/logo/treekoff_logo.png";
-import news1 from "@/assets/images/news1.jpeg";
 
 const router = useRouter();
-const { t } = useTranslation();
+const { t, currentLocale } = useTranslation();
 
 // Use client-only wrapper for Firebase composable
 let getProductsByBakeryType;
+let getLatestNews;
 
 if (import.meta.client) {
   const { getProductsByBakeryType: fetchProducts } = useProducts();
   getProductsByBakeryType = fetchProducts;
+  const { getLatestNews: fetchLatestNews } = useNews();
+  getLatestNews = fetchLatestNews;
 } else {
   // Server-side fallback
   getProductsByBakeryType = async () => [];
+  getLatestNews = async () => [];
 }
 
 // Brand data
@@ -368,29 +426,66 @@ const brands = ref([
 const bakeryProducts = ref([]);
 const productsLoading = ref(true);
 
+// Latest news from Firestore (3 newest)
+const latestNews = ref([]);
+const newsLoading = ref(true);
+
+const getNewsTitle = (item) =>
+  currentLocale.value === 'en' && item.titleEn ? item.titleEn : item.title;
+
+const getNewsSummary = (item) => {
+  if (currentLocale.value === 'en' && item.summaryEn) return item.summaryEn;
+  if (item.summary) return item.summary;
+  const content =
+    currentLocale.value === 'en' && item.contentEn ? item.contentEn : item.content;
+  return content ? content.substring(0, 160) : '';
+};
+
+const formatNewsDate = (date) => {
+  if (!date) return '';
+  const d = date.toDate
+    ? date.toDate()
+    : new Date(date.seconds ? date.seconds * 1000 : date);
+  return d.toLocaleDateString(currentLocale.value === 'en' ? 'en-US' : 'lo-LA', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+};
+
 // Scroll animations
 const { observeAllSections } = useScrollAnimation()
 
-// Load products
+// Load products and news
 onMounted(async () => {
-  try {
-    // Load bakery products (client-side only)
-    if (import.meta.client) {
-      // Setup scroll animations first
-      setTimeout(() => {
-        observeAllSections()
-      }, 100)
+  if (import.meta.client) {
+    // Setup scroll animations first
+    setTimeout(() => {
+      observeAllSections()
+    }, 100)
 
+    // Bakery products
+    try {
       bakeryProducts.value = await getProductsByBakeryType("bakery");
-      console.log(
-        "✅ HOME: Bakery products loaded:",
-        bakeryProducts.value.length
-      );
+      console.log("✅ HOME: Bakery products loaded:", bakeryProducts.value.length);
+    } catch (error) {
+      console.error("Failed to load products:", error);
+    } finally {
+      productsLoading.value = false;
     }
-  } catch (error) {
-    console.error("Failed to load data:", error);
-  } finally {
+
+    // Latest news (3 newest published)
+    try {
+      latestNews.value = await getLatestNews(3);
+      console.log("✅ HOME: Latest news loaded:", latestNews.value.length);
+    } catch (error) {
+      console.error("Failed to load news:", error);
+    } finally {
+      newsLoading.value = false;
+    }
+  } else {
     productsLoading.value = false;
+    newsLoading.value = false;
   }
 });
 
@@ -415,6 +510,20 @@ useSeoMeta({
 /* Custom styles if needed */
 .container {
   max-width: 1200px;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* Custom shadow for the card */

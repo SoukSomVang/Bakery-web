@@ -20,6 +20,15 @@ export const useNews = () => {
     console.log('✅ PUBLIC: Firestore is available:', !!db)
   }
 
+  // Sort newest-first by createdAt (stable across edits). Falls back to publishedAt if missing.
+  const sortByCreatedAtDesc = (list) => {
+    return list.sort((a, b) => {
+      const dateA = a.createdAt?.toDate?.() || a.publishedAt?.toDate?.() || new Date(0)
+      const dateB = b.createdAt?.toDate?.() || b.publishedAt?.toDate?.() || new Date(0)
+      return dateB - dateA
+    })
+  }
+
   // Get all published news
   const getNews = async () => {
     try {
@@ -31,30 +40,23 @@ export const useNews = () => {
         const q = query(
           collection(db, 'news'),
           where('isPublished', '==', true),
-          orderBy('publishedAt', 'desc')
+          orderBy('createdAt', 'desc')
         )
         const querySnapshot = await getDocs(q)
-        console.log('✅ PUBLIC: Got all news with publishedAt orderBy:', querySnapshot.size)
+        console.log('✅ PUBLIC: Got all news with createdAt orderBy:', querySnapshot.size)
         return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
       } catch (indexError) {
         // If index error, fall back to simpler query
         if (indexError.code === 'failed-precondition' || indexError.message.includes('index')) {
           console.warn('⚠️ PUBLIC: Firestore index missing for getNews, using fallback')
 
-          // Fallback: get all published news and sort in memory
           const q = query(
             collection(db, 'news'),
             where('isPublished', '==', true)
           )
           const querySnapshot = await getDocs(q)
           const allNews = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-
-          // Sort by publishedAt or createdAt in memory
-          allNews.sort((a, b) => {
-            const dateA = a.publishedAt?.toDate?.() || a.createdAt?.toDate?.() || new Date(0)
-            const dateB = b.publishedAt?.toDate?.() || b.createdAt?.toDate?.() || new Date(0)
-            return dateB - dateA
-          })
+          sortByCreatedAtDesc(allNews)
 
           console.log('✅ PUBLIC: Got all news with fallback query:', allNews.length)
           return allNews
@@ -78,11 +80,11 @@ export const useNews = () => {
         const q = query(
           collection(db, 'news'),
           where('isPublished', '==', true),
-          orderBy('publishedAt', 'desc'),
+          orderBy('createdAt', 'desc'),
           limit(limitCount)
         )
         const querySnapshot = await getDocs(q)
-        console.log('✅ PUBLIC: Got news with publishedAt orderBy:', querySnapshot.size)
+        console.log('✅ PUBLIC: Got news with createdAt orderBy:', querySnapshot.size)
         return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
       } catch (indexError) {
         // If index error, fall back to simpler query
@@ -90,20 +92,13 @@ export const useNews = () => {
           console.warn('⚠️ PUBLIC: Firestore index missing, using fallback query')
           console.warn('Create index at:', indexError.message)
 
-          // Fallback: get all published news and sort in memory
           const q = query(
             collection(db, 'news'),
             where('isPublished', '==', true)
           )
           const querySnapshot = await getDocs(q)
           const allNews = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-
-          // Sort by publishedAt or createdAt in memory
-          allNews.sort((a, b) => {
-            const dateA = a.publishedAt?.toDate?.() || a.createdAt?.toDate?.() || new Date(0)
-            const dateB = b.publishedAt?.toDate?.() || b.createdAt?.toDate?.() || new Date(0)
-            return dateB - dateA
-          })
+          sortByCreatedAtDesc(allNews)
 
           console.log('✅ PUBLIC: Got news with fallback query:', allNews.length)
           return allNews.slice(0, limitCount)

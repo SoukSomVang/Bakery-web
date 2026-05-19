@@ -23,7 +23,8 @@
     "gallery": "Gallery",
     "branches": "Branches",
     "allBakery": "All Bakery",
-    "cakes": "Cakes"
+    "cakes": "Cakes",
+    "news": "News"
   },
   "manual": {
     "title": "Product Manual & Guidelines",
@@ -129,7 +130,9 @@
     "backToNews": "Back to News",
     "backToHome": "Back to Home",
     "error": "Error Loading News",
-    "tags": "Tags"
+    "tags": "Tags",
+    "allNews": "All News",
+    "loadMore": "Load More"
   },
   "home": {
     "discoverUs": "Discover us",

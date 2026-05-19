@@ -55,6 +55,13 @@
           >
             {{ t('nav.manual') }}
           </NuxtLink>
+          <NuxtLink
+            to="/news"
+            class="nav-link"
+            :class="{ active: $route.path.startsWith('/news') }"
+          >
+            {{ t('nav.news') }}
+          </NuxtLink>
 
           <!-- Products Dropdown Menu -->
           <!-- <div class="relative" ref="productsDropdown">
@@ -218,6 +225,12 @@
             class="block py-2 text-gray-700 hover:text-red-800"
           >
             {{ t('nav.manual') }}
+          </NuxtLink>
+          <NuxtLink
+            to="/news"
+            class="block py-2 text-gray-700 hover:text-red-800"
+          >
+            {{ t('nav.news') }}
           </NuxtLink>
 
           <!-- Language Switcher for Mobile -->

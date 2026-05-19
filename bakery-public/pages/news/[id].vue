@@ -78,7 +78,7 @@
           <img
             :src="newsItem.images[0]"
             :alt="currentLocale.value === 'en' && newsItem.titleEn ? newsItem.titleEn : newsItem.title"
-            class="w-full h-auto max-h-[600px] object-cover rounded-lg shadow-xl"
+            class="w-full h-auto max-h-[800px] object-cover rounded-lg shadow-xl"
           />
 
           <!-- Additional Images Grid -->
@@ -88,7 +88,7 @@
               :key="index"
               :src="image"
               :alt="`${currentLocale.value === 'en' && newsItem.titleEn ? newsItem.titleEn : newsItem.title} - Image ${index + 2}`"
-              class="w-full h-48 object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+              class="w-full h-[350px] object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
               @click="openImageModal(image)"
             />
           </div>
@@ -121,7 +121,7 @@
       <!-- Back Button -->
       <div class="mt-12 pt-8 border-t border-gray-200">
         <button
-          @click="navigateTo('/#news')"
+          @click="goBack"
           class="inline-flex items-center text-red-800 hover:text-red-900 font-semibold transition-colors"
         >
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -160,10 +160,19 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
+const router = useRouter()
 const { currentLocale, t } = useTranslation()
+
+const goBack = () => {
+  if (import.meta.client && window.history.length > 1) {
+    router.back()
+  } else {
+    router.push('/news')
+  }
+}
 
 const newsItem = ref(null)
 const loading = ref(true)
