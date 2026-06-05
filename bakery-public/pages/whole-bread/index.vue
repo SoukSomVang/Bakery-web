@@ -6,7 +6,7 @@
         <div class="grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <div class="max-w-lg">
-              <span class="text-red-600 font-semibold text-sm uppercase tracking-wider mb-2 block">
+              <span class="text-red-600 font-semibold text-sm uppercase tracking-wider mb-6 block">
                 {{ t('wholeBread.featuredProduct') }}
               </span>
               <h2 class="text-4xl lg:text-5xl font-bold mb-6 text-gray-800 leading-tight">
@@ -94,16 +94,28 @@
           </div>
 
           <!-- Product Image -->
-          <div>
-            <div class="relative">
+          <div class="flex justify-center">
+            <div class="relative max-w-sm w-full">
               <div class="absolute inset-0 bg-gradient-to-r from-red-100 to-orange-100 rounded-2xl transform rotate-6"></div>
               <img
-                src="https://images.squarespace-cdn.com/content/v1/5ccc9bada9ab950174f0b374/1719853260027-MUYMSU6RJOXZFKQ8QIU2/Nature%27s+Own+-+Perfectly+Crafted+-+Multigrain+WEB+-+FOP.png?format=500w"
-                alt="Whole Wheat Multigrain Bread"
-                class="relative w-full rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-300"
+                :src="wholeBreadImage"
+                alt="Mild Choice Soft Bread"
+                class="relative w-full object-cover rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-300"
               />
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Background / Our Story Section -->
+    <section class="py-16 bg-white scroll-section opacity-0 translate-y-10 transition-all duration-700">
+      <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto text-center">
+          <h2 class="text-4xl font-bold text-gray-800 mb-6">{{ t('wholeBread.backgroundTitle') }}</h2>
+          <p class="text-gray-600 text-lg leading-relaxed">
+            {{ t('wholeBread.backgroundText') }}
+          </p>
         </div>
       </div>
     </section>
@@ -179,6 +191,7 @@
 <script setup>
 import KafepaLogo from "@/assets/images/logo/kafepa_logo.jpg";
 import TreekoffLogo from "@/assets/images/logo/treekoff_logo.png";
+import wholeBreadImage from "@/assets/images/whole-bread.png";
 
 const { t } = useTranslation();
 

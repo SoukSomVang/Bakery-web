@@ -149,11 +149,11 @@
     "safetyFreshness": "Safety & Freshness",
     "safetyDesc": "Maintaining the highest standards of freshness and cleanliness to deliver the best to our customers.",
     "allBakery": "ALL BAKERY",
-    "ourCustomers": "Our Partners",
+    "ourCustomers": "Our Customers",
     "wholeBreadSection": {
       "featuredProduct": "Featured Product",
-      "title": "Whole Wheat Multigrain Bread",
-      "description": "Our signature multigrain bread combines the wholesome goodness of wheat with a perfect blend of seeds and grains, creating a nutritious and delicious choice for health-conscious customers.",
+      "title": "Mild Choice Soft Bread",
+      "description": "We wanted to create a bread that feels soft from the very first touch all the way through to every bite — soft crust and soft crumb alike. So we researched new recipes and refined many of them to suit our customers, achieving that perfectly balanced softness in both crust and crumb. The result is Mild Choice Soft Bread.",
       "viewWholeBread": "View Whole Bread"
     }
   },
@@ -177,18 +177,20 @@
   },
   "wholeBread": {
     "featuredProduct": "Featured Product",
-    "title": "Whole Wheat Multigrain Bread",
-    "description": "Our signature multigrain bread combines the wholesome goodness of wheat with a perfect blend of seeds and grains, creating a nutritious and delicious choice for health-conscious customers.",
-    "feature1": "100% Whole Wheat Flour",
-    "feature2": "Rich in Fiber & Protein",
-    "feature3": "No Artificial Preservatives",
-    "feature4": "Baked Fresh Daily",
+    "title": "Mild Choice Soft Bread",
+    "description": "Mild Choice Soft Bread is made with our care, leaving a memorable impression every time our customers enjoy it.",
+    "feature1": "Baked Fresh Daily",
+    "feature2": "No Preservatives",
+    "feature3": "Guaranteed Softness",
+    "feature4": "Rich in Fiber & Protein",
+    "backgroundTitle": "Our Story",
+    "backgroundText": "We wanted to create a bread that feels soft from the very first touch all the way through to every bite — soft crust and soft crumb alike. So we researched new recipes and refined many of them to suit our customers, achieving that perfectly balanced softness in both crust and crumb. The result is Mild Choice Soft Bread.",
     "nutritionTitle": "Nutrition Facts (per slice)",
     "calories": "Calories:",
     "protein": "Protein:",
     "fiber": "Fiber:",
     "wholeGrains": "Whole Grains:",
-    "ourPartners": "Our Partners",
+    "ourPartners": "Our Customers",
     "visit": "Visit"
   }
 }

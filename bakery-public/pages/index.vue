@@ -164,7 +164,7 @@
           <div class="order-2 lg:order-1">
             <div class="max-w-lg">
               <span
-                class="text-red-600 font-semibold text-sm uppercase tracking-wider mb-2 block"
+                class="text-red-600 font-semibold text-sm uppercase tracking-wider mb-6 block"
                 >{{ t('home.wholeBreadSection.featuredProduct') }}</span
               >
               <h2
@@ -185,14 +185,14 @@
               </div>
             </div>
           </div>
-          <div class="order-1 lg:order-2">
-            <div class="relative">
+          <div class="order-1 lg:order-2 flex justify-center">
+            <div class="relative max-w-sm w-full">
               <div
                 class="absolute inset-0 bg-gradient-to-r from-red-100 to-orange-100 rounded-2xl transform rotate-6"
               ></div>
               <img
-                src="https://images.squarespace-cdn.com/content/v1/5ccc9bada9ab950174f0b374/1719853260027-MUYMSU6RJOXZFKQ8QIU2/Nature%27s+Own+-+Perfectly+Crafted+-+Multigrain+WEB+-+FOP.png?format=500w"
-                alt="Whole Wheat Bread"
+                :src="wholeBreadImage"
+                alt="Mild Choice Soft Bread"
                 class="relative w-full rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-300"
               />
             </div>
@@ -389,6 +389,7 @@ import propImage from "@/assets/images/prop-image2.jpg";
 import productSectionImage from "@/assets/images/prop-image.jpeg";
 import KafepaLogo from "@/assets/images/logo/kafepa_logo.jpg";
 import TreekoffLogo from "@/assets/images/logo/treekoff_logo.png";
+import wholeBreadImage from "@/assets/images/whole-bread.png";
 
 const router = useRouter();
 const { t, currentLocale } = useTranslation();

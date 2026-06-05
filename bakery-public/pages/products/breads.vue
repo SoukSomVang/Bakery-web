@@ -177,7 +177,7 @@
     <section class="py-16 bg-white">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold text-gray-900 mb-4">Our Partners</h2>
+          <h2 class="text-4xl font-bold text-gray-900 mb-4">Our Customers</h2>
           <p class="text-gray-600 max-w-2xl mx-auto">
             Trusted by leading restaurants, hotels, and cafes across the region
           </p>
