@@ -294,6 +294,9 @@ const closeDeleteModal = () => {
   showDeleteModal.value = false
   itemToDelete.value = null
   deleteError.value = null
+  // The failed delete also set the store error, which renders in the page
+  // banner behind the modal — clear it too or it outlives the modal
+  bakeryStore.clearError()
 }
 
 const confirmDelete = async () => {

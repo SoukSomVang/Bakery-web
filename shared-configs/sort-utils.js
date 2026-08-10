@@ -27,9 +27,15 @@ export const toMillis = (value) => {
 
 /**
  * Sort a list of documents by `createdAt`, newest first.
- * Done client-side (instead of a Firestore orderBy) so documents that are
- * missing `createdAt` are still returned instead of being dropped by the query,
- * and so no composite index is needed when combined with a `where` filter.
+ *
+ * Done client-side rather than with a Firestore `orderBy('createdAt')`,
+ * because `orderBy` also acts as a filter: it drops every document that has
+ * no `createdAt` field. Sorting here keeps those documents (they sort last)
+ * and tolerates the mixed date shapes in this dataset.
+ *
+ * Note this means the result set is larger than the old `orderBy` query's —
+ * legacy items written before `createdAt` existed are now visible.
+ *
  * Returns a new array; the input is not mutated.
  */
 export const sortByCreatedAtDesc = (items = [], field = 'createdAt') =>

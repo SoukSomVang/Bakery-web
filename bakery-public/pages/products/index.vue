@@ -300,6 +300,11 @@ const fetchDataWithRetry = async () => {
         console.error('❌ PUBLIC: Error code:', err.code);
         console.error('❌ PUBLIC: Error message:', err.message);
 
+        // The component may have unmounted while the request was in flight —
+        // onUnmounted has already run, so don't start another timer or write
+        // to refs nobody is rendering any more.
+        if (cancelled) return;
+
         // Don't burn retries on failures a retry can never fix
         // (denied rules, missing index, bad query)
         if (attempt === maxRetries || !isRetryable(err)) {

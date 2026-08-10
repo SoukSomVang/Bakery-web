@@ -56,6 +56,10 @@ export const useBakeryStore = defineStore('bakery', {
       this.error = error
     },
 
+    clearError() {
+      this.error = null
+    },
+
     // Bakery Items Actions
     async fetchBakeryItems() {
       this.setLoading(true)
