@@ -94,6 +94,7 @@
     "noProductsAvailable": "No products available at the moment.",
     "checkBackLater": "Please check back later or contact us for more information.",
     "retryAttempt": "Retry attempt",
+    "loadFailed": "Failed to load products",
     "showing": "Showing"
   },
   "cakes": {

@@ -282,8 +282,12 @@
         <p class="text-gray-600 mb-6">
           Are you sure you want to delete "{{ itemToDelete?.name }}"? This action cannot be undone.
         </p>
+        <!-- The page-level error banner sits behind this overlay, so repeat it here -->
+        <div v-if="deleteError" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          {{ deleteError }}
+        </div>
         <div class="flex justify-end space-x-3">
-          <button @click="showDeleteModal = false" class="btn-secondary">Cancel</button>
+          <button @click="closeDeleteModal" class="btn-secondary">Cancel</button>
           <button @click="confirmDelete" class="btn-danger" :disabled="loading">
             {{ loading ? 'Deleting...' : 'Delete' }}
           </button>
@@ -294,6 +298,8 @@
 </template>
 
 <script setup>
+import { describeError } from '../../../shared-configs/error-utils.js'
+
 const bakeryStore = useBakeryStore()
 const { bakeryItems, loading, error } = storeToRefs(bakeryStore)
 const bakeryTypeNames = computed(() => bakeryStore.bakeryTypeNames)
@@ -304,6 +310,7 @@ const searchQuery = ref('')
 const selectedType = ref('')
 const showDeleteModal = ref(false)
 const itemToDelete = ref(null)
+const deleteError = ref(null)
 
 // Pagination
 const currentPage = ref(1)
@@ -389,18 +396,28 @@ const changeItemsPerPage = (newItemsPerPage) => {
 
 const deleteItem = (item) => {
   itemToDelete.value = item
+  deleteError.value = null
   showDeleteModal.value = true
 }
 
+const closeDeleteModal = () => {
+  showDeleteModal.value = false
+  itemToDelete.value = null
+  deleteError.value = null
+}
+
 const confirmDelete = async () => {
-  if (itemToDelete.value) {
-    try {
-      await bakeryStore.deleteBakeryItem(itemToDelete.value.id)
-      showDeleteModal.value = false
-      itemToDelete.value = null
-    } catch (err) {
-      console.error('Failed to delete item:', err)
-    }
+  if (!itemToDelete.value) return
+
+  deleteError.value = null
+
+  try {
+    await bakeryStore.deleteBakeryItem(itemToDelete.value.id)
+    closeDeleteModal()
+  } catch (err) {
+    // Keep the modal open and tell the user why it failed
+    console.error('Failed to delete item:', err)
+    deleteError.value = `Failed to delete "${itemToDelete.value.name}": ${describeError(err)}`
   }
 }
 

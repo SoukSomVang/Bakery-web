@@ -9,6 +9,7 @@ import {
   onSnapshot
 } from 'firebase/firestore'
 import { db } from '../../shared-configs/firebase-config.js'
+import { sortByCreatedAtDesc } from '../../shared-configs/sort-utils.js'
 
 export const useFirebase = () => {
   // Debug database initialization
@@ -28,7 +29,7 @@ export const useFirebase = () => {
         throw new Error('Firebase Database is not initialized. Please check your Firebase configuration.')
       }
       const querySnapshot = await getDocs(collection($db, 'bakeryItems'))
-      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      return sortByCreatedAtDesc(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
     } catch (error) {
       console.error('Error getting bakery items:', error)
       throw error
@@ -39,7 +40,7 @@ export const useFirebase = () => {
     try {
       const q = query(collection($db, 'bakeryItems'), where('type', '==', type))
       const querySnapshot = await getDocs(q)
-      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      return sortByCreatedAtDesc(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
     } catch (error) {
       console.error('Error getting bakery items by type:', error)
       throw error
@@ -143,10 +144,10 @@ export const useFirebase = () => {
     }
     
     return onSnapshot(q, (querySnapshot) => {
-      const items = querySnapshot.docs.map(doc => ({ 
-        id: doc.id, 
-        ...doc.data() 
-      }))
+      const items = sortByCreatedAtDesc(querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })))
       callback(items)
     })
   }

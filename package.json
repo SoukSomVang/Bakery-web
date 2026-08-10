@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Bakery Web Applications - Public Site & Admin Panel",
   "private": true,
+  "type": "module",
   "scripts": {
     "install:all": "npm run install:public && npm run install:admin",
     "install:public": "cd bakery-public && npm install",
@@ -13,7 +14,8 @@
     "build:public": "cd bakery-public && npm run generate",
     "build:admin": "cd bakery-admin && npm run generate",
     "deploy:firestore": "firebase deploy --only firestore:rules,firestore:indexes",
-    "setup": "npm run install:all"
+    "setup": "npm run install:all",
+    "test": "node --test \"tests/**/*.test.js\""
   },
   "keywords": [
     "bakery",

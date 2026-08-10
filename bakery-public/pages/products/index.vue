@@ -207,6 +207,7 @@
 <script setup>
 // Use client-only wrapper for Firebase composable
 import productSectionImage from "@/assets/images/prop-image.jpeg"
+import { describeError, isRetryable } from "../../../shared-configs/error-utils.js"
 
 const { t } = useTranslation();
 
@@ -235,62 +236,90 @@ const itemsPerPageOptions = [10, 20, 50];
 // Data from Firestore
 const allProducts = ref([]);
 
-// Fetch bakery products
+// Fetch bakery products. Throws on failure so fetchDataWithRetry can retry —
+// do not swallow the error here.
 const fetchData = async () => {
+  console.log('🚀 PUBLIC: Fetching bakery products...');
+
+  const products = await getProductsByBakeryType('bakery');
+  allProducts.value = products || [];
+
+  console.log('✅ PUBLIC: Products loaded:', allProducts.value.length);
+  console.log('📊 PUBLIC: First product data:', allProducts.value[0]);
+
+  // Log pagination debug info
+  console.log('📄 PUBLIC: Items per page:', itemsPerPage.value);
+  console.log('📄 PUBLIC: Should show pagination:', allProducts.value.length > itemsPerPage.value);
+
+  // Log if no products found
+  if (allProducts.value.length === 0) {
+    console.warn('⚠️ PUBLIC: No products found in bakeryItems collection');
+  }
+};
+
+// Retry mechanism
+const maxRetries = 3;
+const retryDelayMs = 2000;
+const retryCount = ref(0);
+
+let retryTimer = null;
+let cancelPendingWait = null;
+let fetchInFlight = false;
+let cancelled = false;
+
+// Cancellable delay — unmounting resolves it immediately so the retry loop
+// can bail out instead of leaving a timer (and a pending promise) behind
+const wait = (ms) => new Promise((resolve) => {
+  cancelPendingWait = resolve;
+  retryTimer = setTimeout(resolve, ms);
+});
+
+// Fetch data, retrying transient Firestore failures before giving up
+const fetchDataWithRetry = async () => {
   // Only fetch data on client side
   if (!import.meta.client) {
     loading.value = false;
     return;
   }
 
+  // Ignore extra clicks on "Try Again" while a run is already going
+  if (fetchInFlight) return;
+  fetchInFlight = true;
+
+  loading.value = true;
+  error.value = null;
+  retryCount.value = 0;
+
   try {
-    console.log('🚀 PUBLIC: Fetching bakery products...');
-    loading.value = true;
-    error.value = null;
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        await fetchData();
+        return;
+      } catch (err) {
+        console.error('❌ PUBLIC: Error fetching products:', err);
+        console.error('❌ PUBLIC: Error code:', err.code);
+        console.error('❌ PUBLIC: Error message:', err.message);
 
-    const products = await getProductsByBakeryType('bakery');
-    allProducts.value = products || [];
+        // Don't burn retries on failures a retry can never fix
+        // (denied rules, missing index, bad query)
+        if (attempt === maxRetries || !isRetryable(err)) {
+          if (attempt === maxRetries) console.error('❌ PUBLIC: Max retries reached');
+          allProducts.value = [];
+          error.value = `${t('products.loadFailed')}: ${describeError(err)}`;
+          return;
+        }
 
-    console.log('✅ PUBLIC: Products loaded:', allProducts.value.length);
-    console.log('📊 PUBLIC: First product data:', allProducts.value[0]);
-
-    // Log pagination debug info
-    console.log('📄 PUBLIC: Items per page:', itemsPerPage.value);
-    console.log('📄 PUBLIC: Should show pagination:', allProducts.value.length > itemsPerPage.value);
-
-    // Log if no products found
-    if (allProducts.value.length === 0) {
-      console.warn('⚠️ PUBLIC: No products found in bakeryItems collection');
+        retryCount.value = attempt + 1;
+        console.log(`🔄 PUBLIC: Retrying... (${retryCount.value}/${maxRetries})`);
+        await wait(retryDelayMs);
+        if (cancelled) return;
+      }
     }
-
-  } catch (err) {
-    console.error('❌ PUBLIC: Error fetching products:', err);
-    console.error('❌ PUBLIC: Error code:', err.code);
-    console.error('❌ PUBLIC: Error message:', err.message);
-    error.value = `Failed to load products: ${err.message}`;
-    allProducts.value = [];
   } finally {
+    retryTimer = null;
+    cancelPendingWait = null;
+    fetchInFlight = false;
     loading.value = false;
-  }
-};
-
-// Retry mechanism
-const maxRetries = 3;
-const retryCount = ref(0);
-
-// Fetch data with retries
-const fetchDataWithRetry = async () => {
-  try {
-    await fetchData();
-    retryCount.value = 0; // Reset retry count on success
-  } catch (error) {
-    if (retryCount.value < maxRetries) {
-      retryCount.value++;
-      console.log(`🔄 PUBLIC: Retrying... (${retryCount.value}/${maxRetries})`);
-      setTimeout(() => fetchDataWithRetry(), 2000); // Wait 2s before retry
-    } else {
-      console.error('❌ PUBLIC: Max retries reached');
-    }
   }
 };
 
@@ -298,6 +327,19 @@ const fetchDataWithRetry = async () => {
 onMounted(() => {
   if (import.meta.client) {
     fetchDataWithRetry();
+  }
+});
+
+// Don't leave a retry timer running after the user navigates away
+onUnmounted(() => {
+  cancelled = true;
+  if (retryTimer) {
+    clearTimeout(retryTimer);
+    retryTimer = null;
+  }
+  if (cancelPendingWait) {
+    cancelPendingWait();
+    cancelPendingWait = null;
   }
 });
 

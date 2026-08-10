@@ -47,12 +47,19 @@
         v-if="error"
         class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6 text-center"
       >
-        {{ error }}
+        <div class="mb-3">{{ error }}</div>
+        <button
+          @click="fetchData"
+          :disabled="loading"
+          class="bg-red-600 text-white px-5 py-2 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+        >
+          {{ loading ? t('common.retrying') : t('common.tryAgain') }}
+        </button>
       </div>
 
       <!-- No Items Message -->
       <div
-        v-if="!loading && filteredItems.length === 0"
+        v-if="!loading && !error && filteredItems.length === 0"
         class="text-center py-12"
       >
         <div class="text-gray-500 text-lg">{{ t('manual.noItemsFound') }}</div>
@@ -699,23 +706,22 @@
 </template>
 
 <script setup>
+import { describeError } from "../../../shared-configs/error-utils.js"
+
 // Translation composable
 const { t, locale: currentLocale } = useTranslation()
 
-// Client-only Firebase initialization
+// Client-only Firebase initialization.
+// Errors propagate to fetchData so the page can show them instead of
+// silently rendering an empty "no items found" table.
 const getProductsByCakeAndBakeryTypes = async () => {
   // Only fetch on client side
   if (!import.meta.client) {
     return [];
   }
 
-  try {
-    const { getProductsByCakeAndBakeryTypes: fetchProducts } = useProducts();
-    return await fetchProducts();
-  } catch (error) {
-    console.error('Error loading products function:', error);
-    return [];
-  }
+  const { getProductsByCakeAndBakeryTypes: fetchProducts } = useProducts();
+  return await fetchProducts();
 };
 
 function capitalizeFirst(str) {
@@ -748,7 +754,8 @@ const fetchData = async () => {
     bakeryItems.value = products || [];
   } catch (err) {
     console.error("Error fetching bakery items:", err);
-    error.value = `Failed to load products: ${err.message}`;
+    console.error("Error code:", err.code);
+    error.value = `${t('products.loadFailed')}: ${describeError(err)}`;
     bakeryItems.value = [];
   } finally {
     loading.value = false;

@@ -17,6 +17,8 @@ import {
   getDownloadURL,
   deleteObject
 } from 'firebase/storage'
+import { sortByCreatedAtDesc } from '../../shared-configs/sort-utils.js'
+
 const getFirebaseInstances = () => {
   console.log('🔧 Using client-side Firebase configuration...')
 
@@ -62,7 +64,7 @@ export const useFirebase = () => {
         throw new Error('Firebase Database is not initialized. Please check your Firebase configuration.')
       }
       const querySnapshot = await getDocs(collection($db, 'bakeryItems'))
-      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      return sortByCreatedAtDesc(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
     } catch (error) {
       console.error('Error getting bakery items:', error)
       throw error
@@ -73,7 +75,7 @@ export const useFirebase = () => {
     try {
       const q = query(collection($db, 'bakeryItems'), where('type', '==', type))
       const querySnapshot = await getDocs(q)
-      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      return sortByCreatedAtDesc(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
     } catch (error) {
       console.error('Error getting bakery items by type:', error)
       throw error

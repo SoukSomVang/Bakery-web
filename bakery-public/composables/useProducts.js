@@ -5,9 +5,9 @@ import {
   getDoc,
   query,
   where,
-  orderBy,
   onSnapshot,
 } from "firebase/firestore";
+import { sortByCreatedAtDesc } from "../../shared-configs/sort-utils.js";
 
 export const useProducts = () => {
   // Check if Firestore is available
@@ -29,17 +29,14 @@ export const useProducts = () => {
       const { db } = useClientFirebase();
       checkFirestore(db);
 
-      const q = query(
-        collection(db, "bakeryItems"),
-        orderBy("createdAt", "desc"),
+      const querySnapshot = await getDocs(collection(db, "bakeryItems"));
+
+      return sortByCreatedAtDesc(
+        querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })),
       );
-
-      const querySnapshot = await getDocs(q);
-
-      return querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
     } catch (error) {
       console.error("PUBLIC: Error getting products:", error);
       throw error;
@@ -55,7 +52,9 @@ export const useProducts = () => {
         where("category", "==", category),
       );
       const querySnapshot = await getDocs(q);
-      return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      return sortByCreatedAtDesc(
+        querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })),
+      );
     } catch (error) {
       console.error("PUBLIC: Error getting products by category:", error);
       throw error;
@@ -70,15 +69,16 @@ export const useProducts = () => {
       const q = query(
         collection(db, "bakeryItems"),
         where("type", "==", typeName),
-        orderBy("createdAt", "desc"),
       );
 
       const querySnapshot = await getDocs(q);
 
-      return querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      return sortByCreatedAtDesc(
+        querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })),
+      );
     } catch (error) {
       console.error("PUBLIC: Error getting products by bakery type:", error);
       throw error;
@@ -106,7 +106,9 @@ export const useProducts = () => {
         where("type", "in", bakeryTypes),
       );
       const querySnapshot = await getDocs(q);
-      return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      return sortByCreatedAtDesc(
+        querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })),
+      );
     } catch (error) {
       console.error(
         "PUBLIC: Error getting products filtered by bakery types:",
@@ -145,7 +147,7 @@ export const useProducts = () => {
         );
       });
 
-      return filteredProducts;
+      return sortByCreatedAtDesc(filteredProducts);
     } catch (error) {
       console.error(
         "PUBLIC: Error getting products by cake and bakery types:",
@@ -212,7 +214,9 @@ export const useProducts = () => {
         where("featured", "==", true),
       );
       const querySnapshot = await getDocs(q);
-      return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      return sortByCreatedAtDesc(
+        querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })),
+      );
     } catch (error) {
       console.error("PUBLIC: Error getting featured products:", error);
       throw error;
@@ -231,10 +235,12 @@ export const useProducts = () => {
     }
 
     return onSnapshot(q, (querySnapshot) => {
-      const products = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const products = sortByCreatedAtDesc(
+        querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })),
+      );
       callback(products);
     });
   };

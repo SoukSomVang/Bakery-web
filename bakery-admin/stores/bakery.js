@@ -1,3 +1,5 @@
+import { describeError } from '../../shared-configs/error-utils.js'
+
 export const useBakeryStore = defineStore('bakery', {
   state: () => ({
     bakeryItems: [],
@@ -63,7 +65,7 @@ export const useBakeryStore = defineStore('bakery', {
         const { getBakeryItems } = useFirebase()
         this.bakeryItems = await getBakeryItems()
       } catch (error) {
-        this.setError('Failed to fetch bakery items')
+        this.setError(`Failed to fetch bakery items: ${describeError(error)}`)
         console.error('Error fetching bakery items:', error)
       } finally {
         this.setLoading(false)
@@ -78,11 +80,11 @@ export const useBakeryStore = defineStore('bakery', {
         const { addBakeryItem } = useFirebase()
         const id = await addBakeryItem(item)
         
-        // Add to local state
-        this.bakeryItems.push({ id, ...item, createdAt: new Date(), updatedAt: new Date() })
+        // Add to local state (newest first, matching the createdAt desc order from Firestore)
+        this.bakeryItems.unshift({ id, ...item, createdAt: new Date(), updatedAt: new Date() })
         return id
       } catch (error) {
-        this.setError('Failed to add bakery item')
+        this.setError(`Failed to add bakery item: ${describeError(error)}`)
         console.error('Error adding bakery item:', error)
         throw error
       } finally {
@@ -104,7 +106,7 @@ export const useBakeryStore = defineStore('bakery', {
           this.bakeryItems[index] = { ...this.bakeryItems[index], ...item, updatedAt: new Date() }
         }
       } catch (error) {
-        this.setError('Failed to update bakery item')
+        this.setError(`Failed to update bakery item: ${describeError(error)}`)
         console.error('Error updating bakery item:', error)
         throw error
       } finally {
@@ -123,7 +125,7 @@ export const useBakeryStore = defineStore('bakery', {
         // Remove from local state
         this.bakeryItems = this.bakeryItems.filter(item => item.id !== id)
       } catch (error) {
-        this.setError('Failed to delete bakery item')
+        this.setError(`Failed to delete bakery item: ${describeError(error)}`)
         console.error('Error deleting bakery item:', error)
         throw error
       } finally {
@@ -140,7 +142,7 @@ export const useBakeryStore = defineStore('bakery', {
         const { getStorageData } = useFirebase()
         this.storageData = await getStorageData()
       } catch (error) {
-        this.setError('Failed to fetch storage data')
+        this.setError(`Failed to fetch storage data: ${describeError(error)}`)
         console.error('Error fetching storage data:', error)
       } finally {
         this.setLoading(false)
@@ -159,7 +161,7 @@ export const useBakeryStore = defineStore('bakery', {
         this.storageData.push({ id, ...data, createdAt: new Date(), updatedAt: new Date() })
         return id
       } catch (error) {
-        this.setError('Failed to add storage data')
+        this.setError(`Failed to add storage data: ${describeError(error)}`)
         console.error('Error adding storage data:', error)
         throw error
       } finally {
@@ -181,7 +183,7 @@ export const useBakeryStore = defineStore('bakery', {
           this.storageData[index] = { ...this.storageData[index], ...data, updatedAt: new Date() }
         }
       } catch (error) {
-        this.setError('Failed to update storage data')
+        this.setError(`Failed to update storage data: ${describeError(error)}`)
         console.error('Error updating storage data:', error)
         throw error
       } finally {
@@ -200,7 +202,7 @@ export const useBakeryStore = defineStore('bakery', {
         // Remove from local state
         this.storageData = this.storageData.filter(data => data.id !== id)
       } catch (error) {
-        this.setError('Failed to delete storage data')
+        this.setError(`Failed to delete storage data: ${describeError(error)}`)
         console.error('Error deleting storage data:', error)
         throw error
       } finally {
@@ -217,7 +219,7 @@ export const useBakeryStore = defineStore('bakery', {
         const { getBranches } = useFirebase()
         this.branches = await getBranches()
       } catch (error) {
-        this.setError('Failed to fetch branches')
+        this.setError(`Failed to fetch branches: ${describeError(error)}`)
         console.error('Error fetching branches:', error)
       } finally {
         this.setLoading(false)
@@ -236,7 +238,7 @@ export const useBakeryStore = defineStore('bakery', {
         this.branches.push({ id, ...branch, createdAt: new Date(), updatedAt: new Date() })
         return id
       } catch (error) {
-        this.setError('Failed to add branch')
+        this.setError(`Failed to add branch: ${describeError(error)}`)
         console.error('Error adding branch:', error)
         throw error
       } finally {
@@ -258,7 +260,7 @@ export const useBakeryStore = defineStore('bakery', {
           this.branches[index] = { ...this.branches[index], ...branch, updatedAt: new Date() }
         }
       } catch (error) {
-        this.setError('Failed to update branch')
+        this.setError(`Failed to update branch: ${describeError(error)}`)
         console.error('Error updating branch:', error)
         throw error
       } finally {
@@ -277,7 +279,7 @@ export const useBakeryStore = defineStore('bakery', {
         // Remove from local state
         this.branches = this.branches.filter(branch => branch.id !== id)
       } catch (error) {
-        this.setError('Failed to delete branch')
+        this.setError(`Failed to delete branch: ${describeError(error)}`)
         console.error('Error deleting branch:', error)
         throw error
       } finally {
@@ -294,7 +296,7 @@ export const useBakeryStore = defineStore('bakery', {
         const { getBakeries } = useFirebase()
         this.bakeries = await getBakeries()
       } catch (error) {
-        this.setError('Failed to fetch bakeries')
+        this.setError(`Failed to fetch bakeries: ${describeError(error)}`)
         console.error('Error fetching bakeries:', error)
       } finally {
         this.setLoading(false)
@@ -313,7 +315,7 @@ export const useBakeryStore = defineStore('bakery', {
         this.bakeries.push({ id, ...bakery, createdAt: new Date(), updatedAt: new Date() })
         return id
       } catch (error) {
-        this.setError('Failed to add bakery')
+        this.setError(`Failed to add bakery: ${describeError(error)}`)
         console.error('Error adding bakery:', error)
         throw error
       } finally {
@@ -335,7 +337,7 @@ export const useBakeryStore = defineStore('bakery', {
           this.bakeries[index] = { ...this.bakeries[index], ...bakery, updatedAt: new Date() }
         }
       } catch (error) {
-        this.setError('Failed to update bakery')
+        this.setError(`Failed to update bakery: ${describeError(error)}`)
         console.error('Error updating bakery:', error)
         throw error
       } finally {
@@ -354,7 +356,7 @@ export const useBakeryStore = defineStore('bakery', {
         // Remove from local state
         this.bakeries = this.bakeries.filter(bakery => bakery.id !== id)
       } catch (error) {
-        this.setError('Failed to delete bakery')
+        this.setError(`Failed to delete bakery: ${describeError(error)}`)
         console.error('Error deleting bakery:', error)
         throw error
       } finally {
@@ -371,7 +373,7 @@ export const useBakeryStore = defineStore('bakery', {
         const { getBakeryTypes } = useFirebase()
         this.bakeryTypes = await getBakeryTypes()
       } catch (error) {
-        this.setError('Failed to fetch bakery types')
+        this.setError(`Failed to fetch bakery types: ${describeError(error)}`)
         console.error('Error fetching bakery types:', error)
       } finally {
         this.setLoading(false)
@@ -390,7 +392,7 @@ export const useBakeryStore = defineStore('bakery', {
         this.bakeryTypes.push({ id, ...type, createdAt: new Date(), updatedAt: new Date() })
         return id
       } catch (error) {
-        this.setError('Failed to add bakery type')
+        this.setError(`Failed to add bakery type: ${describeError(error)}`)
         console.error('Error adding bakery type:', error)
         throw error
       } finally {
@@ -412,7 +414,7 @@ export const useBakeryStore = defineStore('bakery', {
           this.bakeryTypes[index] = { ...this.bakeryTypes[index], ...type, updatedAt: new Date() }
         }
       } catch (error) {
-        this.setError('Failed to update bakery type')
+        this.setError(`Failed to update bakery type: ${describeError(error)}`)
         console.error('Error updating bakery type:', error)
         throw error
       } finally {
@@ -431,7 +433,7 @@ export const useBakeryStore = defineStore('bakery', {
         // Remove from local state
         this.bakeryTypes = this.bakeryTypes.filter(type => type.id !== id)
       } catch (error) {
-        this.setError('Failed to delete bakery type')
+        this.setError(`Failed to delete bakery type: ${describeError(error)}`)
         console.error('Error deleting bakery type:', error)
         throw error
       } finally {
@@ -448,7 +450,7 @@ export const useBakeryStore = defineStore('bakery', {
         const { getNews } = useFirebase()
         this.news = await getNews()
       } catch (error) {
-        this.setError('Failed to fetch news')
+        this.setError(`Failed to fetch news: ${describeError(error)}`)
         console.error('Error fetching news:', error)
       } finally {
         this.setLoading(false)
@@ -467,7 +469,7 @@ export const useBakeryStore = defineStore('bakery', {
         this.news.push({ id, ...newsItem, createdAt: new Date(), updatedAt: new Date() })
         return id
       } catch (error) {
-        this.setError('Failed to add news')
+        this.setError(`Failed to add news: ${describeError(error)}`)
         console.error('Error adding news:', error)
         throw error
       } finally {
@@ -489,7 +491,7 @@ export const useBakeryStore = defineStore('bakery', {
           this.news[index] = { ...this.news[index], ...newsItem, updatedAt: new Date() }
         }
       } catch (error) {
-        this.setError('Failed to update news')
+        this.setError(`Failed to update news: ${describeError(error)}`)
         console.error('Error updating news:', error)
         throw error
       } finally {
@@ -508,7 +510,7 @@ export const useBakeryStore = defineStore('bakery', {
         // Remove from local state
         this.news = this.news.filter(item => item.id !== id)
       } catch (error) {
-        this.setError('Failed to delete news')
+        this.setError(`Failed to delete news: ${describeError(error)}`)
         console.error('Error deleting news:', error)
         throw error
       } finally {
